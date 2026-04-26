@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma__get_screenshot",
+      "Bash(curl -s -o \"D:/PROJECT_NOW/VIBE/koreanroad/.figma-preview.png\" \"https://www.figma.com/api/mcp/asset/3d9935d7-66bb-4afc-ad56-b42b5b932626\")",
+      "mcp__figma__get_design_context",
+      "mcp__figma__get_variable_defs",
+      "Bash(npm --version)",
+      "Bash(npx --yes create-next-app@latest . --ts --tailwind --app --eslint --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --skip-install)"
+    ]
+  }
+}
