@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/pretendard/Pretendard-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/pretendard/Pretendard-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/pretendard/Pretendard-ExtraBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/pretendard/Pretendard-Black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "SUITE";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/suite/SUITE-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "SUITE";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/suite/SUITE-ExtraBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "SUITE";
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/suite/SUITE-Heavy.woff2") format("woff2");
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+
+  --color-primary: #0ac200;
+  --color-primary-main: #0ac200;
+
+  --color-grayscale-000: #ffffff;
+  --color-grayscale-100: #f0f0f0;
+  --color-grayscale-200: #d9d9d9;
+  --color-grayscale-400: #bdbdbd;
+  --color-grayscale-600: #737373;
+  --color-grayscale-700: #5a5b5d;
+  --color-grayscale-900: #000000;
+
+  --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  --font-pretendard: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  --font-suite: "SUITE", "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  --font-montserrat: var(--font-montserrat-next), "Montserrat", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hero-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hero-carousel::-webkit-scrollbar {
+  display: none;
 }
