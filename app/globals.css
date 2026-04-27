@@ -87,3 +87,11 @@ body {
 .hero-carousel::-webkit-scrollbar {
   display: none;
 }
+
+[data-slide] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+[data-slide]::-webkit-scrollbar {
+  display: none;
+}

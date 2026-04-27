@@ -151,7 +151,7 @@ export function Hero1() {
   return (
     <HeroLayout
       activeMenuIndex={0}
-      bgImage="/figma/hero1-bg.png"
+      bgImage="/img01.jpg"
       linearOverlay={0.3}
       radialOverlay={0.66}
     >
