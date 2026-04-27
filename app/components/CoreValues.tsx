@@ -63,19 +63,15 @@ export default function CoreValues() {
     if (!slide) return;
 
     const getWrapperTop = () => {
-      let top = 0;
-      let el: HTMLElement | null = wrapper;
-      while (el && el !== slide) {
-        top += el.offsetTop;
-        el = el.offsetParent as HTMLElement | null;
-      }
-      return top;
+      const wRect = wrapper.getBoundingClientRect();
+      const sRect = slide.getBoundingClientRect();
+      return Math.round(wRect.top - sRect.top + slide.scrollTop);
     };
 
     const onScroll = () => {
       const wrapperTop = getWrapperTop();
-      const progress = slide.scrollTop - wrapperTop;
       const vh = slide.clientHeight;
+      const progress = Math.round(slide.scrollTop - wrapperTop);
       const index = Math.max(0, Math.min(3, Math.floor(progress / vh)));
       setActiveIndex(index);
     };
@@ -83,26 +79,39 @@ export default function CoreValues() {
     let cooldown = false;
 
     const onWheel = (e: WheelEvent) => {
+      if (!e.deltaY || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+
       const wrapperTop = getWrapperTop();
       const vh = slide.clientHeight;
-      const relativeScroll = slide.scrollTop - wrapperTop;
+      const relativeScroll = Math.round(slide.scrollTop - wrapperTop);
+      const dir = e.deltaY > 0 ? 1 : -1;
 
-      // Not in CoreValues zone
-      if (relativeScroll < 0 || relativeScroll >= 4 * vh) return;
+      // zone 밖이면 cooldown 리셋 후 허용
+      if (relativeScroll < 0 || relativeScroll >= 4 * vh) {
+        cooldown = false;
+        return;
+      }
 
       const currentIndex = Math.max(0, Math.min(3, Math.floor(relativeScroll / vh)));
-      const dir = e.deltaY > 0 ? 1 : -1;
       const nextIndex = currentIndex + dir;
 
-      // Out of bounds — let natural scroll continue
-      if (nextIndex < 0 || nextIndex > 3) return;
+      // zone 이탈 → cooldown 리셋 후 허용
+      if (nextIndex < 0 || nextIndex > 3) {
+        cooldown = false;
+        return;
+      }
 
       e.preventDefault();
       if (cooldown) return;
 
       cooldown = true;
-      slide.scrollTo({ top: wrapperTop + nextIndex * vh, behavior: "smooth" });
-      setTimeout(() => { cooldown = false; }, 700);
+      slide.scrollTop = wrapperTop + nextIndex * vh;
+
+      if (dir < 0) {
+        cooldown = false;
+      } else {
+        setTimeout(() => { cooldown = false; }, 700);
+      }
     };
 
     slide.addEventListener("scroll", onScroll, { passive: true });
@@ -128,6 +137,19 @@ export default function CoreValues() {
             transform: "scale(calc(100vw / 1920px))",
           }}
         >
+          {/* Fixed header — sits above all sliding cards */}
+          <div
+            className="absolute z-10 flex -translate-x-1/2 items-end gap-[14px] whitespace-nowrap"
+            style={{ left: "calc(50% + 0.5px)", top: 98 }}
+          >
+            <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
+              핵심가치
+            </p>
+            <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
+              Core Value
+            </p>
+          </div>
+
           {CARDS.map((card, i) => (
             <div
               key={card.eng}
@@ -141,18 +163,6 @@ export default function CoreValues() {
                 transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
-              <div
-                className="absolute flex -translate-x-1/2 items-end gap-[14px] whitespace-nowrap"
-                style={{ left: "calc(50% + 0.5px)", top: 98 }}
-              >
-                <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-                  핵심가치
-                </p>
-                <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-                  Core Value
-                </p>
-              </div>
-
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={card.img}

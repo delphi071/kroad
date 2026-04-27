@@ -11,7 +11,11 @@ export default function SubpagePlaceholder({ title }: { title: string }) {
           준비 중인 콘텐츠입니다.
         </p>
       </section>
-      <Footer />
+      <div className="relative w-full overflow-hidden" style={{ height: "calc(100vw * 675 / 1920)" }}>
+        <div className="absolute left-0 top-0 origin-top-left" style={{ transform: "scale(calc(100vw / 1920px))" }}>
+          <Footer />
+        </div>
+      </div>
     </div>
   );
 }

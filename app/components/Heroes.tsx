@@ -1,6 +1,6 @@
 "use client";
 
-import HeroLayout from "./HeroLayout";
+import HeroLayout, { useHeroCollapse } from "./HeroLayout";
 
 // Shared CTA button (자세히 보기) — clicking scrolls current slide down to subpage
 function HeroButton({
@@ -13,14 +13,8 @@ function HeroButton({
   variant?: "default" | "hero6";
 }) {
   const isHero6 = variant === "hero6";
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const slide = (e.currentTarget as HTMLElement).closest(
-      "[data-slide]"
-    ) as HTMLElement | null;
-    if (slide) {
-      slide.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-    }
-  };
+  const collapse = useHeroCollapse();
+  const handleClick = () => { if (collapse) collapse(); };
   return (
     <button
       type="button"
@@ -154,6 +148,8 @@ export function Hero1() {
       bgImage="/img01.jpg"
       linearOverlay={0.3}
       radialOverlay={0.66}
+      collapsedLine1="길"
+      collapsedLine2="그 이상의 연결"
     >
       {/* Vertical L-curve vector (left side, rotated 90deg) - inline SVG */}
       <div
@@ -235,6 +231,8 @@ export function Hero2() {
       bgImage="/figma/hero2-bg.png"
       linearOverlay={0.2}
       radialOverlay={0.8}
+      collapsedLine1="같은 길"
+      collapsedLine2="다른 시선"
     >
       {/* Vector 3 (left S-curve) - inline SVG with arc commands */}
       <div
@@ -328,6 +326,8 @@ export function Hero3() {
       bgImage="/figma/hero3-bg.png"
       linearOverlay={0.3}
       radialOverlay={0.6}
+      collapsedLine1="우리가"
+      collapsedLine2="걷는 길"
     >
       {/* Vector 4 (left) - inline SVG with arc commands */}
       <div
@@ -420,6 +420,8 @@ export function Hero4() {
       bgImage="/figma/hero4-bg.png"
       linearOverlay={0.4}
       radialOverlay={0.5}
+      collapsedLine1="함께 걷는"
+      collapsedLine2="사람들"
     >
       {/* Vector 5 (left, rotate-180) */}
       <div
@@ -517,6 +519,8 @@ export function Hero5() {
       bgImage="/figma/hero5-bg.png"
       linearOverlay={0.3}
       radialOverlay={0.6}
+      collapsedLine1="알리는"
+      collapsedLine2="이야기"
     >
       {/* Vector 4 (left, scaleY(-1)) - inline SVG */}
       <div
@@ -607,6 +611,7 @@ export function Hero6() {
       bgImage="/figma/hero6-bg.png"
       linearOverlay={0.4}
       radialOverlay={0.4}
+      collapsedLine1="마음잇기"
     >
       {/* Vector 4 (left) - inline SVG */}
       <div

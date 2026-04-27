@@ -35,8 +35,8 @@ export default function HeroCarousel({
 
     const onWheel = (e: WheelEvent) => {
       const slide = activeSlide();
-      // If active slide is scrolled past hero, let native vertical scroll happen
-      if (slide && slide.scrollTop > 10) {
+      // 히어로가 collapsed 상태이거나 서브페이지로 스크롤된 경우 세로 스크롤 허용
+      if (slide && (slide.scrollTop > 10 || slide.dataset.heroCollapsed)) {
         return;
       }
 

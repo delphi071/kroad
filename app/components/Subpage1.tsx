@@ -1,18 +1,16 @@
 import Footer from "./Footer";
 import CoreValues from "./CoreValues";
+import JourneyTimeline from "./JourneyTimeline";
 
 // Figma PC base: page total ~14000px, banner-area is 0..613.
-// F(): top section coordinate (Figma Y → layout Y)
-// FB(): bottom section coordinate (Figma Y → layout Y within bottom section)
+const F  = (figmaY: number) => figmaY - 613;   // TOP section
+const FB = (figmaY: number) => figmaY - 5940;  // BOTTOM_A section (journey header + intro)
+const FC = (figmaY: number) => figmaY - 10026; // BOTTOM_B section (people + location + footer)
 
-const F = (figmaY: number) => figmaY - 613;
-const FB = (figmaY: number) => figmaY - 5940;
-
-// Top section ends just before the CoreValues frame (Figma Y 5072)
-const TOP_HEIGHT = 5072 - 613; // 4459 layout px
-
-// Bottom section starts at Figma Y 5940 (gives natural breathing room before Journey at 6833)
-const BOTTOM_HEIGHT = 14000 - 5940; // 8060 Figma px
+const TOP_HEIGHT      = 5072 - 613;   // 4459
+const BOTTOM_A_HEIGHT = 7700 - 5940;  // 1760
+const BOTTOM_GAP_HEIGHT = 10026 - 8780; // 1246
+const BOTTOM_B_HEIGHT = 14000 - 10026; // 3974
 
 export default function Subpage1() {
   return (
@@ -135,14 +133,13 @@ export default function Subpage1() {
             ))}
           </div>
 
-          {/* Vertical green line — between mission cards and Vision header */}
           <div
             className="absolute -translate-x-1/2 bg-primary"
             style={{ left: "50%", top: F(3018), width: 32, height: 556.5 }}
             aria-hidden
           />
 
-          {/* ============= SECTION 2: Vision (우리가 꿈꾸는 미래) ============= */}
+          {/* ============= SECTION 2: Vision ============= */}
           <div
             className="absolute flex -translate-x-1/2 items-end gap-[14px] whitespace-nowrap"
             style={{ left: "50%", top: F(3664) }}
@@ -167,9 +164,7 @@ export default function Subpage1() {
             </div>
             <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
               <span>행복한</span>
-              <span>
-                <span>이야기</span>가&nbsp; 되는 곳
-              </span>
+              <span>이야기가&nbsp; 되는 곳</span>
             </div>
             <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
               <span>대한민국</span>
@@ -178,7 +173,6 @@ export default function Subpage1() {
             </div>
           </div>
 
-          {/* Vertical green line — between Vision and CoreValues */}
           <div
             className="absolute -translate-x-1/2 bg-primary"
             style={{ left: "50%", top: F(4451), width: 32, height: 616 }}
@@ -190,20 +184,20 @@ export default function Subpage1() {
       {/* ===== SECTION 3: Core Value (핵심가치) — sticky scroll ===== */}
       <CoreValues />
 
-      {/* ===== BOTTOM: Journey + People + Location ===== */}
+      {/* ===== BOTTOM_A: Journey header + intro ===== */}
       <div
         className="relative w-full overflow-hidden bg-grayscale-100"
-        style={{ height: `calc(100vw * ${BOTTOM_HEIGHT} / 1920)` }}
+        style={{ height: `calc(100vw * ${BOTTOM_A_HEIGHT} / 1920)` }}
       >
         <div
           className="absolute left-0 top-0 origin-top-left text-black"
           style={{
             width: 1920,
-            height: BOTTOM_HEIGHT,
+            height: BOTTOM_A_HEIGHT,
             transform: "scale(calc(100vw / 1920px))",
           }}
         >
-          {/* Vector 8 continuation (negative top keeps it visually aligned) */}
+          {/* Vector 8 continuation */}
           <div
             className="absolute"
             style={{ left: -62.5, top: FB(768.08), width: 1990.5, height: 8921.27 }}
@@ -244,98 +238,53 @@ export default function Subpage1() {
             <p>다양한 걷기 길을 지속적으로 연구∙관리·운영하는 가운데,</p>
             <p>새로운 걷기 기반 문화 프로그램을 운영하며 걷기 문화 확산을 위한 걸음을 이어가고 있습니다.</p>
           </div>
+        </div>
+      </div>
 
-          {/* Timeline: 2010 */}
-          <div className="absolute" style={{ left: 414, top: FB(7753) }}>
-            <p className="font-montserrat text-[100px] font-extrabold leading-[1.1] tracking-[-1px]">
-              2010
-            </p>
+      {/* ===== SECTION 4 Timeline: Journey entries (sticky scroll, 3 visible at a time) ===== */}
+      <JourneyTimeline />
+
+      {/* ===== BOTTOM_GAP: Vector8 곡선 — 연혁과 사람들 사이 ===== */}
+      <div
+        className="relative w-full overflow-hidden bg-grayscale-100"
+        style={{ height: `calc(100vw * ${BOTTOM_GAP_HEIGHT} / 1920)` }}
+      >
+        <div
+          className="absolute left-0 top-0 origin-top-left"
+          style={{
+            width: 1920,
+            height: BOTTOM_GAP_HEIGHT,
+            transform: "scale(calc(100vw / 1920px))",
+          }}
+        >
+          <div
+            className="absolute"
+            style={{ left: -62.5, top: 768.08 - 8780, width: 1990.5, height: 8889.419 }}
+            aria-hidden
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/figma/sub1-vector8.svg" alt="" className="block h-full w-full" />
           </div>
-          <p
-            className="-translate-x-1/2 absolute font-montserrat text-[60px] font-extrabold leading-[1.1] tracking-[-0.6px] text-grayscale-700"
-            style={{ left: 772.5, top: FB(7771) }}
-          >
-            08
-          </p>
-          <p
-            className="absolute font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 whitespace-nowrap"
-            style={{ left: 871, top: FB(7784) }}
-          >
-            법인 설립
-          </p>
-          <p
-            className="absolute font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 871, top: FB(7853) }}
-          >
-            문화생태탐방로 사업 진행
-          </p>
-          <p
-            className="absolute -translate-x-1/2 font-montserrat text-[60px] font-extrabold leading-[1.1] tracking-[-0.6px] text-grayscale-700"
-            style={{ left: 772, top: FB(7983) }}
-          >
-            09
-          </p>
-          <p
-            className="absolute font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 whitespace-nowrap"
-            style={{ left: 871, top: FB(7996) }}
-          >
-            {"동해안 걷기여행길 '해파랑길' 사업 진행"}
-          </p>
+        </div>
+      </div>
 
-          {/* Timeline: 2013 */}
-          <div className="absolute opacity-45" style={{ left: 414, top: FB(8349) }}>
-            <p className="font-montserrat text-[100px] font-extrabold leading-[1.1] tracking-[-1px]">
-              2013
-            </p>
-          </div>
-          <p
-            className="absolute -translate-x-1/2 font-montserrat text-[60px] font-extrabold leading-[1.1] tracking-[-0.6px] text-grayscale-700 opacity-45"
-            style={{ left: 772.5, top: FB(8367) }}
-          >
-            07
-          </p>
-          <p
-            className="absolute font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 opacity-45 whitespace-nowrap"
-            style={{ left: 871, top: FB(8380) }}
-          >
-            전국 걷기여행길 현황 조사
-          </p>
-          <p
-            className="absolute font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] opacity-45 whitespace-nowrap"
-            style={{ left: 871, top: FB(8449) }}
-          >
-            걷기여행길 (현 두루누비) 홈페이지 콘텐츠 조사
-          </p>
-
-          {/* Timeline: 2016 */}
-          <div className="absolute opacity-[0.14]" style={{ left: 414, top: FB(8775) }}>
-            <p className="font-montserrat text-[100px] font-extrabold leading-[1.1] tracking-[-1px]">
-              2016
-            </p>
-          </div>
-          <p
-            className="absolute -translate-x-1/2 font-montserrat text-[60px] font-extrabold leading-[1.1] tracking-[-0.6px] text-grayscale-700 opacity-[0.14]"
-            style={{ left: 772.5, top: FB(8793) }}
-          >
-            05
-          </p>
-          <p
-            className="absolute font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 opacity-[0.14] whitespace-nowrap"
-            style={{ left: 871, top: FB(8806) }}
-          >
-            {"7일 동해안 걷기여행길 '해파랑길' 개통"}
-          </p>
-          <p
-            className="absolute font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] opacity-[0.14] whitespace-nowrap"
-            style={{ left: 871, top: FB(8875) }}
-          >
-            50개 코스, 750KM
-          </p>
-
+      {/* ===== BOTTOM_B: Our People + Location + Footer ===== */}
+      <div
+        className="relative w-full overflow-hidden bg-grayscale-100"
+        style={{ height: `calc(100vw * ${BOTTOM_B_HEIGHT} / 1920)` }}
+      >
+        <div
+          className="absolute left-0 top-0 origin-top-left text-black"
+          style={{
+            width: 1920,
+            height: BOTTOM_B_HEIGHT,
+            transform: "scale(calc(100vw / 1920px))",
+          }}
+        >
           {/* ============= SECTION 5: Our People (사람들) ============= */}
           <div
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
-            style={{ left: 226, top: FB(10026) }}
+            style={{ left: 226, top: FC(10026) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
               사람들
@@ -347,14 +296,14 @@ export default function Subpage1() {
 
           <p
             className="absolute font-pretendard text-[100px] font-bold leading-[1.1] tracking-[-1px]"
-            style={{ left: 226, top: FB(10118) }}
+            style={{ left: 226, top: FC(10118) }}
           >
             한국의 길과 문화를 만들어가는 사람들
           </p>
 
           <div
             className="absolute flex -translate-x-1/2 items-center justify-center rounded-full bg-primary p-[40px]"
-            style={{ left: "50%", top: FB(10475), width: 300 }}
+            style={{ left: "50%", top: FC(10475), width: 300 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
               이사장
@@ -363,7 +312,7 @@ export default function Subpage1() {
 
           <div
             className="absolute flex items-center justify-center rounded-full bg-primary py-[40px]"
-            style={{ left: 381, top: FB(11040), width: 1158 }}
+            style={{ left: 381, top: FC(11040), width: 1158 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
               사무처
@@ -372,7 +321,7 @@ export default function Subpage1() {
 
           <div
             className="absolute flex items-center justify-center rounded-full bg-primary p-[40px]"
-            style={{ left: 1139, top: FB(10758), width: 300 }}
+            style={{ left: 1139, top: FC(10758), width: 300 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
               감사
@@ -381,7 +330,7 @@ export default function Subpage1() {
 
           <div
             className="absolute flex gap-[19px]"
-            style={{ left: 381, top: FB(11279), width: 1158 }}
+            style={{ left: 381, top: FC(11279), width: 1158 }}
           >
             {["탐방로팀", "문화콘텐츠팀", "운영지원팀"].map((team) => (
               <div
@@ -397,7 +346,7 @@ export default function Subpage1() {
 
           <div
             className="absolute flex items-stretch gap-[19px]"
-            style={{ left: 381, top: FB(11433), width: 1158 }}
+            style={{ left: 381, top: FC(11433), width: 1158 }}
           >
             {[
               ["코리아둘레길 사업", "연구사업", "컨설팅 사업"],
@@ -420,10 +369,36 @@ export default function Subpage1() {
             ))}
           </div>
 
+          {/* ============= 조직도 연결선 ============= */}
+          <svg
+            className="absolute pointer-events-none"
+            style={{ left: 0, top: 0, width: 1920, height: BOTTOM_B_HEIGHT, overflow: "visible" }}
+            aria-hidden
+          >
+            <g stroke="#0ac200" strokeWidth="3" strokeDasharray="5 8" fill="none">
+              {/* 이사장 하단 → 사무처 상단 수직선 */}
+              <line x1="960" y1={FC(10475) + 120} x2="960" y2={FC(11040)} />
+              {/* 감사 분기 수평선 */}
+              <line x1="960" y1={FC(10758) + 60} x2="1139" y2={FC(10758) + 60} />
+              {/* 사무처 하단 → 팀 분기점 수직선 */}
+              <line x1="960" y1={FC(11040) + 120} x2="960" y2={FC(11279) - 40} />
+              {/* 팀 분기 수평선 */}
+              <line x1="568" y1={FC(11279) - 40} x2="1352" y2={FC(11279) - 40} />
+              {/* 각 팀으로 수직 드롭 — 박스 내부까지 */}
+              <line x1="568"  y1={FC(11279) - 40} x2="568"  y2={FC(11279) + 38} />
+              <line x1="960"  y1={FC(11279) - 40} x2="960"  y2={FC(11279) + 38} />
+              <line x1="1352" y1={FC(11279) - 40} x2="1352" y2={FC(11279) + 38} />
+            </g>
+            {/* 팀 내부 연결 점 */}
+            <circle cx="568"  cy={FC(11279) + 38} r="6" fill="#0ac200" />
+            <circle cx="960"  cy={FC(11279) + 38} r="6" fill="#0ac200" />
+            <circle cx="1352" cy={FC(11279) + 38} r="6" fill="#0ac200" />
+          </svg>
+
           {/* ============= SECTION 6: Location (오시는 길) ============= */}
           <div
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
-            style={{ left: 200, top: FB(12188) }}
+            style={{ left: 200, top: FC(12188) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
               오시는 길
@@ -435,17 +410,49 @@ export default function Subpage1() {
 
           <div
             className="absolute flex items-center"
-            style={{ left: 200, top: FB(12364), width: 1400, height: 610 }}
+            style={{ left: 200, top: FC(12364), width: 1400, height: 610 }}
           >
-            <div className="relative h-[610px] w-[694px] overflow-hidden bg-white">
-              <div className="flex h-full w-full items-center justify-center">
-                <p className="font-pretendard text-[24px] text-grayscale-700">지도</p>
+            {/* 지도 일러스트 */}
+            <div className="relative h-[610px] w-[694px] shrink-0 overflow-hidden bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-vector21.svg" alt="" aria-hidden style={{ position:"absolute", left:-7, top:-40.41, width:421.807, height:640.477 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-vector22.svg" alt="" aria-hidden style={{ position:"absolute", left:186.45, top:-24.63, width:525.016, height:180.386 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-vector23.svg" alt="" aria-hidden style={{ position:"absolute", left:81.76, top:109.96, width:419.892, height:470.643 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-vector24.svg" alt="" aria-hidden style={{ position:"absolute", left:408.86, top:-3.72, width:68.069, height:143.285 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-vector25.svg" alt="" aria-hidden style={{ position:"absolute", left:329.58, top:-27.62, width:69.731, height:146.029 }} />
+              <div style={{ position:"absolute", left:61.95, top:492.15, width:64.122, height:102.558, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <div style={{ transform:"rotate(8.31deg)" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-map-vector36.svg" alt="" aria-hidden style={{ display:"block", width:50.751, height:96.235 }} />
+                </div>
               </div>
-            </div>
-            <div className="flex h-[610px] w-[706px] flex-col justify-between px-[50px] py-[70px]">
-              <p className="font-montserrat text-[24px] font-semibold tracking-[-0.5px] text-primary">
-                Korean Trails and Culture Foundation
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-ellipse12.svg" alt="" aria-hidden style={{ position:"absolute", left:313.01, top:363.24, width:29.685, height:29.685 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-ellipse13.svg" alt="" aria-hidden style={{ position:"absolute", left:259.31, top:260.79, width:15.321, height:15.321 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-ellipse13.svg" alt="" aria-hidden style={{ position:"absolute", left:54.91, top:537.35, width:15.321, height:15.321 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/sub1-map-ellipse14.svg" alt="" aria-hidden style={{ position:"absolute", left:551.44, top:57.3, width:15.321, height:15.321 }} />
+              {/* 역명 라벨 */}
+              <p style={{ position:"absolute", left:284.5, top:257.83, width:59.508, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                삼각지역<br/>3번 출구
               </p>
+              <p style={{ position:"absolute", left:520.7, top:77.4, width:74.385, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                전쟁기념관
+              </p>
+              <p style={{ position:"absolute", left:34, top:473, width:59.508, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                신용산역<br/>1번 출구
+              </p>
+            </div>
+            {/* 우측 정보 패널 */}
+            <div className="flex h-[610px] w-[706px] shrink-0 flex-col justify-between px-[50px] py-[70px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/figma/footer-beyond-logo.svg" alt="Beyond the Trails" style={{ width:200, height:84 }} />
               <div className="flex flex-col gap-[34px]">
                 <div className="flex items-center gap-[24px]">
                   <div className="size-[40px] shrink-0 rounded-full border border-solid border-primary" />
@@ -470,7 +477,7 @@ export default function Subpage1() {
           </div>
 
           {/* ============= FOOTER ============= */}
-          <div className="absolute" style={{ left: 0, top: FB(13325), width: 1920 }}>
+          <div className="absolute" style={{ left: 0, top: FC(13325), width: 1920 }}>
             <Footer />
           </div>
         </div>
