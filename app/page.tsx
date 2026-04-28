@@ -5,6 +5,8 @@ import Slide from "./components/Slide";
 import Subpage1 from "./components/Subpage1";
 import Subpage2 from "./components/Subpage2";
 import Subpage4 from "./components/Subpage4";
+import Subpage5 from "./components/Subpage5";
+import Subpage6 from "./components/Subpage6";
 import SubpagePlaceholder from "./components/SubpagePlaceholder";
 
 export default function Home() {
@@ -30,11 +32,11 @@ export default function Home() {
           </Slide>
           <Slide>
             <Hero5 />
-            <SubpagePlaceholder title="알리는 이야기" />
+            <Subpage5 />
           </Slide>
           <Slide>
             <Hero6 />
-            <SubpagePlaceholder title="마음잇기" />
+            <Subpage6 />
           </Slide>
         </HeroCarousel>
       </IntroGate>

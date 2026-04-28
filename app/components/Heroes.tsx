@@ -3,6 +3,8 @@
 import Hero1Section from "./Hero1Section";
 import Hero2Section from "./Hero2Section";
 import Hero4Section from "./Hero4Section";
+import Hero5Section from "./Hero5Section";
+import Hero6Section from "./Hero6Section";
 import HeroLayout, { useHeroCollapse } from "./HeroLayout";
 
 // Shared CTA button (자세히 보기) — clicking scrolls current slide down to subpage
@@ -256,7 +258,13 @@ export function Hero4() {
 }
 
 /* ============= HERO 5: 알리는 이야기 ============= */
+/* Hero5는 Hero1처럼 자체 반응형 컴포넌트로 분리. PC scale-frame + 모바일 레이아웃 + sticky nav. */
 export function Hero5() {
+  return <Hero5Section />;
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+function _Hero5Legacy() {
   return (
     <HeroLayout
       activeMenuIndex={4}
@@ -348,7 +356,13 @@ export function Hero5() {
 }
 
 /* ============= HERO 6: 마음잇기 ============= */
+/* Hero6는 Hero1처럼 자체 반응형 컴포넌트로 분리. PC scale-frame + 모바일 레이아웃 + sticky nav. */
 export function Hero6() {
+  return <Hero6Section />;
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+function _Hero6Legacy() {
   return (
     <HeroLayout
       activeMenuIndex={5}
