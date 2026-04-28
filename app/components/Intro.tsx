@@ -4,7 +4,7 @@ const OVERLAY_PC =
   "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)";
 
 const OVERLAY_MOBILE =
-  "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), radial-gradient(ellipse 19.5% 42.2% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)";
+  "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)";
 
 export default function Intro({ visible }: { visible: boolean }) {
   return (
@@ -17,21 +17,25 @@ export default function Intro({ visible }: { visible: boolean }) {
       aria-hidden={!visible}
     >
       {/* Background image — separate asset for mobile vs desktop */}
-      <Image
-        src="/figma/intro-bg-mobile.png"
-        alt=""
-        fill
-        priority
-        sizes="(min-width: 1024px) 0px, 100vw"
-        className="object-cover lg:hidden"
+      <div
+        className="absolute inset-0 lg:hidden"
+        style={{
+          backgroundImage: "url(/figma/intro-bg-mobile.png)",
+          backgroundSize: "100% 100%",
+          backgroundPosition: "bottom",
+          backgroundRepeat: "no-repeat",
+        }}
+        aria-hidden
       />
-      <Image
-        src="/figma/intro-bg.png"
-        alt=""
-        fill
-        priority
-        sizes="(min-width: 1024px) 100vw, 0px"
-        className="hidden object-cover lg:block"
+      <div
+        className="absolute inset-0 hidden lg:block"
+        style={{
+          backgroundImage: "url(/figma/intro-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        aria-hidden
       />
 
       {/* Overlay (radial+linear) — different gradient stops per breakpoint */}

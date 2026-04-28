@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { getMainHref, getSubHref } from "./navLinks";
 
 type NavItem = {
   label?: string;
@@ -43,7 +44,7 @@ const ACTIVE_INDEX = 0;
 const COLLAPSED_H_DESKTOP = 370; // 1920-frame baseline
 
 const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)`;
-const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 19.5% 42.2% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 100%)`;
+const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 100%)`;
 
 export default function Hero1Section() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -120,6 +121,23 @@ export default function Hero1Section() {
       slide.scrollTop = 0;
     }
   };
+
+  // Auto-collapse when nav link with sub key targets this slide
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const subKey = (e as CustomEvent<{ subKey?: string }>).detail?.subKey;
+      if (!subKey) return;
+      if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
+        setCollapsed(true);
+        const slide = sectionRef.current?.closest("[data-slide]") as HTMLElement | null;
+        if (slide) {
+          slide.dataset.heroCollapsed = "true";
+        }
+      }
+    };
+    window.addEventListener("nav-h1", handler);
+    return () => window.removeEventListener("nav-h1", handler);
+  }, []);
 
   /* Mobile: always relative h-screen — no sticky/collapse.
      Desktop collapsed: sticky top-0 with compact 370/1920 ratio height. */
@@ -202,7 +220,7 @@ export default function Hero1Section() {
               <button
                 type="button"
                 aria-label="메뉴 닫기"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                 className="block size-[24px] cursor-pointer text-white"
               >
                 <svg
@@ -232,16 +250,19 @@ export default function Hero1Section() {
                   key={idx}
                   className="flex flex-1 flex-col items-end justify-end gap-[10px] border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]"
                 >
-                  <p
-                    className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}
-                  >
-                    {titleText}
-                  </p>
+                  <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }}>
+                    <p
+                      className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}
+                    >
+                      {titleText}
+                    </p>
+                  </a>
                   <div className="flex flex-wrap items-start justify-end gap-x-[12px] gap-y-[4px]">
-                    {item.subs.map((sub) => (
+                    {item.subs.map((sub, subIdx) => (
                       <a
                         key={sub}
-                        href="#"
+                        href={getSubHref(idx, subIdx)}
+                        onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                         className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary"
                       >
                         {sub}
@@ -255,17 +276,13 @@ export default function Hero1Section() {
             {/* Social icons row */}
             <div className="flex flex-1 items-center justify-end border-b border-l border-r border-white bg-white/10 px-[50px] py-[12px]">
               <div className="flex items-center gap-[39px]">
-                <a href="#" aria-label="Instagram" className="block size-[24px]">
+                <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-instagram.svg" alt="" className="size-full" />
                 </a>
-                <a href="#" aria-label="스토어" className="block size-[24px]">
+                <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-store.svg" alt="" className="size-full" />
-                </a>
-                <a href="#" aria-label="후원" className="block size-[24px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-donate.svg" alt="" className="size-full" />
                 </a>
                 <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
                 <a href="#" aria-label="언어" className="block size-[28px]">
@@ -360,139 +377,30 @@ export default function Hero1Section() {
               transition: "opacity 0.3s",
             }}
           >
-            {/* Vertical L-curve vector */}
-            <div
-              className="absolute"
-              style={{ left: -37, top: 571, width: 484.247, height: 205 }}
-            >
-              <div className="flex h-full w-full items-center justify-center">
-                <div
-                  className="origin-center rotate-90"
-                  style={{ width: 205, height: 484.247 }}
-                >
-                  <div className="absolute" style={{ inset: "-2.79% -6.59% 0 0" }}>
-                    <svg
-                      preserveAspectRatio="none"
-                      width="100%"
-                      height="100%"
-                      viewBox="0 0 218.5 497.747"
-                      fill="none"
-                      style={{ overflow: "visible", display: "block" }}
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden
-                    >
-                      <path
-                        d="M0 13.5L25 13.5A180 180 0 0 1 205 193.5L205 497.747"
-                        stroke="#0AC200"
-                        strokeWidth={31}
-                        vectorEffect="non-scaling-stroke"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Title image (transparent PNG: text + lines + 자세히 보기 visual) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/title_img/ko-hero-01.png"
+              alt="길, 그 이상의 연결 — Beyond the Route"
+              className="absolute pointer-events-none select-none"
+              style={{ left: 0, top: 0, width: 1920, height: 1080 }}
+            />
 
-            {/* Horizontal vector line */}
-            <div
-              className="absolute"
-              style={{ left: 1048, top: 571 - 14 - 2, width: 878.497, height: 28 }}
-              aria-hidden
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/hero1-vec-h.svg"
-                alt=""
-                className="block h-full w-full"
-              />
-            </div>
-
-            {/* Heading: 길 */}
-            <p
-              className="font-suite text-primary absolute whitespace-nowrap"
-              style={{
-                left: 102.07,
-                top: 200,
-                width: 175.089,
-                fontSize: 201.5,
-                lineHeight: 0.9,
-                letterSpacing: "-10.075px",
-                fontWeight: 900,
-                margin: 0,
-              }}
-            >
-              길
-            </p>
-            <p
-              className="font-suite text-primary absolute whitespace-nowrap"
-              style={{
-                left: 102.07,
-                top: 400,
-                width: 1071.547,
-                fontSize: 201.5,
-                lineHeight: 0.9,
-                letterSpacing: "-10.075px",
-                fontWeight: 900,
-                margin: 0,
-              }}
-            >
-              그 이상의 연결
-            </p>
-
-            {/* CTA */}
+            {/* Invisible click area covering the 자세히 보기 button position */}
             <button
               type="button"
+              aria-label="자세히 보기"
               onClick={collapse}
-              className="absolute flex h-[49px] w-[169px] cursor-pointer items-center justify-center bg-white p-[10px]"
+              className="absolute cursor-pointer"
               style={{
                 left: 1312,
                 top: 479,
-                borderTopLeftRadius: 20,
-                borderBottomRightRadius: 20,
+                width: 169,
+                height: 49,
+                background: "transparent",
+                border: 0,
               }}
-            >
-              <span
-                className="font-pretendard text-primary whitespace-nowrap"
-                style={{
-                  fontSize: 15,
-                  fontWeight: 800,
-                  lineHeight: 1.3,
-                  letterSpacing: "-0.3px",
-                }}
-              >
-                자세히 보기
-              </span>
-            </button>
-
-            {/* Subtitle: Beyond the Route */}
-            <p
-              className="font-montserrat absolute whitespace-nowrap text-white"
-              style={{
-                left: 1041,
-                top: 624,
-                fontSize: 30.395,
-                lineHeight: 1.3,
-                letterSpacing: "-0.6079px",
-                fontWeight: 800,
-              }}
-            >
-              Beyond the Route
-            </p>
-            <div
-              className="font-pretendard absolute text-white"
-              style={{
-                left: 1041,
-                top: 682,
-                width: 259,
-                fontSize: 20,
-                lineHeight: 1.5,
-                letterSpacing: "-0.2px",
-                fontWeight: 500,
-              }}
-            >
-              <p>단순한 이동을 넘어,</p>
-              <p>길 위에 숨겨진 가치를 연결하는 여정이 시작되는 지점</p>
-            </div>
+            />
           </div>
 
           {/* Collapsed compact title (desktop) */}
@@ -577,7 +485,9 @@ export default function Hero1Section() {
                   className="relative w-[184px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200"
                   style={{ height: navHeightDesktop }}
                 >
-                  <div
+                  <a
+                    href={getMainHref(idx)}
+                    onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                     className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`}
                     style={{ top: isTwoLine ? 75 : 96 }}
                   >
@@ -589,7 +499,7 @@ export default function Hero1Section() {
                         <p>{item.line2}</p>
                       </>
                     )}
-                  </div>
+                  </a>
 
                   <div
                     className="absolute right-[18px] flex flex-col items-end gap-[12px] transition-opacity duration-200"
@@ -600,10 +510,11 @@ export default function Hero1Section() {
                     }}
                     aria-hidden={!navHovered}
                   >
-                    {item.subs.map((sub) => (
+                    {item.subs.map((sub, subIdx) => (
                       <a
                         key={sub}
-                        href="#"
+                        href={getSubHref(idx, subIdx)}
+                        onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                         className="font-pretendard hover:text-primary whitespace-nowrap text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white"
                       >
                         {sub}
@@ -620,17 +531,13 @@ export default function Hero1Section() {
               style={{ height: navHeightDesktop }}
             >
               <div className="absolute right-[49.5px] top-[50.5px] flex items-center gap-[39px]">
-                <a href="#" aria-label="Instagram" className="block size-[24px]">
+                <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-instagram.svg" alt="" className="size-full" />
                 </a>
-                <a href="#" aria-label="스토어" className="block size-[24px]">
+                <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-store.svg" alt="" className="size-full" />
-                </a>
-                <a href="#" aria-label="후원" className="block size-[24px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-donate.svg" alt="" className="size-full" />
                 </a>
                 <span
                   className="bg-grayscale-200 block h-[25px] w-px"

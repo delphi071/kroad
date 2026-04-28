@@ -276,17 +276,13 @@ export default function HeroLayout({
               style={{ height: navHeight }}
             >
               <div className="absolute right-[49.5px] top-[50.5px] flex items-center gap-[39px]">
-                <a href="#" aria-label="Instagram" className="block size-[24px]">
+                <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-instagram.svg" alt="" className="size-full" />
                 </a>
-                <a href="#" aria-label="스토어" className="block size-[24px]">
+                <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-store.svg" alt="" className="size-full" />
-                </a>
-                <a href="#" aria-label="후원" className="block size-[24px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-donate.svg" alt="" className="size-full" />
                 </a>
                 <span className="block h-[25px] w-px bg-grayscale-200" aria-hidden />
                 <a href="#" aria-label="언어" className="block size-[28px]">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import { showToast } from "./Toast";
+import { getMainHref, getSubHref } from "./navLinks";
 
 type TabId = "donate" | "reports";
 
@@ -93,24 +94,24 @@ function MobileFooter() {
       </div>
       <div className="flex flex-col gap-[24px] w-full">
         <div className="flex items-start justify-between w-full">
-          {NAV_COLS.slice(0, 3).map((col) => (
+          {NAV_COLS.slice(0, 3).map((col, colIdx) => (
             <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-              <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">{col.title}</p>
+              <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">{col.title}</a>
               <div className="flex flex-col items-center gap-[6px]">
-                {col.items.map((item) => (
-                  <a key={item} href="#" className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
+                {col.items.map((item, itemIdx) => (
+                  <a key={item} href={getSubHref(colIdx, itemIdx)} className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
                 ))}
               </div>
             </div>
           ))}
         </div>
         <div className="flex items-start justify-between w-full">
-          {NAV_COLS.slice(3, 6).map((col) => (
+          {NAV_COLS.slice(3, 6).map((col, colIdx) => (
             <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-              <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">{col.title}</p>
+              <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">{col.title}</a>
               <div className="flex flex-col items-center gap-[6px]">
-                {col.items.map((item) => (
-                  <a key={item} href="#" className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
+                {col.items.map((item, itemIdx) => (
+                  <a key={item} href={getSubHref(colIdx + 3, itemIdx)} className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
                 ))}
               </div>
             </div>
@@ -121,9 +122,8 @@ function MobileFooter() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/figma/footer-group32.svg" alt="사단법인 한국의길과문화" className="block shrink-0" style={{ width: 134, height: 56 }} />
         <div className="flex items-center gap-[24px] shrink-0">
-          <a href="#" aria-label="Instagram" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" /></a>
-          <a href="#" aria-label="스토어" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-store.svg" alt="" className="size-full" /></a>
-          <a href="#" aria-label="후원" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-donate.svg" alt="" className="size-full" /></a>
+          <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" /></a>
+          <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-store.svg" alt="" className="size-full" /></a>
         </div>
       </div>
       <div className="flex items-center gap-[12px]">
@@ -557,6 +557,19 @@ export default function Subpage6() {
     const handler = () => setReportId(null);
     window.addEventListener("hero-expanded", handler);
     return () => window.removeEventListener("hero-expanded", handler);
+  }, []);
+
+  // React to nav links like #h6-donate / #h6-reports
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const subKey = (e as CustomEvent<{ subKey?: string }>).detail?.subKey;
+      if (subKey === "donate" || subKey === "reports") {
+        setReportId(null);
+        setTab(subKey);
+      }
+    };
+    window.addEventListener("nav-h6", handler);
+    return () => window.removeEventListener("nav-h6", handler);
   }, []);
 
   const view: "donate" | "list" | "detail" =

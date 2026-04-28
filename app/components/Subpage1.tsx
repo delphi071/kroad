@@ -1,6 +1,10 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Footer from "./Footer";
 import CoreValues from "./CoreValues";
 import JourneyTimeline from "./JourneyTimeline";
+import { getMainHref, getSubHref } from "./navLinks";
 
 /* Mobile footer nav columns — duplicated from Footer.tsx since that one is desktop-only. */
 const NAV_COLS = [
@@ -32,8 +36,34 @@ const BOTTOM_GAP_HEIGHT = 10026 - 8780; // 1246
 const BOTTOM_B_HEIGHT = 14000 - 10026; // 3974
 
 export default function Subpage1() {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // React to nav links like #h1-mission, #h1-vision, #h1-journey, #h1-people, #h1-location
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const subKey = (e as CustomEvent<{ subKey?: string }>).detail?.subKey;
+      if (!subKey) return;
+      const root = rootRef.current;
+      if (!root) return;
+      const slide = root.closest("[data-slide]") as HTMLElement | null;
+      if (!slide) return;
+      const isMobile = window.matchMedia("(max-width: 1023.98px)").matches;
+      const selector = subKey === "journey" && isMobile
+        ? `[data-section="journey-mobile"]`
+        : `[data-section="${subKey}"]`;
+      const targets = root.querySelectorAll<HTMLElement>(selector);
+      const target = Array.from(targets).find((el) => el.offsetParent !== null);
+      if (!target) return;
+      const offsetTop =
+        target.getBoundingClientRect().top - slide.getBoundingClientRect().top + slide.scrollTop;
+      slide.scrollTo({ top: offsetTop - (isMobile ? 80 : 0), behavior: "smooth" });
+    };
+    window.addEventListener("nav-h1", handler);
+    return () => window.removeEventListener("nav-h1", handler);
+  }, []);
+
   return (
-    <div className="bg-grayscale-100">
+    <div ref={rootRef} className="bg-grayscale-100">
       {/* ===========================================================================
           MOBILE — Mission + Vision (matches Figma node 525:24085 mobile layout)
           Centered single column, 50px headings, quote box, 3 vertical full-width
@@ -41,7 +71,7 @@ export default function Subpage1() {
           =========================================================================== */}
       <div className="lg:hidden flex flex-col items-center gap-[83px] px-[20px] py-[64px]">
         {/* Mission header */}
-        <div className="flex items-center gap-[10px] whitespace-nowrap leading-none">
+        <div data-section="mission" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
           <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
             설립목적
           </p>
@@ -148,7 +178,7 @@ export default function Subpage1() {
 
         {/* Vision — text + inline pill images per Figma. Each row is text with a 50px-tall image
             embedded between words. Pill-shaped (rounded-full) images use overflow-hidden. */}
-        <div className="flex flex-col items-center gap-[24px] text-center font-pretendard tracking-[-1.196px] whitespace-nowrap">
+        <div data-section="vision" className="flex flex-col items-center gap-[24px] text-center font-pretendard tracking-[-1.196px] whitespace-nowrap" style={{ scrollMarginTop: 80 }}>
           {/* 걷는 [pill img347] 길이 */}
           <div className="flex items-center gap-[6px] justify-center">
             <p className="text-primary text-[46px] font-bold leading-[1.2]">걷는</p>
@@ -261,6 +291,7 @@ export default function Subpage1() {
 
           {/* ============= SECTION 1: Mission (설립목적) ============= */}
           <div
+            data-section="mission"
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
             style={{ left: 190, top: F(900) }}
           >
@@ -363,6 +394,7 @@ export default function Subpage1() {
 
           {/* ============= SECTION 2: Vision ============= */}
           <div
+            data-section="vision"
             className="absolute flex -translate-x-1/2 items-end gap-[14px] whitespace-nowrap"
             style={{ left: "50%", top: F(3664) }}
           >
@@ -432,6 +464,7 @@ export default function Subpage1() {
 
           {/* ============= SECTION 4: Our Journey (주요 연혁) ============= */}
           <div
+            data-section="journey"
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
             style={{ left: 414, top: FB(6833) }}
           >
@@ -465,6 +498,7 @@ export default function Subpage1() {
       </div>
 
       {/* ===== SECTION 4 Timeline: Journey entries (sticky scroll, 3 visible at a time) ===== */}
+      <div data-section="journey-mobile" className="lg:hidden" style={{ scrollMarginTop: 80 }} />
       <JourneyTimeline />
 
       {/* ===== BOTTOM_GAP: Vector8 곡선 — 연혁과 사람들 사이 (DESKTOP ONLY) ===== */}
@@ -506,6 +540,7 @@ export default function Subpage1() {
         >
           {/* ============= SECTION 5: Our People (사람들) ============= */}
           <div
+            data-section="people"
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
             style={{ left: 226, top: FC(10026) }}
           >
@@ -620,6 +655,7 @@ export default function Subpage1() {
 
           {/* ============= SECTION 6: Location (오시는 길) ============= */}
           <div
+            data-section="location"
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
             style={{ left: 200, top: FC(12188) }}
           >
@@ -713,7 +749,7 @@ export default function Subpage1() {
           =========================================================================== */}
       <div className="lg:hidden flex flex-col items-center gap-[83px] px-[20px] py-[64px]">
         {/* People header */}
-        <div className="flex items-center gap-[10px] whitespace-nowrap leading-none">
+        <div data-section="people" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
           <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
             사람들
           </p>
@@ -847,7 +883,7 @@ export default function Subpage1() {
         </div>
 
         {/* Location header */}
-        <div className="flex items-center gap-[10px] whitespace-nowrap leading-none">
+        <div data-section="location" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
           <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
             오시는 길
           </p>
@@ -1045,16 +1081,16 @@ export default function Subpage1() {
         {/* Nav columns — 2 rows × 3 cols */}
         <div className="flex flex-col gap-[24px] w-full">
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(0, 3).map((col) => (
+            {NAV_COLS.slice(0, 3).map((col, colIdx) => (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">
+                <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
                   {col.title}
-                </p>
+                </a>
                 <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item) => (
+                  {col.items.map((item, itemIdx) => (
                     <a
                       key={item}
-                      href="#"
+                      href={getSubHref(colIdx, itemIdx)}
                       className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
                       style={{ whiteSpace: "pre-line" }}
                     >
@@ -1066,16 +1102,16 @@ export default function Subpage1() {
             ))}
           </div>
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(3, 6).map((col) => (
+            {NAV_COLS.slice(3, 6).map((col, colIdx) => (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">
+                <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
                   {col.title}
-                </p>
+                </a>
                 <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item) => (
+                  {col.items.map((item, itemIdx) => (
                     <a
                       key={item}
-                      href="#"
+                      href={getSubHref(colIdx + 3, itemIdx)}
                       className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
                       style={{ whiteSpace: "pre-line" }}
                     >
@@ -1099,17 +1135,13 @@ export default function Subpage1() {
             style={{ width: 134, height: 56 }}
           />
           <div className="flex items-center gap-[24px] shrink-0">
-            <a href="#" aria-label="Instagram" className="block size-[32px]">
+            <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[32px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" />
             </a>
-            <a href="#" aria-label="스토어" className="block size-[32px]">
+            <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[32px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/footer-icon-store.svg" alt="" className="size-full" />
-            </a>
-            <a href="#" aria-label="후원" className="block size-[32px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/figma/footer-icon-donate.svg" alt="" className="size-full" />
             </a>
           </div>
         </div>

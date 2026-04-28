@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Footer from "./Footer";
+import { getMainHref, getSubHref } from "./navLinks";
 
 /* Figma slide 4 PC: hero 0-613, content from 820 onwards. Footer at bottom of frame.
    Bottom row cards (top:2057) with image+title+body+CTA + padding ≈ 800px → cards end ~2860.
@@ -74,14 +78,17 @@ function PCPartnerCard({
   left,
   top,
   width,
+  sectionKey,
 }: {
   partner: Partner;
   left: number;
   top: number;
   width: number;
+  sectionKey?: string;
 }) {
   return (
     <div
+      data-section={sectionKey}
       className="absolute flex flex-col items-center gap-[50px] overflow-hidden px-[40px] pt-[50px] pb-[40px]"
       style={{ left, top, width }}
     >
@@ -118,9 +125,9 @@ function PCPartnerCard({
   );
 }
 
-function MobilePartnerCard({ partner }: { partner: Partner }) {
+function MobilePartnerCard({ partner, sectionKey }: { partner: Partner; sectionKey?: string }) {
   return (
-    <div className="flex flex-col items-center gap-[50px] overflow-hidden pt-[50px] pb-[40px] w-full">
+    <div data-section={sectionKey} style={{ scrollMarginTop: 80 }} className="flex flex-col items-center gap-[50px] overflow-hidden pt-[50px] pb-[40px] w-full">
       <div className="relative shrink-0" style={{ width: partner.imgMobile.width, height: partner.imgMobile.height }}>
         {partner.imgMobile.withCircle && (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -157,8 +164,31 @@ function MobilePartnerCard({ partner }: { partner: Partner }) {
 }
 
 export default function Subpage4() {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // React to nav links like #h4-kta, #h4-atn, #h4-wtn, #h4-gko
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const subKey = (e as CustomEvent<{ subKey?: string }>).detail?.subKey;
+      if (!subKey) return;
+      const root = rootRef.current;
+      if (!root) return;
+      const slide = root.closest("[data-slide]") as HTMLElement | null;
+      if (!slide) return;
+      const isMobile = window.matchMedia("(max-width: 1023.98px)").matches;
+      const targets = root.querySelectorAll<HTMLElement>(`[data-section="${subKey}"]`);
+      const target = Array.from(targets).find((el) => el.offsetParent !== null);
+      if (!target) return;
+      const offsetTop =
+        target.getBoundingClientRect().top - slide.getBoundingClientRect().top + slide.scrollTop;
+      slide.scrollTo({ top: offsetTop - (isMobile ? 80 : 0), behavior: "smooth" });
+    };
+    window.addEventListener("nav-h4", handler);
+    return () => window.removeEventListener("nav-h4", handler);
+  }, []);
+
   return (
-    <div className="bg-grayscale-100">
+    <div ref={rootRef} className="bg-grayscale-100">
       {/* ============================== MOBILE ============================== */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[100px] px-[20px] py-[64px]">
         <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px] leading-none whitespace-nowrap">
@@ -176,10 +206,10 @@ export default function Subpage4() {
           </div>
         </div>
 
-        <MobilePartnerCard partner={PARTNERS.kta} />
-        <MobilePartnerCard partner={PARTNERS.wtn} />
-        <MobilePartnerCard partner={PARTNERS.atn} />
-        <MobilePartnerCard partner={PARTNERS.gko} />
+        <MobilePartnerCard partner={PARTNERS.kta} sectionKey="kta" />
+        <MobilePartnerCard partner={PARTNERS.wtn} sectionKey="wtn" />
+        <MobilePartnerCard partner={PARTNERS.atn} sectionKey="atn" />
+        <MobilePartnerCard partner={PARTNERS.gko} sectionKey="gko" />
       </div>
 
       {/* MOBILE FOOTER */}
@@ -194,24 +224,24 @@ export default function Subpage4() {
 
         <div className="flex flex-col gap-[24px] w-full">
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(0, 3).map((col) => (
+            {NAV_COLS.slice(0, 3).map((col, colIdx) => (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">{col.title}</p>
+                <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">{col.title}</a>
                 <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item) => (
-                    <a key={item} href="#" className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
+                  {col.items.map((item, itemIdx) => (
+                    <a key={item} href={getSubHref(colIdx, itemIdx)} className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
                   ))}
                 </div>
               </div>
             ))}
           </div>
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(3, 6).map((col) => (
+            {NAV_COLS.slice(3, 6).map((col, colIdx) => (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <p className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap">{col.title}</p>
+                <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">{col.title}</a>
                 <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item) => (
-                    <a key={item} href="#" className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
+                  {col.items.map((item, itemIdx) => (
+                    <a key={item} href={getSubHref(colIdx + 3, itemIdx)} className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>{item}</a>
                   ))}
                 </div>
               </div>
@@ -223,9 +253,8 @@ export default function Subpage4() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/footer-group32.svg" alt="사단법인 한국의길과문화" className="block shrink-0" style={{ width: 134, height: 56 }} />
           <div className="flex items-center gap-[24px] shrink-0">
-            <a href="#" aria-label="Instagram" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" /></a>
-            <a href="#" aria-label="스토어" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-store.svg" alt="" className="size-full" /></a>
-            <a href="#" aria-label="후원" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-donate.svg" alt="" className="size-full" /></a>
+            <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" /></a>
+            <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[32px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/footer-icon-store.svg" alt="" className="size-full" /></a>
           </div>
         </div>
 
@@ -280,10 +309,10 @@ export default function Subpage4() {
           </div>
 
           {/* 4 partner cards 2x2 grid */}
-          <PCPartnerCard partner={PARTNERS.kta} left={192} top={F4(1279)} width={743} />
-          <PCPartnerCard partner={PARTNERS.atn} left={985} top={F4(1279)} width={717} />
-          <PCPartnerCard partner={PARTNERS.wtn} left={192} top={F4(2057)} width={743} />
-          <PCPartnerCard partner={PARTNERS.gko} left={985} top={F4(2057)} width={721} />
+          <PCPartnerCard partner={PARTNERS.kta} sectionKey="kta" left={192} top={F4(1279)} width={743} />
+          <PCPartnerCard partner={PARTNERS.atn} sectionKey="atn" left={985} top={F4(1279)} width={717} />
+          <PCPartnerCard partner={PARTNERS.wtn} sectionKey="wtn" left={192} top={F4(2057)} width={743} />
+          <PCPartnerCard partner={PARTNERS.gko} sectionKey="gko" left={985} top={F4(2057)} width={721} />
 
           {/* Footer */}
           <div className="absolute" style={{ left: 0, top: SUBPAGE_HEIGHT - FOOTER_HEIGHT, width: 1920 }}>

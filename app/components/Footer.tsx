@@ -1,3 +1,5 @@
+import { getMainHref, getSubHref } from "./navLinks";
+
 const NAV_COLS = [
   {
     title: "우리의 길",
@@ -53,16 +55,16 @@ export default function Footer() {
         className="absolute flex items-start justify-between"
         style={{ left: 880, top: 120, width: 840 }}
       >
-        {NAV_COLS.map((col) => (
+        {NAV_COLS.map((col, colIdx) => (
           <div key={col.title} className="flex flex-col items-end gap-[20px]">
-            <p className="font-pretendard text-right text-[16px] font-extrabold leading-[1.3] text-black tracking-[-0.32px] whitespace-nowrap">
+            <a href={getMainHref(colIdx)} className="font-pretendard text-right text-[16px] font-extrabold leading-[1.3] text-black tracking-[-0.32px] whitespace-nowrap hover:text-primary">
               {col.title}
-            </p>
+            </a>
             <div className="flex flex-col items-end gap-[12px]">
-              {col.items.map((item) => (
+              {col.items.map((item, itemIdx) => (
                 <a
                   key={item}
-                  href="#"
+                  href={getSubHref(colIdx, itemIdx)}
                   className="font-pretendard text-right text-[16px] font-normal leading-[1.4] text-[#737373] tracking-[-0.8px] hover:text-primary"
                   style={{ whiteSpace: "pre-line" }}
                 >
@@ -117,17 +119,13 @@ export default function Footer() {
         className="absolute flex items-center gap-[39px]"
         style={{ left: 1546, top: 465 }}
       >
-        <a href="#" aria-label="Instagram" className="block size-[32px]">
+        <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[32px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/footer-icon-instagram.svg" alt="" className="size-full" />
         </a>
-        <a href="#" aria-label="스토어" className="block size-[32px]">
+        <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[32px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/footer-icon-store.svg" alt="" className="size-full" />
-        </a>
-        <a href="#" aria-label="후원" className="block size-[32px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/footer-icon-donate.svg" alt="" className="size-full" />
         </a>
       </div>
 

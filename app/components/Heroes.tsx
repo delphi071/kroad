@@ -2,6 +2,7 @@
 
 import Hero1Section from "./Hero1Section";
 import Hero2Section from "./Hero2Section";
+import Hero3Section from "./Hero3Section";
 import Hero4Section from "./Hero4Section";
 import Hero5Section from "./Hero5Section";
 import Hero6Section from "./Hero6Section";
@@ -159,7 +160,13 @@ export function Hero2() {
 }
 
 /* ============= HERO 3: 우리가 걷는 길 ============= */
+/* Hero3는 Hero1처럼 자체 반응형 컴포넌트로 분리. PC scale-frame + 모바일 레이아웃 + sticky nav. */
 export function Hero3() {
+  return <Hero3Section />;
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+function _Hero3Legacy() {
   return (
     <HeroLayout
       activeMenuIndex={2}
