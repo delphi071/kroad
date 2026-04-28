@@ -10,7 +10,16 @@ const SUBPAGE_HEIGHT = 2900 - 613 + FOOTER_HEIGHT; // ~2962
 /* 4 partner cards data — order differs per Figma:
    PC: 2x2 grid (KTA top-left, ATN top-right, WTN bottom-left, GKO bottom-right)
    Mobile: vertical (KTA, WTN, ATN, GKO) */
-const PARTNERS = {
+type PartnerData = {
+  img: string;
+  imgPC: { width: number; height: number; withCircle?: boolean };
+  imgMobile: { width: number; height: number; withCircle?: boolean };
+  title: string;
+  titleMobile: string[];
+  body: string;
+  link: string;
+};
+const PARTNERS: Record<"kta" | "atn" | "wtn" | "gko", PartnerData> = {
   kta: {
     img: "/figma/sub4-img-kta.png",
     imgPC: { width: 332, height: 240 },
