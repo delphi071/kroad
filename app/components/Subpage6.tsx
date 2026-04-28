@@ -87,10 +87,12 @@ function MobileFooter() {
   const { t } = useLang();
   return (
     <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] py-[64px]">
-      <div className="relative" style={{ width: 281, height: 215 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
-        <p className="font-montserrat text-primary absolute font-semibold leading-none whitespace-nowrap" style={{ left: "61%", top: "92%", fontSize: 10 }}>
+      <div className="flex flex-col items-center gap-[8px]">
+        <div className="relative" style={{ width: 281, height: 215 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
+        </div>
+        <p className="font-montserrat text-primary font-semibold leading-none whitespace-nowrap" style={{ fontSize: 10 }}>
           Korean Trails and Culture Foundation
         </p>
       </div>
@@ -165,13 +167,17 @@ function MobileFooter() {
 
 /* ---------- PC tabs (2 tabs) ---------- */
 function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void }) {
-  const items: { id: TabId; korean: string; english: string; left: number }[] = [
-    { id: "donate", korean: "후원하기", english: "Donate", left: 198 },
-    { id: "reports", korean: "연간기금 및 활동실적 내역", english: "Reports", left: 469 },
+  const { t, lang } = useLang();
+  const items: { id: TabId; left: number }[] = [
+    { id: "donate", left: 198 },
+    { id: "reports", left: 469 },
   ];
   return (
     <>
       {items.map((it) => {
+        const tabData = t.subpage6.tabs[it.id];
+        const mainLabel = lang === "ko" ? tabData.ko : tabData.en;
+        const subLabel = tabData.en;
         const active = it.id === tab;
         return active ? (
           <button
@@ -179,10 +185,12 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
             type="button"
             onClick={() => onSelect(it.id)}
             className="absolute flex flex-col items-start gap-[12px] cursor-pointer text-grayscale-900 text-left"
-            style={{ left: it.left, top: F(722), width: 700 }}
+            style={{ left: it.left, top: lang === "en" ? F(770.38) : F(722), width: 700 }}
           >
-            <p className="font-montserrat font-bold leading-none tracking-[-1.28px]" style={{ fontSize: 32 }}>{it.english}</p>
-            <p className="font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap" style={{ fontSize: 60 }}>{it.korean}</p>
+            {lang === "ko" && (
+              <p className="font-montserrat font-bold leading-none tracking-[-1.28px]" style={{ fontSize: 32 }}>{subLabel}</p>
+            )}
+            <p className="font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap" style={{ fontSize: lang === "en" ? 44 : 60 }}>{mainLabel}</p>
           </button>
         ) : (
           <button
@@ -190,9 +198,9 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
             type="button"
             onClick={() => onSelect(it.id)}
             className="absolute font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap text-grayscale-200 cursor-pointer hover:text-grayscale-400"
-            style={{ left: it.left, top: F(770.38), fontSize: 60 }}
+            style={{ left: it.left, top: F(770.38), fontSize: lang === "en" ? 44 : 60 }}
           >
-            {it.korean}
+            {mainLabel}
           </button>
         );
       })}
@@ -202,13 +210,14 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
 
 /* ---------- Mobile tabs ---------- */
 function MobileTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void }) {
-  const items: { id: TabId; korean: string; english: string }[] = [
-    { id: "donate", korean: "후원하기", english: "Donate" },
-    { id: "reports", korean: "연간기금 및 활동실적 내역", english: "Reports" },
-  ];
+  const { t, lang } = useLang();
+  const items: { id: TabId }[] = [{ id: "donate" }, { id: "reports" }];
   return (
     <div className="flex gap-[30px] items-end justify-center w-full">
       {items.map((it) => {
+        const tabData = t.subpage6.tabs[it.id];
+        const mainLabel = lang === "ko" ? tabData.ko : tabData.en;
+        const subLabel = tabData.en;
         const active = it.id === tab;
         return active ? (
           <button
@@ -217,8 +226,10 @@ function MobileTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => voi
             onClick={() => onSelect(it.id)}
             className="flex flex-col items-start gap-[6.893px] text-grayscale-900 cursor-pointer"
           >
-            <p className="font-montserrat font-bold leading-none tracking-[-0.64px]" style={{ fontSize: 16 }}>{it.english}</p>
-            <p className="font-pretendard font-bold leading-[1.5] tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>{it.korean}</p>
+            {lang === "ko" && (
+              <p className="font-montserrat font-bold leading-none tracking-[-0.64px]" style={{ fontSize: 16 }}>{subLabel}</p>
+            )}
+            <p className="font-pretendard font-bold leading-[1.5] tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: lang === "en" ? 18 : 24 }}>{mainLabel}</p>
           </button>
         ) : (
           <button
@@ -226,9 +237,9 @@ function MobileTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => voi
             type="button"
             onClick={() => onSelect(it.id)}
             className="font-pretendard font-bold leading-[1.5] tracking-[-0.96px] whitespace-nowrap text-grayscale-200 cursor-pointer hover:text-grayscale-400"
-            style={{ fontSize: 24 }}
+            style={{ fontSize: lang === "en" ? 18 : 24 }}
           >
-            {it.korean}
+            {mainLabel}
           </button>
         );
       })}
@@ -240,31 +251,32 @@ function MobileTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => voi
 /* PC DONATE                                                            */
 /* =================================================================== */
 function PCDonate() {
+  const { t, lang } = useLang();
   const handleCopy = () => {
     if (typeof window !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText("3010061804901");
-      showToast("계좌번호가 복사되었습니다.");
+      showToast(t.subpage5.toast.copied);
     }
   };
   return (
     <>
       {/* Heading */}
-      <p className="absolute font-pretendard font-bold leading-[1.1] text-grayscale-900 whitespace-nowrap" style={{ left: 198, top: F(955), fontSize: 100, letterSpacing: "-1px" }}>
-        후원은 길이 다시 살고 빛나게 합니다.
+      <p className={`absolute font-pretendard font-bold leading-[1.1] text-grayscale-900 ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ left: 198, top: F(955), fontSize: lang === "en" ? 72 : 100, letterSpacing: "-1px", maxWidth: 1500 }}>
+        {t.subpage6.donate.headline}
       </p>
       {/* Subheader 1 */}
-      <p className="absolute font-pretendard leading-[1.3] text-grayscale-900 whitespace-nowrap" style={{ left: 198, top: F(1131), fontSize: 36, letterSpacing: "-0.72px" }}>
-        걷기 길의 지속가능한 발전을 지원해주세요.
+      <p className={`absolute font-pretendard leading-[1.3] text-grayscale-900 ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ left: 198, top: F(1131), fontSize: lang === "en" ? 28 : 36, letterSpacing: "-0.72px", maxWidth: 1500 }}>
+        {t.subpage6.donate.intro1}
       </p>
       {/* Subheader 2 */}
-      <p className="absolute font-pretendard font-bold leading-[1.3] text-grayscale-900 whitespace-nowrap" style={{ left: 198, top: F(1178), fontSize: 36, letterSpacing: "-0.72px" }}>
-        모아주신 후원금은 걷기 길의 지속가능한 발전을 위한 다양한 활동에 사용됩니다.
+      <p className={`absolute font-pretendard font-bold leading-[1.3] text-grayscale-900 ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ left: 198, top: F(1178), fontSize: lang === "en" ? 28 : 36, letterSpacing: "-0.72px", maxWidth: 1500 }}>
+        {t.subpage6.donate.intro2}
       </p>
       {/* Bank info card */}
       <div className="absolute flex flex-col gap-[46px] items-start justify-center py-[40px]" style={{ left: 200, top: F(1460), width: 1520 }}>
         <div className="flex flex-col gap-[8px] items-start">
           <div className="flex gap-[42px] items-center">
-            <p className="font-pretendard font-bold leading-[1.2] text-grayscale-900 tracking-[-1.3px] whitespace-nowrap" style={{ fontSize: 50 }}>농협 301-0061-8049-01</p>
+            <p className="font-pretendard font-bold leading-[1.2] text-grayscale-900 tracking-[-1.3px] whitespace-nowrap" style={{ fontSize: 50 }}>{lang === "en" ? "NH Bank " : "농협 "}301-0061-8049-01</p>
             <button
               type="button"
               onClick={handleCopy}
@@ -275,30 +287,33 @@ function PCDonate() {
               <span className="block size-[52px]"><CopyIcon size={52} /></span>
             </button>
           </div>
-          <p className="font-pretendard leading-[1.1] text-grayscale-900 tracking-[-0.36px] whitespace-nowrap" style={{ fontSize: 36, fontWeight: 800 }}>사단법인 한국의길과문화</p>
+          <p className={`font-pretendard leading-[1.1] text-grayscale-900 tracking-[-0.36px] ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ fontSize: 36, fontWeight: 800 }}>{t.subpage6.donate.bankAccountName}</p>
         </div>
-        <p className="font-pretendard leading-[1.3] text-primary tracking-[-0.72px]" style={{ fontSize: 36, width: 394 }}>
-          일시후원/정기후원 모두 가능
+        <p className="font-pretendard leading-[1.3] text-primary tracking-[-0.72px]" style={{ fontSize: 36, width: 600 }}>
+          {t.subpage6.donate.bankNote}
         </p>
       </div>
       {/* 후원금 사용처 heading */}
       <p className="absolute font-pretendard leading-[1.1] text-grayscale-900 whitespace-nowrap" style={{ left: 198, top: F(1989), fontSize: 36, fontWeight: 800, letterSpacing: "-0.36px" }}>
-        후원금 사용처
+        {t.subpage6.donate.circlesLabel}
       </p>
       {/* 3 circles */}
       <div className="absolute flex gap-[50px] items-center" style={{ left: 200, top: F(2102), width: 1520 }}>
-        {DONATE_CIRCLES.map((c, idx) => (
-          <div key={idx} className="aspect-[1/1] flex-1 min-w-px overflow-clip relative rounded-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={c.img} alt="" className="absolute inset-0 size-full object-cover" />
-            <div className="absolute inset-0 bg-black/40 rounded-full" />
-            <div className="absolute left-1/2 -translate-x-1/2 font-pretendard text-white text-center tracking-[-0.36px] whitespace-nowrap" style={{ top: "calc(50% - 39.67px)", fontSize: 36, fontWeight: 800, lineHeight: 1.1 }}>
-              {c.lines.map((line, i) => (
-                <p key={i} className="leading-[1.1]" style={{ marginBottom: 0 }}>{line}</p>
-              ))}
+        {DONATE_CIRCLES.map((c, idx) => {
+          const lines = t.subpage6.donate.circles[idx] || c.lines;
+          return (
+            <div key={idx} className="aspect-[1/1] flex-1 min-w-px overflow-clip relative rounded-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.img} alt="" className="absolute inset-0 size-full object-cover" />
+              <div className="absolute inset-0 bg-black/40 rounded-full" />
+              <div className="absolute left-1/2 -translate-x-1/2 font-pretendard text-white text-center tracking-[-0.36px]" style={{ top: "calc(50% - 39.67px)", fontSize: lang === "en" ? 24 : 36, fontWeight: 800, lineHeight: 1.1, width: "90%" }}>
+                {lines.map((line, i) => (
+                  <p key={i} className="leading-[1.1]" style={{ marginBottom: 0 }}>{line}</p>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );
@@ -402,33 +417,26 @@ function PCReportDetail({ reportId, onBack }: { reportId: number; onBack: () => 
 /* MOBILE DONATE                                                        */
 /* =================================================================== */
 function MobileDonate() {
+  const { t, lang } = useLang();
   const handleCopy = () => {
     if (typeof window !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText("3010061804901");
-      showToast("계좌번호가 복사되었습니다.");
+      showToast(t.subpage5.toast.copied);
     }
   };
   return (
     <div className="flex flex-col gap-[100px] items-center justify-center w-full">
-      <div className="font-pretendard font-bold leading-[1.2] text-grayscale-900 text-center w-full" style={{ fontSize: 50, letterSpacing: "-1.3px" }}>
-        <p className="leading-[1.2]">후원은 길이</p>
-        <p className="leading-[1.2]">다시 살고 빛나게 합니다.</p>
-      </div>
-      <div className="flex flex-col gap-[14px] items-start font-pretendard text-grayscale-900 text-center w-full" style={{ fontSize: 24, letterSpacing: "-0.24px" }}>
-        <div className="w-full">
-          <p className="leading-[1.3]">걷기 길의 지속가능한</p>
-          <p className="leading-[1.3]">발전을 지원해주세요.</p>
-        </div>
-        <div className="w-full">
-          <p className="leading-[1.3]">모아주신 후원금은</p>
-          <p className="leading-[1.3]">걷기 길의 지속가능한 발전을 위한</p>
-          <p className="leading-[1.3]">다양한 활동에 사용됩니다.</p>
-        </div>
+      <p className={`font-pretendard font-bold leading-[1.2] text-grayscale-900 text-center w-full ${lang === "en" ? "text-[32px]" : "text-[50px]"}`} style={{ letterSpacing: "-1.3px" }}>
+        {t.subpage6.donate.headline}
+      </p>
+      <div className="flex flex-col gap-[14px] items-start font-pretendard text-grayscale-900 text-center w-full" style={{ fontSize: lang === "en" ? 18 : 24, letterSpacing: "-0.24px" }}>
+        <p className="w-full leading-[1.3]">{t.subpage6.donate.intro1}</p>
+        <p className="w-full leading-[1.3]">{t.subpage6.donate.intro2}</p>
       </div>
       <div className="flex flex-col items-center justify-center w-full">
         <div className="flex flex-col gap-[8px] items-center">
           <div className="flex gap-[14px] items-center">
-            <p className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>농협 301-0061-8049-01</p>
+            <p className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>{lang === "en" ? "NH Bank " : "농협 "}301-0061-8049-01</p>
             <button
               type="button"
               onClick={handleCopy}
@@ -439,27 +447,30 @@ function MobileDonate() {
               <span className="block size-[19.81px]"><CopyIcon size={19.81} /></span>
             </button>
           </div>
-          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>사단법인 한국의길과문화</p>
+          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] text-center" style={{ fontSize: lang === "en" ? 18 : 24 }}>{t.subpage6.donate.bankAccountName}</p>
         </div>
         <div className="flex items-center justify-center">
-          <p className="font-pretendard leading-[1.5] text-primary tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>일시후원/정기후원 모두 가능</p>
+          <p className="font-pretendard leading-[1.5] text-primary tracking-[-0.8px] text-center" style={{ fontSize: 16 }}>{t.subpage6.donate.bankNote}</p>
         </div>
       </div>
       <div className="flex flex-col gap-[50px] items-center w-full">
-        <p className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>후원금 사용처</p>
+        <p className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] text-center" style={{ fontSize: 16 }}>{t.subpage6.donate.circlesLabel}</p>
         <div className="flex flex-col gap-[50px] items-start justify-center w-full">
-          {DONATE_CIRCLES.map((c, idx) => (
-            <div key={idx} className="aspect-[1/1] overflow-clip relative rounded-full w-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={c.img} alt="" className="absolute inset-0 size-full object-cover" />
-              <div className="absolute inset-0 bg-black/40 rounded-full" />
-              <div className="absolute left-1/2 -translate-x-1/2 font-pretendard font-bold text-white text-center tracking-[-0.96px] whitespace-nowrap" style={{ top: "calc(50% - 36px)", fontSize: 24, lineHeight: 1.5 }}>
-                {c.lines.map((line, i) => (
-                  <p key={i} className="leading-[1.5]" style={{ marginBottom: 0 }}>{line}</p>
-                ))}
+          {DONATE_CIRCLES.map((c, idx) => {
+            const lines = t.subpage6.donate.circles[idx] || c.lines;
+            return (
+              <div key={idx} className="aspect-[1/1] overflow-clip relative rounded-full w-full">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.img} alt="" className="absolute inset-0 size-full object-cover" />
+                <div className="absolute inset-0 bg-black/40 rounded-full" />
+                <div className="absolute left-1/2 -translate-x-1/2 font-pretendard font-bold text-white text-center tracking-[-0.96px]" style={{ top: "calc(50% - 36px)", fontSize: lang === "en" ? 18 : 24, lineHeight: 1.5, width: "85%" }}>
+                  {lines.map((line, i) => (
+                    <p key={i} className="leading-[1.5]" style={{ marginBottom: 0 }}>{line}</p>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

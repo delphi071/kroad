@@ -21,8 +21,8 @@ export default function Intro({ visible }: { visible: boolean }) {
         className="absolute inset-0 lg:hidden"
         style={{
           backgroundImage: "url(/figma/intro-bg-mobile.png)",
-          backgroundSize: "100% 100%",
-          backgroundPosition: "bottom",
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
         }}
         aria-hidden
@@ -62,6 +62,8 @@ export default function Intro({ visible }: { visible: boolean }) {
             top: "37.56%",
             width: "80.66%",
             height: "19.83%",
+            objectFit: "contain",
+            objectPosition: "center",
           }}
         />
         <p
@@ -90,6 +92,8 @@ export default function Intro({ visible }: { visible: boolean }) {
             top: "28.6%",
             width: "39.76%",
             height: "37.75%",
+            objectFit: "contain",
+            objectPosition: "center",
           }}
         />
         <p

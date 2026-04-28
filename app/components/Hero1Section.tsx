@@ -331,15 +331,15 @@ export default function Hero1Section() {
           style={{
             left: "9.74%",
             top: "32.94%",
-            fontSize: "clamp(60px, 25.12vw, 110px)",
+            fontSize: lang === "en" ? "clamp(40px, 9vw, 60px)" : "clamp(60px, 25.12vw, 110px)",
             lineHeight: 0.9,
             letterSpacing: "-0.05em",
             fontWeight: 900,
           }}
         >
-          <p style={{ marginBottom: "0.12em", whiteSpace: "nowrap" }}>길</p>
-          <p style={{ marginBottom: "0.12em", whiteSpace: "nowrap" }}>그 이상의</p>
-          <p style={{ whiteSpace: "nowrap" }}>연결</p>
+          {t.hero1.headingMobile.map((line, i, arr) => (
+            <p key={i} style={{ marginBottom: i < arr.length - 1 ? "0.12em" : 0, whiteSpace: "nowrap" }}>{line}</p>
+          ))}
         </div>
 
         {/* Mobile scroll-down indicator — scrolls slide naturally to subpage start */}
@@ -407,31 +407,22 @@ export default function Hero1Section() {
           {/* Collapsed compact title (desktop) */}
           {collapsed && (
             <div className="absolute" style={{ left: 80, top: 152 }}>
-              <p
-                className="font-suite text-primary"
-                style={{
-                  fontSize: 90,
-                  lineHeight: 1,
-                  fontWeight: 900,
-                  letterSpacing: "-4.5px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                길
-              </p>
-              <p
-                className="font-suite text-primary"
-                style={{
-                  fontSize: 90,
-                  lineHeight: 1,
-                  fontWeight: 900,
-                  letterSpacing: "-4.5px",
-                  whiteSpace: "nowrap",
-                  marginTop: 14,
-                }}
-              >
-                그 이상의 연결
-              </p>
+              {t.hero1.collapsedTitle.map((line, i) => (
+                <p
+                  key={i}
+                  className="font-suite text-primary"
+                  style={{
+                    fontSize: 90,
+                    lineHeight: 1,
+                    fontWeight: 900,
+                    letterSpacing: "-4.5px",
+                    whiteSpace: "nowrap",
+                    marginTop: i > 0 ? 14 : 0,
+                  }}
+                >
+                  {line}
+                </p>
+              ))}
             </div>
           )}
 

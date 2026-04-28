@@ -227,38 +227,33 @@ export default function Hero2Section() {
 
         {/* MOBILE LAYOUT — matches Figma 525:24297 hero portion (390×844) */}
         <div className="relative z-10 h-full w-full lg:hidden">
-          {/* "같은 / 길" at left:28 top:239 of 390×844 frame (per Figma) */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "7.18%",
-              top: "28.32%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              textAlign: "left",
-            }}
-          >
-            <p style={{ whiteSpace: "nowrap" }}>같은</p>
-            <p style={{ whiteSpace: "nowrap" }}>길</p>
-          </div>
-          {/* "다른 / 시선" at left:195 (50%) top:466 of 390×844 frame */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "50%",
-              top: "55.21%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              textAlign: "left",
-            }}
-          >
-            <p style={{ whiteSpace: "nowrap" }}>다른</p>
-            <p style={{ whiteSpace: "nowrap" }}>시선</p>
-          </div>
+          {lang === "ko" ? (
+            <>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "7.18%", top: "28.32%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, textAlign: "left" }}
+              >
+                <p style={{ whiteSpace: "nowrap" }}>같은</p>
+                <p style={{ whiteSpace: "nowrap" }}>길</p>
+              </div>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "50%", top: "55.21%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, textAlign: "left" }}
+              >
+                <p style={{ whiteSpace: "nowrap" }}>다른</p>
+                <p style={{ whiteSpace: "nowrap" }}>시선</p>
+              </div>
+            </>
+          ) : (
+            <div
+              className="absolute font-suite font-black text-primary"
+              style={{ left: "7.18%", top: "32%", fontSize: "clamp(36px, 8vw, 56px)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 900 }}
+            >
+              {t.hero2.headingMobile.map((line, i) => (
+                <p key={i} style={{ whiteSpace: "nowrap" }}>{line}</p>
+              ))}
+            </div>
+          )}
 
           <button
             type="button"
@@ -302,8 +297,9 @@ export default function Hero2Section() {
             {/* Collapsed compact title */}
             {collapsed && (
               <div className="absolute" style={{ left: 80, top: 152 }}>
-                <p className="font-suite text-primary" style={{ fontSize: 90, lineHeight: 1, fontWeight: 900, letterSpacing: "-4.5px", whiteSpace: "nowrap" }}>같은 길</p>
-                <p className="font-suite text-primary" style={{ fontSize: 90, lineHeight: 1, fontWeight: 900, letterSpacing: "-4.5px", whiteSpace: "nowrap", marginTop: 14 }}>다른 시선</p>
+                {(lang === "ko" ? ["같은 길", "다른 시선"] : t.hero2.collapsedTitle).map((line, i) => (
+                  <p key={i} className="font-suite text-primary" style={{ fontSize: 90, lineHeight: 1, fontWeight: 900, letterSpacing: "-4.5px", whiteSpace: "nowrap", marginTop: i > 0 ? 14 : 0 }}>{line}</p>
+                ))}
               </div>
             )}
 

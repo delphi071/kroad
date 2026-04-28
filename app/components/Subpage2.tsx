@@ -11,100 +11,42 @@ const F2 = (figmaY: number) => figmaY - 613;
 const FOOTER_HEIGHT = 675;
 const SUBPAGE_HEIGHT = 8780 - 613 + FOOTER_HEIGHT; // 8842
 
-const SECTIONS = [
-  {
-    num: "01",
-    label: "계획",
-    enHook: "길을 짓다",
-    title: "기획과 설계의 시선",
-    bigText: ["사람·자연·지역을 잇는", "걷기길의 구조와 철학을 함께 설계 합니다."],
-    leftDesc: ["구조와 동선을 넘어,", "지역의 미래와 일상의 발걸음을", "함께 그리는 지속가능한 길의 설계자입니다."],
-    rightDesc: [
-      "코리아둘레길, 경기둘레길을 비롯해",
-      "지역의 길을 조사·발굴하고,",
-      "사람과 지역을 연결하고,",
-      "자연과 문화가 함께 숨 쉬는 길을 만들어 갑니다.",
-    ],
-    leftImg: "/figma/sub2-img-gyeonggi.png",
-    rightImg: "/figma/sub2-img-294.png",
-  },
-  {
-    num: "02",
-    label: "해석",
-    enHook: "길을 보다",
-    title: "관점과 해석의 시선",
-    bigText: ["길을 풍경이 아닌", "이야기와 철학으로 읽어냅니다."],
-    leftDesc: [
-      "길 위의 자원, 지역문화, 사람의 시간을 읽어내어,",
-      "걷기길을 하나의 인문·문화 텍스트로 해석합니다.",
-    ],
-    rightDesc: [
-      "같은 길이라도 누구의 눈으로 보느냐에 따라",
-      "전혀 다른 역사와 이야기가 펼쳐집니다.",
-      "",
-      "길은 단순한 경로가 아니라,",
-      "그 위에 쌓인 시간과 이야기입니다",
-    ],
-    extraDesc: [
-      "묻혀있던 지역의 원석을 찾아 기록하고",
-      "길 위에 새로운 숨결을 불어넣어",
-      "문화라는 생명력을 더합니다.",
-    ],
-    leftImg: "/figma/sub2-img-youth.png",
-    rightImg: "/figma/sub2-img-294.png",
-    centerImg: "/figma/sub2-img-namparang46.png",
-  },
-  {
-    num: "03",
-    label: "체험",
-    enHook: "길을 걷다",
-    title: "경험과 체험의 시선",
-    bigText: ["걷는 사람에게 남다른 경험을 선물하는", "길 위의 인문 산책"],
-    leftDesc: [
-      "우리는 지역의 색과 이야기를 담은 프로그램을 통해,",
-      "사람들이 길 위에서 만나는 감동의 순간을 이어갑니다.",
-    ],
-    rightDesc: [
-      "한 걸음마다 배우고, 위로받고, 연결되는",
-      "걷기여행의 사회적 가치를 만들어갑니다.",
-    ],
-    extraDesc: [
-      "청소년여행문화학교, 지역 특화 걷기프로그램,",
-      "치유와 배움의 프로그램으로",
-      "길 위의 시간을 특별한 경험으로 채웁니다.",
-    ],
-    leftImg: "/figma/sub2-img-namparang22.png",
-    rightImg: "/figma/sub2-img-namparang44.png",
-  },
+const SECTION_IMAGES: { leftImg: string; rightImg: string; centerImg?: string }[] = [
+  { leftImg: "/figma/sub2-img-gyeonggi.png", rightImg: "/figma/sub2-img-294.png" },
+  { leftImg: "/figma/sub2-img-youth.png", rightImg: "/figma/sub2-img-294.png", centerImg: "/figma/sub2-img-namparang46.png" },
+  { leftImg: "/figma/sub2-img-namparang22.png", rightImg: "/figma/sub2-img-namparang44.png" },
 ];
 
 export default function Subpage2() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const SECTIONS = SECTION_IMAGES.map((img, i) => ({ ...t.subpage2.sections[i], ...img }));
   return (
     <div className="bg-grayscale-100">
       {/* ============================== MOBILE — Figma 525:24297 ============================== */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[83px] px-[20px] py-[64px]">
         {/* "What Sets Us Apart" header */}
         <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px] leading-none whitespace-nowrap">
-          What Sets Us Apart
+          {t.subpage2.headerTagline}
         </p>
 
         {/* 24px subtitle */}
-        <p className="font-pretendard text-grayscale-900 text-[24px] tracking-[-0.24px] leading-[1.3] text-center whitespace-nowrap">
-          표준을 설계하는 전문성과
-          <br />
-          현장의 맥락을 읽는 기획력의 결합
-        </p>
+        <div className="font-pretendard text-grayscale-900 text-[24px] tracking-[-0.24px] leading-[1.3] text-center">
+          {t.subpage2.subTitle.map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
 
-        {/* 50px Big heading — Regular 2 lines + Bold 2 lines */}
-        <div className="flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] whitespace-nowrap">
+        {/* 50px Big heading — Regular block + Bold block */}
+        <div className={`flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div>
-            <p className="text-[50px] leading-[1.2]">길과 지역을</p>
-            <p className="text-[50px] leading-[1.2]">바라보는</p>
+            {t.subpage2.bigHeadingRegular.map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[36px]" : "text-[50px]"} leading-[1.2]`}>{line}</p>
+            ))}
           </div>
           <div>
-            <p className="text-[50px] font-bold leading-[1.2]">우리의 시선은</p>
-            <p className="text-[50px] font-bold leading-[1.2]">조금 남다릅니다.</p>
+            {t.subpage2.bigHeadingBold.map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold leading-[1.2]`}>{line}</p>
+            ))}
           </div>
         </div>
 
@@ -122,18 +64,17 @@ export default function Subpage2() {
           {/* Intro text @ top:422, left:28, w:295, 16px Regular center */}
           <div className="absolute" style={{ left: 28, top: 422, width: 295 }}>
             <div className="font-pretendard text-grayscale-900 text-[16px] tracking-[-0.8px] leading-[1.4] text-center">
-              <p>길은 단순한 선이 아니라,</p>
-              <p>사람이 걸으며 이야기를 새기는 문화의 길 입니다.</p>
-              <p>우리는 길을 찾고, 길을 만들며,</p>
-              <p>길 위에서 세상의 숨결을 읽습니다.</p>
+              {t.subpage2.introBody.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
             </div>
           </div>
           {/* Tagline @ top:920, left:28, w:295, 24px Bold center */}
           <div className="absolute" style={{ left: 28, top: 920, width: 295 }}>
             <div className="font-pretendard text-grayscale-900 text-[24px] font-bold tracking-[-0.96px] leading-[1.5] text-center">
-              <p>기획에서 체험까지,</p>
-              <p>길에 이야기를 입히는</p>
-              <p>걷기길 전문 법인</p>
+              {t.subpage2.tagline.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
             </div>
           </div>
         </div>
@@ -150,36 +91,35 @@ export default function Subpage2() {
 
         {/* SECTION 01 */}
         <div className="relative" style={{ width: 250, height: 365 }}>
-          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>01</p>
-          <p className="absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 text-[100px] font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center" style={{ top: 161 }}>계획</p>
+          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>{SECTIONS[0].num}</p>
+          <p className={`absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 ${lang === "en" ? "text-[60px]" : "text-[100px]"} font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center`} style={{ top: 161 }}>{SECTIONS[0].label}</p>
         </div>
-        <div className="flex flex-col items-center gap-[46px] font-pretendard whitespace-nowrap">
+        <div className={`flex flex-col items-center gap-[46px] font-pretendard ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div className="flex flex-col items-center gap-[18px]">
-            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">길을 짓다</p>
-            <p className="text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] leading-[1.2]">기획과 설계의 시선</p>
+            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">{SECTIONS[0].enHook}</p>
+            <p className={`text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] leading-[1.2] text-center`}>{SECTIONS[0].title}</p>
           </div>
           <div className="text-grayscale-900 text-[24px] tracking-[-0.96px] leading-[1.5] text-center">
-            <p>사람·자연·지역을 잇는</p>
-            <p>걷기길의 구조와 철학</p>
-            <p>함께 설계 합니다.</p>
+            {SECTIONS[0].bigText.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
         </div>
         {/* Section 01 image+text block (350×615) */}
         <div className="relative" style={{ width: 350, height: 615 }}>
           <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 0, width: 350 }}>
-            <p>코리아둘레길, 경기둘레길을 비롯해</p>
-            <p>지역의 길을 조사·발굴하고,</p>
-            <p>사람과 지역을 연결하고,</p>
-            <p>자연과 문화가 함께 숨 쉬는 길을 만들어 갑니다.</p>
+            {SECTIONS[0].rightDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ right: 0, top: 114, width: 219, height: 160 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/figma/sub2-img-gyeonggi.png" alt="" className="block h-full w-full object-cover" />
           </div>
           <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 414, width: 350 }}>
-            <p>구조와 동선을 넘어,</p>
-            <p>지역의 미래와 일상의 발걸음을</p>
-            <p>함께 그리는 지속가능한 길의 설계자입니다.</p>
+            {SECTIONS[0].leftDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ left: 0, top: 506, width: 287, height: 109 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -189,27 +129,26 @@ export default function Subpage2() {
 
         {/* SECTION 02 */}
         <div className="relative" style={{ width: 250, height: 365 }}>
-          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>02</p>
-          <p className="absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 text-[100px] font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center" style={{ top: 161 }}>해석</p>
+          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>{SECTIONS[1].num}</p>
+          <p className={`absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 ${lang === "en" ? "text-[60px]" : "text-[100px]"} font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center`} style={{ top: 161 }}>{SECTIONS[1].label}</p>
         </div>
-        <div className="flex flex-col items-center gap-[46px] font-pretendard whitespace-nowrap">
+        <div className={`flex flex-col items-center gap-[46px] font-pretendard ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div className="flex flex-col items-center gap-[18px]">
-            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">길을 보다</p>
-            <p className="text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] leading-[1.2]">관점과 해석의 시선</p>
+            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">{SECTIONS[1].enHook}</p>
+            <p className={`text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] leading-[1.2] text-center`}>{SECTIONS[1].title}</p>
           </div>
           <div className="text-grayscale-900 text-[24px] tracking-[-0.96px] leading-[1.5] text-center">
-            <p>길을 풍경이 아닌</p>
-            <p>이야기와 철학으로 읽어냅니다.</p>
+            {SECTIONS[1].bigText.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
         </div>
         {/* Section 02 image+text block (350×726) */}
         <div className="relative" style={{ width: 350, height: 726 }}>
-          <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 0, width: 350 }}>
-            <p>같은 길이라도 누구의 눈으로 보느냐에 따라</p>
-            <p>전혀 다른 역사와 이야기가 펼쳐집니다.</p>
-            <p>&nbsp;</p>
-            <p>길은 단순한 경로가 아니라,</p>
-            <p>그 위에 쌓인 시간과 이야기입니다.</p>
+          <div className={`absolute font-pretendard text-grayscale-700 ${lang === "en" ? "text-[13px]" : "text-[16px]"} tracking-[-0.8px] leading-[1.4]`} style={{ left: 0, top: 0, width: lang === "en" ? 200 : 350 }}>
+            {SECTIONS[1].rightDesc.map((line, i) => (
+              <p key={i}>{line || "\u00A0"}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ right: 0, top: 71, width: 140, height: 201 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -219,58 +158,62 @@ export default function Subpage2() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/figma/sub2-img-youth.png" alt="" className="block h-full w-full object-cover" />
           </div>
-          <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4] whitespace-nowrap" style={{ left: 69, top: 380 }}>
-            <p>길 위의 자원, 지역문화, 사람의 시간을 읽어내어,</p>
-            <p>걷기길을 하나의 인문·문화 텍스트로 해석합니다.</p>
+          <div className={`absolute font-pretendard text-grayscale-700 ${lang === "en" ? "text-[13px]" : "text-[16px]"} tracking-[-0.8px] leading-[1.4] ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ left: 69, top: lang === "en" ? 350 : 380, maxWidth: lang === "en" ? 281 : "none" }}>
+            {SECTIONS[1].leftDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ left: 0, top: 476, width: 294, height: 166 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/figma/sub2-img-frame.png" alt="" className="block h-full w-full object-cover" />
           </div>
           <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 660, width: 350 }}>
-            <p>묻혀있던 지역의 원석을 찾아 기록하고</p>
-            <p>길 위에 새로운 숨결을 불어넣어</p>
-            <p>문화라는 생명력을 더합니다.</p>
+            {SECTIONS[1].extraDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
         </div>
 
         {/* SECTION 03 */}
         <div className="relative" style={{ width: 250, height: 365 }}>
-          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>03</p>
-          <p className="absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 text-[100px] font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center" style={{ top: 161 }}>체험</p>
+          <p className="absolute left-1/2 -translate-x-1/2 font-montserrat text-grayscale-200 text-[160px] font-semibold leading-[1.3] tracking-[-4.16px] whitespace-nowrap text-center" style={{ top: 0 }}>{SECTIONS[2].num}</p>
+          <p className={`absolute left-1/2 -translate-x-1/2 font-pretendard text-grayscale-200 ${lang === "en" ? "text-[60px]" : "text-[100px]"} font-bold leading-[1.3] tracking-[-2.6px] whitespace-nowrap text-center`} style={{ top: 161 }}>{SECTIONS[2].label}</p>
         </div>
-        <div className="flex flex-col items-center gap-[46px] font-pretendard whitespace-nowrap">
+        <div className={`flex flex-col items-center gap-[46px] font-pretendard ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div className="flex flex-col items-center gap-[18px]">
-            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">길을 걷다</p>
-            <p className="text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] leading-[1.2]">경험과 체험의 시선</p>
+            <p className="text-primary text-[24px] font-bold tracking-[-0.96px] leading-[1.5]">{SECTIONS[2].enHook}</p>
+            <p className={`text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] leading-[1.2] text-center`}>{SECTIONS[2].title}</p>
           </div>
           <div className="text-grayscale-900 text-[24px] tracking-[-0.96px] leading-[1.5] text-center">
-            <p>걷는 사람에게 남다른</p>
-            <p>경험을 선물하는 길 위의 인문 산책</p>
+            {SECTIONS[2].bigText.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
         </div>
         {/* Section 03 image+text block (350×726) */}
         <div className="relative" style={{ width: 350, height: 726 }}>
           <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 0, width: 350 }}>
-            <p>한 걸음마다 배우고, 위로받고, 연결되는</p>
-            <p>걷기여행의 사회적 가치를 만들어갑니다.</p>
+            {SECTIONS[2].rightDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ right: 0, top: 71, width: 241, height: 144 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/figma/sub2-img-namparang44.png" alt="" className="block h-full w-full object-cover" />
           </div>
-          <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4] whitespace-nowrap" style={{ left: 69, top: 258 }}>
-            <p>청소년여행문화학교, 지역 특화 걷기프로그램,</p>
-            <p>치유와 배움의 프로그램으로</p>
-            <p>길 위의 시간을 특별한 경험으로 채웁니다.</p>
+          <div className={`absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4] ${lang === "en" ? "" : "whitespace-nowrap"}`} style={{ left: 69, top: 258, maxWidth: lang === "en" ? 281 : "none" }}>
+            {SECTIONS[2].extraDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
           <div className="bg-grayscale-900 absolute overflow-hidden" style={{ left: 0, top: 413, width: 220, height: 220 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/figma/sub2-img-namparang22.png" alt="" className="block h-full w-full object-cover" />
           </div>
           <div className="absolute font-pretendard text-grayscale-700 text-[16px] tracking-[-0.8px] leading-[1.4]" style={{ left: 0, top: 660, width: 350 }}>
-            <p>우리는 지역의 색과 이야기를 담은 프로그램을 통해,</p>
-            <p>사람들이 길 위에서 만나는 감동의 순간을 이어갑니다.</p>
+            {SECTIONS[2].leftDesc.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
         </div>
 
@@ -279,19 +222,21 @@ export default function Subpage2() {
       {/* ===========================================================================
           MOBILE FOOTER — Same structure as Subpage1 mobile footer (Figma 320:2748)
           =========================================================================== */}
-      <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] py-[64px]">
+      <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] pt-[140px] pb-[64px]">
         {/* Beyond logo with Korean Trails subtitle inside logo bounds */}
-        <div className="relative" style={{ width: 281, height: 215 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/figma/footer-union.svg"
-            alt="Beyond the Route"
-            className="absolute block"
-            style={{ left: 0, top: 0, width: "100%", height: "100%" }}
-          />
+        <div className="flex flex-col items-center gap-[8px]">
+          <div className="relative" style={{ width: 281, height: 215 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/figma/footer-union.svg"
+              alt="Beyond the Route"
+              className="absolute block"
+              style={{ left: 0, top: 0, width: "100%", height: "100%" }}
+            />
+          </div>
           <p
-            className="font-montserrat text-primary absolute font-semibold leading-none whitespace-nowrap"
-            style={{ left: "61%", top: "92%", fontSize: 10 }}
+            className="font-montserrat text-primary font-semibold leading-none whitespace-nowrap"
+            style={{ fontSize: 10 }}
           >
             Korean Trails and Culture Foundation
           </p>
@@ -446,67 +391,77 @@ export default function Subpage2() {
             style={{ left: 200, top: F2(784), width: 1246 }}
           >
             <p className="font-montserrat text-grayscale-400 text-[32px] font-bold leading-none tracking-[-1.28px]">
-              What Sets Us Apart
+              {t.subpage2.headerTagline}
             </p>
-            <p className="font-pretendard text-grayscale-900 text-[36px] tracking-[-0.72px] leading-[1.3] whitespace-nowrap">
-              표준을 설계하는 전문성과 현장의 맥락을 읽는 기획력의 결합
+            <p className={`font-pretendard text-grayscale-900 text-[36px] tracking-[-0.72px] leading-[1.3] ${lang === "en" ? "" : "whitespace-nowrap"}`}>
+              {t.subpage2.subTitle.join(lang === "en" ? " " : " ")}
             </p>
-            <div className="font-pretendard text-grayscale-900 text-[100px] font-regular tracking-[-1px] leading-[1.1]">
-              <p>길과 지역을 바라보는</p>
-              <p className="font-bold">우리의 시선은 조금 남다릅니다.</p>
+            <div className={`font-pretendard text-grayscale-900 ${lang === "en" ? "text-[80px]" : "text-[100px]"} font-regular tracking-[-1px] leading-[1.1]`}>
+              {t.subpage2.bigHeadingRegular.map((line, i) => (
+                <p key={`r${i}`}>{line}</p>
+              ))}
+              {t.subpage2.bigHeadingBold.map((line, i) => (
+                <p key={`b${i}`} className="font-bold">{line}</p>
+              ))}
             </div>
           </div>
 
           {/* Right intro text */}
           <div
-            className="absolute font-pretendard text-grayscale-900 text-[36px] tracking-[-0.72px] leading-[1.3] whitespace-nowrap text-right"
-            style={{ left: 1610, top: F2(1723), transform: "translateX(-100%)" }}
+            className={`absolute font-pretendard text-grayscale-900 text-[36px] tracking-[-0.72px] leading-[1.3] text-right ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1610, top: F2(1723), transform: "translateX(-100%)", width: lang === "en" ? 1410 : "auto" }}
           >
-            <p>길은 단순한 선이 아니라, 사람이 걸으며 이야기를 새기는 문화의 길 입니다.</p>
-            <p>우리는 길을 찾고, 길을 만들며, 길 위에서 세상의 숨결을 읽습니다.</p>
+            {lang === "en" ? (
+              <p>{t.subpage2.introBody.join(" ")}</p>
+            ) : (
+              t.subpage2.introBody.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))
+            )}
           </div>
 
           {/* Tagline */}
           <div
-            className="absolute font-pretendard text-grayscale-900 text-[60px] font-bold tracking-[-1.56px] leading-[1.3] whitespace-nowrap"
+            className={`absolute font-pretendard text-grayscale-900 ${lang === "en" ? "text-[44px]" : "text-[60px]"} font-bold tracking-[-1.56px] leading-[1.3] ${lang === "en" ? "" : "whitespace-nowrap"}`}
             style={{ left: "calc(50% - 437px)", top: F2(2742) }}
           >
-            <p>기획에서 체험까지,</p>
-            <p>길에 이야기를 입히는 걷기길 전문 법인</p>
+            {t.subpage2.tagline.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
 
-          {/* SECTION 01 — 길을 짓다 */}
-          {/* "01" big number */}
+          {/* SECTION 01 */}
           <p
             className="absolute font-montserrat text-grayscale-200 text-[220px] font-semibold leading-[1.3] tracking-[22px] whitespace-nowrap text-right"
             style={{ left: 455, top: F2(3610), transform: "translateX(-100%)" }}
           >
-            01
+            {SECTIONS[0].num}
           </p>
           <p
-            className="absolute font-pretendard text-grayscale-200 text-[150px] font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right"
+            className={`absolute font-pretendard text-grayscale-200 ${lang === "en" ? "text-[64px]" : "text-[150px]"} font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right`}
             style={{ left: 456, top: F2(3832), transform: "translateX(-100%)" }}
           >
-            계획
+            {SECTIONS[0].label}
           </p>
           <p
             className="absolute font-pretendard text-primary text-[60px] font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap"
             style={{ left: "calc(50% - 333px)", top: F2(3666) }}
           >
-            길을 짓다
+            {SECTIONS[0].enHook}
           </p>
           <p
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[100px] font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[72px]" : "text-[100px]"} font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap`}
             style={{ left: 627, top: F2(3764) }}
           >
-            기획과 설계의 시선
+            {SECTIONS[0].title}
           </p>
           <div
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
             style={{ left: 627, top: F2(3979) }}
           >
-            <p className="leading-[1.2]">사람·자연·지역을 잇는</p>
-            <p className="leading-[1.2]">걷기길의 구조와 철학을 함께 설계 합니다.</p>
+            {SECTIONS[0].bigText.map((line, i) => (
+              <p key={i} className="leading-[1.2]">{line}</p>
+            ))}
           </div>
           {/* Section 1 photos — left: 경기둘레길(coast), right: image294(forest) per Figma */}
           <div className="bg-grayscale-900 absolute" style={{ left: 729, top: F2(4230), width: 378, height: 277, overflow: "hidden" }}>
@@ -519,54 +474,54 @@ export default function Subpage2() {
           </div>
           {/* Section 1 descriptions */}
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 1144, top: F2(4248) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1144, top: F2(4248), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">코리아둘레길, 경기둘레길을 비롯해</p>
-            <p className="leading-[1.3]">지역의 길을 조사·발굴하고,</p>
-            <p className="leading-[1.3]">사람과 지역을 연결하고,</p>
-            <p className="leading-[1.3]">자연과 문화가 함께 숨 쉬는 길을 만들어 갑니다.</p>
+            {SECTIONS[0].rightDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 729, top: F2(4588) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 729, top: F2(4588), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">구조와 동선을 넘어,</p>
-            <p className="leading-[1.3]">지역의 미래와 일상의 발걸음을</p>
-            <p className="leading-[1.3]">함께 그리는 지속가능한 길의 설계자입니다.</p>
+            {SECTIONS[0].leftDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
 
-          {/* SECTION 02 — 길을 보다 */}
+          {/* SECTION 02 */}
           <p
             className="absolute font-montserrat text-grayscale-200 text-[220px] font-semibold leading-[1.3] tracking-[-4.4px] whitespace-nowrap text-right"
             style={{ left: 473, top: F2(5190), transform: "translateX(-100%)", width: 272 }}
           >
-            02
+            {SECTIONS[1].num}
           </p>
           <p
-            className="absolute font-pretendard text-grayscale-200 text-[150px] font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right"
+            className={`absolute font-pretendard text-grayscale-200 ${lang === "en" ? "text-[64px]" : "text-[150px]"} font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right`}
             style={{ left: 465, top: F2(5412), transform: "translateX(-100%)" }}
           >
-            해석
+            {SECTIONS[1].label}
           </p>
           <p
             className="absolute font-pretendard text-primary text-[60px] font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap"
             style={{ left: "calc(50% - 333px)", top: F2(5247) }}
           >
-            길을 보다
+            {SECTIONS[1].enHook}
           </p>
           <p
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[100px] font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[72px]" : "text-[100px]"} font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap`}
             style={{ left: 627, top: F2(5345) }}
           >
-            관점과 해석의 시선
+            {SECTIONS[1].title}
           </p>
           <div
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
             style={{ left: 627, top: F2(5560) }}
           >
-            <p className="leading-[1.2]">길을 풍경이 아닌</p>
-            <p className="leading-[1.2]">이야기와 철학으로 읽어냅니다.</p>
+            {SECTIONS[1].bigText.map((line, i) => (
+              <p key={i} className="leading-[1.2]">{line}</p>
+            ))}
           </div>
           {/* Section 2 photos — top:namparang46 (shifted right to center person), middle:youth, bottom:wooden frame */}
           <div className="bg-grayscale-900 absolute" style={{ left: 1261, top: F2(5333.5), width: 302, height: 433, overflow: "hidden" }}>
@@ -583,29 +538,28 @@ export default function Subpage2() {
           </div>
           {/* Section 2 descriptions */}
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 1165, top: F2(5841) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1165, top: F2(5841), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">같은 길이라도 누구의 눈으로 보느냐에 따라</p>
-            <p className="leading-[1.3]">전혀 다른 역사와 이야기가 펼쳐집니다.</p>
-            <p className="leading-[1.3]">&nbsp;</p>
-            <p className="leading-[1.3]">길은 단순한 경로가 아니라,</p>
-            <p className="leading-[1.3]">그 위에 쌓인 시간과 이야기입니다</p>
+            {SECTIONS[1].rightDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line || "\u00A0"}</p>
+            ))}
           </div>
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 729, top: F2(6169) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 729, top: F2(6169), maxWidth: lang === "en" ? 480 : "none" }}
           >
-            <p className="leading-[1.3]">길 위의 자원, 지역문화, 사람의 시간을 읽어내어,</p>
-            <p className="leading-[1.3]">걷기길을 하나의 인문·문화 텍스트로 해석합니다.</p>
+            {SECTIONS[1].leftDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 1117, top: F2(6358) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1117, top: F2(6358), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">묻혀있던 지역의 원석을 찾아 기록하고</p>
-            <p className="leading-[1.3]">길 위에 새로운 숨결을 불어넣어</p>
-            <p className="leading-[1.3]">문화라는 생명력을 더합니다.</p>
+            {SECTIONS[1].extraDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
 
           {/* SECTION 03 — 길을 걷다 */}
@@ -613,32 +567,33 @@ export default function Subpage2() {
             className="absolute font-montserrat text-grayscale-200 text-[220px] font-semibold leading-[1.3] tracking-[-4.4px] whitespace-nowrap text-right"
             style={{ left: 473, top: F2(6696), transform: "translateX(-100%)", width: 272 }}
           >
-            03
+            {SECTIONS[2].num}
           </p>
           <p
-            className="absolute font-pretendard text-grayscale-200 text-[150px] font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right"
+            className={`absolute font-pretendard text-grayscale-200 ${lang === "en" ? "text-[64px]" : "text-[150px]"} font-bold leading-[1.3] tracking-[-3.9px] whitespace-nowrap text-right`}
             style={{ left: 465, top: F2(6918), transform: "translateX(-100%)" }}
           >
-            체험
+            {SECTIONS[2].label}
           </p>
           <p
             className="absolute font-pretendard text-primary text-[60px] font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap"
             style={{ left: "calc(50% - 333px)", top: F2(6750) }}
           >
-            길을 걷다
+            {SECTIONS[2].enHook}
           </p>
           <p
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[100px] font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[72px]" : "text-[100px]"} font-bold leading-[1.1] tracking-[-1px] whitespace-nowrap`}
             style={{ left: 627, top: F2(6848) }}
           >
-            경험과 체험의 시선
+            {SECTIONS[2].title}
           </p>
           <div
-            className="absolute z-10 font-pretendard text-grayscale-900 text-[50px] font-bold tracking-[-1.3px] whitespace-nowrap"
+            className={`absolute z-10 font-pretendard text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
             style={{ left: 627, top: F2(7063) }}
           >
-            <p className="leading-[1.2]">걷는 사람에게 남다른 경험을 선물하는</p>
-            <p className="leading-[1.2]">길 위의 인문 산책</p>
+            {SECTIONS[2].bigText.map((line, i) => (
+              <p key={i} className="leading-[1.2]">{line}</p>
+            ))}
           </div>
           {/* Section 3 photos */}
           <div className="bg-grayscale-900 absolute" style={{ left: 1356, top: F2(7152), width: 364, height: 218, overflow: "hidden" }}>
@@ -651,26 +606,28 @@ export default function Subpage2() {
           </div>
           {/* Section 3 descriptions */}
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 1130, top: F2(7417) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1130, top: F2(7417), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">한 걸음마다 배우고, 위로받고, 연결되는</p>
-            <p className="leading-[1.3]">걷기여행의 사회적 가치를 만들어갑니다.</p>
+            {SECTIONS[2].rightDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 1301, top: F2(7548) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 1301, top: F2(7548), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">청소년여행문화학교, 지역 특화 걷기프로그램,</p>
-            <p className="leading-[1.3]">치유와 배움의 프로그램으로</p>
-            <p className="leading-[1.3]">길 위의 시간을 특별한 경험으로 채웁니다.</p>
+            {SECTIONS[2].extraDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
           <div
-            className="absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] whitespace-nowrap"
-            style={{ left: 729, top: F2(7672) }}
+            className={`absolute font-pretendard text-grayscale-700 text-[24px] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+            style={{ left: 729, top: F2(7672), maxWidth: lang === "en" ? 700 : "none" }}
           >
-            <p className="leading-[1.3]">우리는 지역의 색과 이야기를 담은 프로그램을 통해,</p>
-            <p className="leading-[1.3]">사람들이 길 위에서 만나는 감동의 순간을 이어갑니다.</p>
+            {SECTIONS[2].leftDesc.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line}</p>
+            ))}
           </div>
 
           {/* Footer at bottom */}

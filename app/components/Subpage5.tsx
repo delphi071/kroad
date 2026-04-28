@@ -127,10 +127,12 @@ function MobileFooter() {
   const { t } = useLang();
   return (
     <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] py-[64px]">
-      <div className="relative" style={{ width: 281, height: 215 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
-        <p className="font-montserrat text-primary absolute font-semibold leading-none whitespace-nowrap" style={{ left: "61%", top: "92%", fontSize: 10 }}>
+      <div className="flex flex-col items-center gap-[8px]">
+        <div className="relative" style={{ width: 281, height: 215 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
+        </div>
+        <p className="font-montserrat text-primary font-semibold leading-none whitespace-nowrap" style={{ fontSize: 10 }}>
           Korean Trails and Culture Foundation
         </p>
       </div>
@@ -205,14 +207,18 @@ function MobileFooter() {
 
 /* ---------- PC tab cluster (3 tabs at fixed positions) ---------- */
 function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void }) {
-  const items: { id: TabId; korean: string; english: string; left: number }[] = [
-    { id: "notices", korean: "공지사항", english: "Notice", left: 200 },
-    { id: "news", korean: "소식받기", english: "News", left: 463 },
-    { id: "contact", korean: "문의하기", english: "Contact Us", left: 726 },
+  const { t, lang } = useLang();
+  const items: { id: TabId; left: number }[] = [
+    { id: "notices", left: 200 },
+    { id: "news", left: 463 },
+    { id: "contact", left: 726 },
   ];
   return (
     <>
       {items.map((it) => {
+        const tabData = t.subpage5.tabs[it.id];
+        const mainLabel = lang === "ko" ? tabData.ko : tabData.en;
+        const subLabel = tabData.en;
         const active = it.id === tab;
         return active ? (
           <button
@@ -220,10 +226,12 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
             type="button"
             onClick={() => onSelect(it.id)}
             className="absolute flex flex-col items-start gap-[12px] cursor-pointer text-grayscale-900 text-left"
-            style={{ left: it.left, top: F(1155), width: 220 }}
+            style={{ left: it.left, top: lang === "en" ? F(1199) : F(1155), width: 280 }}
           >
-            <p className="font-montserrat font-bold leading-none tracking-[-1.28px]" style={{ fontSize: 32 }}>{it.english}</p>
-            <p className="font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap" style={{ fontSize: 60 }}>{it.korean}</p>
+            {lang === "ko" && (
+              <p className="font-montserrat font-bold leading-none tracking-[-1.28px]" style={{ fontSize: 32 }}>{subLabel}</p>
+            )}
+            <p className="font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap" style={{ fontSize: lang === "en" ? 44 : 60 }}>{mainLabel}</p>
           </button>
         ) : (
           <button
@@ -231,9 +239,9 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
             type="button"
             onClick={() => onSelect(it.id)}
             className="absolute font-pretendard font-bold leading-[1.3] tracking-[-1.56px] whitespace-nowrap text-grayscale-200 cursor-pointer hover:text-grayscale-400"
-            style={{ left: it.left, top: F(1199), fontSize: 60 }}
+            style={{ left: it.left, top: F(1199), fontSize: lang === "en" ? 44 : 60 }}
           >
-            {it.korean}
+            {mainLabel}
           </button>
         );
       })}
@@ -243,20 +251,40 @@ function PCTabs({ tab, onSelect }: { tab: TabId; onSelect: (t: TabId) => void })
 
 /* ---------- PC Header "알리고 나누어 / 길을 더 풍성하게 합니다." ---------- */
 function PCHeader() {
+  const { lang } = useLang();
   return (
-    <div className="absolute" style={{ left: 200, top: F(773), width: 1327 }}>
-      <p className="font-pretendard leading-[1.1] text-grayscale-900" style={{ fontSize: 100, letterSpacing: "-1px" }}>알리고 나누어</p>
-      <p className="font-pretendard leading-[1.1] text-grayscale-900 font-bold" style={{ fontSize: 100, letterSpacing: "-1px" }}>길을 더 풍성하게 합니다.</p>
+    <div className="absolute" style={{ left: 200, top: F(773), width: 1500 }}>
+      {lang === "ko" ? (
+        <>
+          <p className="font-pretendard leading-[1.1] text-grayscale-900" style={{ fontSize: 100, letterSpacing: "-1px" }}>알리고 나누어</p>
+          <p className="font-pretendard leading-[1.1] text-grayscale-900 font-bold" style={{ fontSize: 100, letterSpacing: "-1px" }}>길을 더 풍성하게 합니다.</p>
+        </>
+      ) : (
+        <>
+          <p className="font-pretendard leading-[1.1] text-grayscale-900" style={{ fontSize: 72, letterSpacing: "-1px" }}>Sharing stories,</p>
+          <p className="font-pretendard leading-[1.1] text-grayscale-900 font-bold" style={{ fontSize: 72, letterSpacing: "-1px" }}>enriching every trail.</p>
+        </>
+      )}
     </div>
   );
 }
 
 /* ---------- mobile header ---------- */
 function MobileHeader() {
+  const { lang } = useLang();
   return (
     <div className="font-pretendard text-grayscale-900 w-full" style={{ letterSpacing: "-0.96px" }}>
-      <p className="leading-[1.5]" style={{ fontSize: 24 }}>알리고 나누어</p>
-      <p className="leading-[1.5] font-bold" style={{ fontSize: 24 }}>길을 더 풍성하게 합니다.</p>
+      {lang === "ko" ? (
+        <>
+          <p className="leading-[1.5]" style={{ fontSize: 24 }}>알리고 나누어</p>
+          <p className="leading-[1.5] font-bold" style={{ fontSize: 24 }}>길을 더 풍성하게 합니다.</p>
+        </>
+      ) : (
+        <>
+          <p className="leading-[1.5]" style={{ fontSize: 22 }}>Sharing stories,</p>
+          <p className="leading-[1.5] font-bold" style={{ fontSize: 22 }}>enriching every trail.</p>
+        </>
+      )}
     </div>
   );
 }
@@ -348,10 +376,11 @@ function PCNoticeList({ onSelect }: { onSelect: (id: number) => void }) {
 /* PC NOTICE DETAIL                                                     */
 /* =================================================================== */
 function PCNoticeDetail({ noticeId, onBack }: { noticeId: number; onBack: () => void }) {
+  const { t } = useLang();
   const n = NOTICES.find((x) => x.id === noticeId) ?? NOTICES[0];
   return (
     <>
-      {/* 목록 button */}
+      {/* {t.common.list} button */}
       <button
         type="button"
         onClick={onBack}
@@ -359,7 +388,7 @@ function PCNoticeDetail({ noticeId, onBack }: { noticeId: number; onBack: () => 
         style={{ left: 190, top: F(716) }}
       >
         <span className="block size-[24px]"><ArrowLeft size={24} /></span>
-        <span className="font-pretendard leading-[1.3] text-[#9c9c9c] tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>목록</span>
+        <span className="font-pretendard leading-[1.3] text-[#9c9c9c] tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.common.list}</span>
       </button>
       {/* Title row */}
       <div
@@ -417,6 +446,7 @@ function PCNews({
   setAgree: (b: boolean) => void;
   onSubmit: () => void;
 }) {
+  const { t } = useLang();
   return (
     <div
       className="absolute flex flex-col gap-[120px] items-center justify-center"
@@ -443,13 +473,13 @@ function PCNews({
       <div className="flex flex-col gap-[60px] items-start justify-center w-full">
         {/* Name */}
         <div className="flex flex-col gap-[30px] items-start w-full">
-          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>소식 받는 분 성함</p>
+          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.newsForm.nameLabel}</p>
           <div className="flex flex-col gap-[25px] items-start w-full">
             <input
               type="text"
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              placeholder="소식 받는 분 성함을 입력 해주세요."
+              placeholder={t.subpage5.newsForm.namePlaceholder}
               className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 24 }}
             />
@@ -458,13 +488,13 @@ function PCNews({
         </div>
         {/* Phone */}
         <div className="flex flex-col gap-[30px] items-start w-full">
-          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>소식 받는 분 연락처</p>
+          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.newsForm.phoneLabel}</p>
           <div className="flex flex-col gap-[25px] items-start w-full">
             <input
               type="tel"
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-              placeholder="소식 받는 분 연락처를 입력 해주세요."
+              placeholder={t.subpage5.newsForm.phonePlaceholder}
               className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 24 }}
             />
@@ -473,13 +503,13 @@ function PCNews({
         </div>
         {/* Email */}
         <div className="flex flex-col gap-[30px] items-start w-full">
-          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>소식 받을 이메일</p>
+          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.newsForm.emailLabel}</p>
           <div className="flex flex-col gap-[25px] items-start w-full">
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              placeholder="소식 받을 이메일을 입력 해주세요."
+              placeholder={t.subpage5.newsForm.emailPlaceholder}
               className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 24 }}
             />
@@ -488,9 +518,9 @@ function PCNews({
         </div>
         {/* Interests */}
         <div className="flex flex-col gap-[40px] items-start w-full">
-          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full" style={{ fontSize: 24 }}>관심분야</p>
+          <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full" style={{ fontSize: 24 }}>{t.subpage5.newsForm.interestsLabel}</p>
           <div className="flex gap-[80px] items-start">
-            {INTEREST_OPTIONS.map((opt) => (
+            {INTEREST_OPTIONS.map((opt, i) => (
               <button
                 key={opt}
                 type="button"
@@ -498,7 +528,7 @@ function PCNews({
                 className="flex gap-[10px] items-center justify-center cursor-pointer"
               >
                 <Checkbox checked={interests.has(opt)} size={24} />
-                <span className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{opt}</span>
+                <span className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.newsForm.interestOptions[i] || opt}</span>
               </button>
             ))}
           </div>
@@ -513,7 +543,7 @@ function PCNews({
           className="flex gap-[10px] items-center cursor-pointer"
         >
           <Checkbox checked={agree} size={24} />
-          <span className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>개인정보 수집 및 활용에 동의합니다.</span>
+          <span className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.newsForm.agreeLabel}</span>
         </button>
         <button
           type="button"
@@ -521,7 +551,7 @@ function PCNews({
           className="bg-primary flex items-center justify-center p-[16px] cursor-pointer hover:opacity-90 transition-opacity"
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20, width: 224 }}
         >
-          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>신청</span>
+          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.common.submit}</span>
         </button>
       </div>
     </div>
@@ -540,23 +570,28 @@ function PCContact({
   setForm: React.Dispatch<React.SetStateAction<{ name: string; email: string; message: string }>>;
   onSubmit: () => void;
 }) {
+  const { t, lang } = useLang();
+  const intro = lang === "ko"
+    ? ["궁금하신 사항을 남겨주세요.", "빠른 시간 안에 답변 드리겠습니다."]
+    : ["Please leave your inquiry.", "We will respond as soon as possible."];
   return (
     <div className="absolute flex gap-[60px] items-start" style={{ left: 200, top: F(1387), width: 1534 }}>
-      <div className="font-pretendard leading-[0] text-grayscale-900 whitespace-nowrap shrink-0" style={{ fontSize: 36, letterSpacing: "-0.72px" }}>
-        <p className="leading-[1.3]">궁금하신 사항을 남겨주세요.</p>
-        <p className="leading-[1.3]">빠른 시간 안에 답변 드리겠습니다.</p>
+      <div className={`font-pretendard leading-[0] text-grayscale-900 ${lang === "en" ? "" : "whitespace-nowrap"} shrink-0`} style={{ fontSize: lang === "en" ? 28 : 36, letterSpacing: "-0.72px" }}>
+        {intro.map((line, i) => (
+          <p key={i} className="leading-[1.3]">{line}</p>
+        ))}
       </div>
       <div className="flex flex-1 flex-col gap-[60px] items-end min-w-px">
         <div className="flex flex-col gap-[60px] items-start justify-center w-full">
           <div className="flex gap-[60px] items-start w-full">
             <div className="flex flex-1 flex-col gap-[30px] items-start min-w-px">
-              <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>문의하시는 분 성함</p>
+              <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.contactForm.nameLabel}</p>
               <div className="flex flex-col gap-[25px] items-start w-full">
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  placeholder="성함을 입력해주세요."
+                  placeholder={t.subpage5.contactForm.namePlaceholder}
                   className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
                   style={{ fontSize: 24 }}
                 />
@@ -564,13 +599,13 @@ function PCContact({
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-[30px] items-start min-w-px">
-              <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>답변 받을 이메일</p>
+              <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.contactForm.emailLabel}</p>
               <div className="flex flex-col gap-[25px] items-start w-full">
                 <input
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                  placeholder="이메일을 입력해주세요."
+                  placeholder={t.subpage5.contactForm.emailPlaceholder}
                   className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
                   style={{ fontSize: 24 }}
                 />
@@ -579,12 +614,12 @@ function PCContact({
             </div>
           </div>
           <div className="flex flex-col gap-[30px] items-start w-full">
-            <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>문의하실 내용</p>
+            <p className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.subpage5.contactForm.messageLabel}</p>
             <div className="flex flex-col gap-[140px] items-start w-full">
               <textarea
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                placeholder="문의내용을 입력해주세요."
+                placeholder={t.subpage5.contactForm.messagePlaceholder}
                 rows={4}
                 className="font-pretendard leading-[1.3] text-grayscale-900 tracking-[-0.24px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd] resize-none"
                 style={{ fontSize: 24, minHeight: 24 * 1.3 }}
@@ -599,7 +634,7 @@ function PCContact({
           className="bg-primary flex items-center justify-center p-[16px] cursor-pointer hover:opacity-90 transition-opacity"
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20, width: 224 }}
         >
-          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>보내기</span>
+          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.96px] whitespace-nowrap" style={{ fontSize: 24 }}>{t.common.send}</span>
         </button>
       </div>
     </div>
@@ -654,17 +689,18 @@ function MobileNoticeList({ onSelect }: { onSelect: (id: number) => void }) {
 /* MOBILE NOTICE DETAIL                                                 */
 /* =================================================================== */
 function MobileNoticeDetail({ noticeId, onBack }: { noticeId: number; onBack: () => void }) {
+  const { t } = useLang();
   const n = NOTICES.find((x) => x.id === noticeId) ?? NOTICES[0];
   return (
     <div className="flex flex-col items-start pb-[39px] pt-[15px] w-screen -mx-[20px]">
-      {/* 목록 */}
+      {/* {t.common.list} */}
       <button
         type="button"
         onClick={onBack}
         className="flex gap-[14px] items-center justify-center px-[20px] py-[10px] cursor-pointer"
       >
         <span className="block size-[24px]"><ArrowLeft size={24} /></span>
-        <span className="font-pretendard font-bold leading-[1.5] text-[#9c9c9c] tracking-[-0.8px]" style={{ fontSize: 16 }}>목록</span>
+        <span className="font-pretendard font-bold leading-[1.5] text-[#9c9c9c] tracking-[-0.8px]" style={{ fontSize: 16 }}>{t.common.list}</span>
       </button>
       {/* Title row */}
       <div className="border-b border-solid border-grayscale-400 flex items-center py-[24px] w-full">
@@ -718,18 +754,19 @@ function MobileNews({
   setAgree: (b: boolean) => void;
   onSubmit: () => void;
 }) {
+  const { t } = useLang();
   return (
     <div className="flex flex-col gap-[46px] items-start w-full">
       <div className="flex flex-col gap-[32px] items-start w-full">
         {/* Name */}
         <div className="flex flex-col gap-[20px] items-start w-full">
-          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>소식받는 분 성함</p>
+          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.newsForm.nameLabel}</p>
           <div className="flex flex-col gap-[16px] items-start w-full">
             <input
               type="text"
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              placeholder="성함을 입력해주세요."
+              placeholder={t.subpage5.newsForm.namePlaceholder}
               className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 16 }}
             />
@@ -738,13 +775,13 @@ function MobileNews({
         </div>
         {/* Phone */}
         <div className="flex flex-col gap-[20px] items-start w-full">
-          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>소식 받는 분 연락처</p>
+          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.newsForm.phoneLabel}</p>
           <div className="flex flex-col gap-[16px] items-start w-full">
             <input
               type="tel"
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-              placeholder="연락처를 입력해주세요."
+              placeholder={t.subpage5.newsForm.phonePlaceholder}
               className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 16 }}
             />
@@ -753,13 +790,13 @@ function MobileNews({
         </div>
         {/* Email */}
         <div className="flex flex-col gap-[20px] items-start w-full">
-          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>소식 받을 이메일</p>
+          <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.newsForm.emailLabel}</p>
           <div className="flex flex-col gap-[16px] items-start w-full">
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              placeholder="이메일을 입력해주세요."
+              placeholder={t.subpage5.newsForm.emailPlaceholder}
               className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
               style={{ fontSize: 16 }}
             />
@@ -768,9 +805,9 @@ function MobileNews({
         </div>
         {/* Interests */}
         <div className="flex flex-col gap-[30px] items-start w-full">
-          <p className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full" style={{ fontSize: 16 }}>관심분야</p>
+          <p className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full" style={{ fontSize: 16 }}>{t.subpage5.newsForm.interestsLabel}</p>
           <div className="flex flex-col gap-[14px] items-start">
-            {INTEREST_OPTIONS.map((opt) => (
+            {INTEREST_OPTIONS.map((opt, i) => (
               <button
                 key={opt}
                 type="button"
@@ -778,7 +815,7 @@ function MobileNews({
                 className="flex gap-[10px] items-center justify-center cursor-pointer"
               >
                 <Checkbox checked={interests.has(opt)} size={24} />
-                <span className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{opt}</span>
+                <span className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.newsForm.interestOptions[i] || opt}</span>
               </button>
             ))}
           </div>
@@ -792,7 +829,7 @@ function MobileNews({
           className="flex gap-[10px] items-center w-full cursor-pointer"
         >
           <Checkbox checked={agree} size={24} />
-          <span className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>개인정보 수집 및 활용에 동의합니다.</span>
+          <span className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px]" style={{ fontSize: 16 }}>{t.subpage5.newsForm.agreeLabel}</span>
         </button>
         <button
           type="button"
@@ -800,7 +837,7 @@ function MobileNews({
           className="bg-primary flex items-center justify-center p-[16px] w-full cursor-pointer hover:opacity-90 transition-opacity"
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
         >
-          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>신청</span>
+          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.common.submit}</span>
         </button>
       </div>
       {/* 3 cards */}
@@ -835,24 +872,29 @@ function MobileContact({
   setForm: React.Dispatch<React.SetStateAction<{ name: string; email: string; message: string }>>;
   onSubmit: () => void;
 }) {
+  const { t, lang } = useLang();
+  const intro = lang === "ko"
+    ? ["궁금하신 사항을 남겨주세요.", "빠른 시간 안에 답변 드리겠습니다."]
+    : ["Please leave your inquiry.", "We will respond as soon as possible."];
   return (
     <div className="flex flex-col gap-[60px] items-start w-full">
-      <div className="font-pretendard leading-[0] text-grayscale-900 whitespace-nowrap" style={{ fontSize: 24, letterSpacing: "-0.24px" }}>
-        <p className="leading-[1.3]">궁금하신 사항을 남겨주세요.</p>
-        <p className="leading-[1.3]">빠른 시간 안에 답변 드리겠습니다.</p>
+      <div className="font-pretendard leading-[0] text-grayscale-900" style={{ fontSize: lang === "en" ? 18 : 24, letterSpacing: "-0.24px" }}>
+        {intro.map((line, i) => (
+          <p key={i} className="leading-[1.3]">{line}</p>
+        ))}
       </div>
       <div className="flex flex-col gap-[70px] items-end w-full">
         <div className="flex flex-col gap-[60px] items-start justify-center w-full">
           <div className="flex flex-col gap-[60px] items-start w-full">
             {/* Name */}
             <div className="flex flex-col gap-[20px] items-start w-full">
-              <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>문의하시는 분 성함</p>
+              <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.contactForm.nameLabel}</p>
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  placeholder="성함을 입력해주세요."
+                  placeholder={t.subpage5.contactForm.namePlaceholder}
                   className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
                   style={{ fontSize: 16 }}
                 />
@@ -861,13 +903,13 @@ function MobileContact({
             </div>
             {/* Email */}
             <div className="flex flex-col gap-[20px] items-start w-full">
-              <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>답변 받을 이메일</p>
+              <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.contactForm.emailLabel}</p>
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <input
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                  placeholder="이메일을 입력해주세요."
+                  placeholder={t.subpage5.contactForm.emailPlaceholder}
                   className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd]"
                   style={{ fontSize: 16 }}
                 />
@@ -877,12 +919,12 @@ function MobileContact({
           </div>
           {/* Message */}
           <div className="flex flex-col gap-[20px] items-start w-full">
-            <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>문의하실 내용</p>
+            <p className="font-pretendard leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.subpage5.contactForm.messageLabel}</p>
             <div className="flex flex-col gap-[140px] items-start w-full">
               <textarea
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                placeholder="문의내용을 입력해주세요."
+                placeholder={t.subpage5.contactForm.messagePlaceholder}
                 rows={3}
                 className="font-pretendard leading-[1.4] text-grayscale-900 tracking-[-0.8px] w-full bg-transparent outline-none placeholder:text-[#bdbdbd] resize-none"
                 style={{ fontSize: 16 }}
@@ -897,7 +939,7 @@ function MobileContact({
           className="bg-primary flex items-center justify-center p-[16px] w-full cursor-pointer hover:opacity-90 transition-opacity"
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
         >
-          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>보내기</span>
+          <span className="font-pretendard font-bold leading-[1.5] text-grayscale-900 tracking-[-0.8px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.common.send}</span>
         </button>
       </div>
     </div>
@@ -908,6 +950,7 @@ function MobileContact({
 /* MAIN                                                                  */
 /* =================================================================== */
 export default function Subpage5() {
+  const { t } = useLang();
   const [tab, setTab] = useState<TabId>("notices");
   const [noticeId, setNoticeId] = useState<number | null>(null);
   const [newsForm, setNewsForm] = useState({ name: "", phone: "", email: "" });
@@ -957,30 +1000,30 @@ export default function Subpage5() {
 
   const handleNewsSubmit = () => {
     if (!newsForm.name.trim()) {
-      showToast("성함을 입력해주세요.");
+      showToast(t.subpage5.toast.nameRequired);
       return;
     }
     if (!newsForm.phone.trim()) {
-      showToast("연락처를 입력해주세요.");
+      showToast(t.subpage5.toast.phoneRequired);
       return;
     }
     if (!newsForm.email.trim()) {
-      showToast("이메일을 입력해주세요.");
+      showToast(t.subpage5.toast.emailRequired);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsForm.email)) {
-      showToast("올바른 이메일 형식을 입력해주세요.");
+      showToast(t.subpage5.toast.emailInvalid);
       return;
     }
     if (interests.size === 0) {
-      showToast("관심분야를 1개 이상 선택해주세요.");
+      showToast(t.subpage5.toast.interestRequired);
       return;
     }
     if (!agree) {
-      showToast("개인정보 수집 및 활용에 동의해주세요.");
+      showToast(t.subpage5.toast.agreeRequired);
       return;
     }
-    showToast("신청이 완료 되었습니다.");
+    showToast(t.subpage5.toast.subscribeSuccess);
     setNewsForm({ name: "", phone: "", email: "" });
     setInterests(new Set());
     setAgree(false);
@@ -988,22 +1031,22 @@ export default function Subpage5() {
 
   const handleContactSubmit = () => {
     if (!contactForm.name.trim()) {
-      showToast("성함을 입력해주세요.");
+      showToast(t.subpage5.toast.nameRequired);
       return;
     }
     if (!contactForm.email.trim()) {
-      showToast("이메일을 입력해주세요.");
+      showToast(t.subpage5.toast.emailRequired);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email)) {
-      showToast("올바른 이메일 형식을 입력해주세요.");
+      showToast(t.subpage5.toast.emailInvalid);
       return;
     }
     if (!contactForm.message.trim()) {
-      showToast("문의내용을 입력해주세요.");
+      showToast(t.subpage5.toast.messageRequired);
       return;
     }
-    showToast("정상적으로 접수 되었습니다.");
+    showToast(t.subpage5.toast.contactSuccess);
     setContactForm({ name: "", email: "", message: "" });
   };
 

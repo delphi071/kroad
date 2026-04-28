@@ -1,51 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-
-const ITEMS = [
-  {
-    year: "2010",
-    events: [
-      { month: "08", title: "법인 설립", desc: "문화생태탐방로 사업 진행" },
-      { month: "09", title: "동해안 걷기여행길 '해파랑길' 사업 진행", desc: "" },
-    ],
-  },
-  {
-    year: "2013",
-    events: [
-      { month: "07", title: "전국 걷기여행길 현황 조사", desc: "걷기여행길 (현 두루누비) 홈페이지 콘텐츠 조사" },
-    ],
-  },
-  {
-    year: "2016",
-    events: [
-      { month: "05", title: "7일 동해안 걷기여행길 '해파랑길' 개통", desc: "50개 코스, 750KM" },
-      { month: "06", title: "17일 코리아둘레길 계획 발표", desc: "남파랑길, 서해랑길, DMZ평화의길 노선조사 참여" },
-    ],
-  },
-  {
-    year: "2020",
-    events: [
-      { month: "10", title: '31일 남해안 걷기여행길 "남파랑길" 개통', desc: "90개 코스, 1,470km" },
-      { month: "", title: "코리아둘레길 모니터링 및 안내사무국 운영", desc: "" },
-    ],
-  },
-  {
-    year: "2022",
-    events: [
-      { month: "06", title: '22일 서해안 걷기여행길 "서해랑길" 개통', desc: "109개 코스, 1,800km" },
-    ],
-  },
-  {
-    year: "2024",
-    events: [
-      { month: "09", title: '23일 DMZ 접경지역 걷기여행길 "평화의길" 개통', desc: "35개 코스, 510km / 우회노선 13개 코스" },
-    ],
-  },
-];
+import { useLang } from "../i18n/LanguageContext";
 
 const SLOT_H = 360;
-// 2024가 맨 위로 올 수 있도록 MAX_INDEX = 마지막 인덱스
-const MAX_INDEX = ITEMS.length - 1; // 5
+const MAX_INDEX = 5;
 
 const OPACITIES = [1, 0.45, 0.14];
 
@@ -62,6 +20,8 @@ const VECTOR8_FIGMA_TOP = 768.08;
 const VECTOR8_H = 8921.27;
 
 export default function JourneyTimeline() {
+  const { t, lang } = useLang();
+  const ITEMS = t.subpage1.journey.items;
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -185,27 +145,25 @@ export default function JourneyTimeline() {
           {/* Header */}
           <div className="flex items-center gap-[10px] whitespace-nowrap leading-none">
             <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
-              주요 연혁
+              {t.subpage1.journey.label}
             </p>
             <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px]">
-              Our Journey
+              {t.subpage1.journey.labelEn}
             </p>
           </div>
 
           {/* Big title */}
           <div className="font-pretendard text-grayscale-900 text-[50px] font-bold leading-[1.2] tracking-[-1.3px] whitespace-nowrap">
-            <p>우리가</p>
-            <p>걸어온 길</p>
+            {t.subpage1.journey.headline.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
 
           {/* Intro paragraph */}
           <div className="font-pretendard text-grayscale-900 text-[16px] tracking-[-0.8px] leading-[1.4]">
-            <p>출범 이후 지난 십여년간 걷기여행길에 문화를 입히고 지속가능한 걷기여행길과 올바른 걷기문화를 위한 방향을 제시하며</p>
-            <p>다양한 활동을 해왔습니다.</p>
-            <p>&nbsp;</p>
-            <p>대한민국을 대표하는 코리아둘레길, 경기둘레길을 포함한 다양한 걷기 길을 지속적으로 연구∙관리·운영하는 가운데,</p>
-            <p>새로운 걷기 기반 문화 프로그램을 운영하며</p>
-            <p>걷기 문화 확산을 위한 걸음을 이어가고 있습니다.</p>
+            {t.subpage1.journey.intro.map((line, i) => (
+              <p key={i}>{line || "\u00A0"}</p>
+            ))}
           </div>
 
           {/* Events list */}
@@ -319,7 +277,7 @@ export default function JourneyTimeline() {
               >
                 <p
                   className="absolute font-montserrat font-extrabold leading-[1.1] tracking-[-1px]"
-                  style={{ left: 414, top: 60, fontSize: 100 }}
+                  style={{ left: 414, top: 60, fontSize: lang === "en" ? 80 : 100 }}
                 >
                   {item.year}
                 </p>
@@ -328,21 +286,21 @@ export default function JourneyTimeline() {
                     {ev.month && (
                       <p
                         className="absolute font-montserrat font-extrabold leading-[1.1] tracking-[-0.6px] text-grayscale-700"
-                        style={{ left: 732, top: 78 + j * 160, fontSize: 60 }}
+                        style={{ left: 732, top: 78 + j * 160, fontSize: lang === "en" ? 48 : 60 }}
                       >
                         {ev.month}
                       </p>
                     )}
                     <p
-                      className="absolute font-pretendard font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 whitespace-nowrap"
-                      style={{ left: 871, top: 91 + j * 160, fontSize: 36 }}
+                      className={`absolute font-pretendard font-extrabold leading-[1.1] tracking-[-0.36px] text-grayscale-700 ${lang === "en" ? "" : "whitespace-nowrap"}`}
+                      style={{ left: 871, top: 91 + j * 160, fontSize: lang === "en" ? 28 : 36, maxWidth: lang === "en" ? 950 : "none" }}
                     >
                       {ev.title}
                     </p>
                     {ev.desc && (
                       <p
-                        className="absolute font-pretendard leading-[1.3] tracking-[-0.24px] whitespace-nowrap"
-                        style={{ left: 871, top: 160 + j * 160, fontSize: 24 }}
+                        className={`absolute font-pretendard leading-[1.3] tracking-[-0.24px] ${lang === "en" ? "" : "whitespace-nowrap"}`}
+                        style={{ left: 871, top: 160 + j * 160, fontSize: lang === "en" ? 20 : 24, maxWidth: lang === "en" ? 950 : "none" }}
                       >
                         {ev.desc}
                       </p>

@@ -216,15 +216,16 @@ export default function Hero5Section() {
           <div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-suite font-black text-primary text-center"
             style={{
-              fontSize: "clamp(60px, 25.12vw, 110px)",
+              fontSize: lang === "en" ? "clamp(36px, 8vw, 56px)" : "clamp(60px, 25.12vw, 110px)",
               lineHeight: 1,
               letterSpacing: "-0.05em",
               fontWeight: 900,
               whiteSpace: "nowrap",
             }}
           >
-            <p>알리는</p>
-            <p>이야기</p>
+            {(lang === "ko" ? ["알리는", "이야기"] : t.hero5.headingMobile).map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
 
           <button
@@ -266,7 +267,7 @@ export default function Hero5Section() {
                 className="font-suite text-primary absolute -translate-x-1/2 whitespace-nowrap"
                 style={{ left: "50%", top: 175, fontSize: 130, lineHeight: 1, fontWeight: 900, letterSpacing: "-6.5px" }}
               >
-                알리는 이야기
+                {lang === "ko" ? "알리는 이야기" : t.hero5.collapsedTitle.join(" ")}
               </p>
             )}
 

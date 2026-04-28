@@ -215,36 +215,31 @@ export default function Hero3Section() {
 
         {/* MOBILE LAYOUT — "우리가" / "걷는 길" cascading */}
         <div className="relative z-10 h-full w-full lg:hidden">
-          {/* "우리가" left:28 top:308 */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "7.18%",
-              top: "36.49%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              whiteSpace: "nowrap",
-            }}
-          >
-            우리가
-          </div>
-          {/* "걷는 길" left:113 top:437 */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "28.97%",
-              top: "51.78%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              whiteSpace: "nowrap",
-            }}
-          >
-            걷는 길
-          </div>
+          {lang === "ko" ? (
+            <>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "7.18%", top: "36.49%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+              >
+                우리가
+              </div>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "28.97%", top: "51.78%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+              >
+                걷는 길
+              </div>
+            </>
+          ) : (
+            <div
+              className="absolute font-suite font-black text-primary"
+              style={{ left: "7.18%", top: "40%", fontSize: "clamp(36px, 8vw, 56px)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 900 }}
+            >
+              {t.hero3.headingMobile.map((line, i) => (
+                <p key={i} style={{ whiteSpace: "nowrap" }}>{line}</p>
+              ))}
+            </div>
+          )}
 
           <button
             type="button"
@@ -281,20 +276,29 @@ export default function Hero3Section() {
 
             {/* Collapsed compact title — z-10 (below nav z-20 so hover dropdown shows on top) */}
             {collapsed && (
-              <>
+              lang === "ko" ? (
+                <>
+                  <p
+                    className="font-suite text-primary absolute z-10 -translate-x-1/2 whitespace-nowrap"
+                    style={{ left: 691.5, top: 150, fontSize: 100, lineHeight: 0.9, fontWeight: 900, letterSpacing: "-5px" }}
+                  >
+                    우리가
+                  </p>
+                  <p
+                    className="font-suite text-primary absolute z-10 -translate-x-1/2 whitespace-nowrap"
+                    style={{ left: 1042.5, top: 260, fontSize: 100, lineHeight: 0.9, fontWeight: 900, letterSpacing: "-5px" }}
+                  >
+                    걷는 길
+                  </p>
+                </>
+              ) : (
                 <p
                   className="font-suite text-primary absolute z-10 -translate-x-1/2 whitespace-nowrap"
-                  style={{ left: 691.5, top: 150, fontSize: 100, lineHeight: 0.9, fontWeight: 900, letterSpacing: "-5px" }}
+                  style={{ left: "50%", top: 175, fontSize: 100, lineHeight: 1, fontWeight: 900, letterSpacing: "-5px" }}
                 >
-                  우리가
+                  {t.hero3.collapsedTitle.join(" ")}
                 </p>
-                <p
-                  className="font-suite text-primary absolute z-10 -translate-x-1/2 whitespace-nowrap"
-                  style={{ left: 1042.5, top: 260, fontSize: 100, lineHeight: 0.9, fontWeight: 900, letterSpacing: "-5px" }}
-                >
-                  걷는 길
-                </p>
-              </>
+              )
             )}
 
             {collapsed && (

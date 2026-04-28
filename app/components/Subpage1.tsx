@@ -37,7 +37,7 @@ const BOTTOM_GAP_HEIGHT = 10026 - 8780; // 1246
 const BOTTOM_B_HEIGHT = 14000 - 10026; // 3974
 
 export default function Subpage1() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const rootRef = useRef<HTMLDivElement>(null);
 
   // React to nav links like #h1-mission, #h1-vision, #h1-journey, #h1-people, #h1-location
@@ -75,24 +75,24 @@ export default function Subpage1() {
         {/* Mission header */}
         <div data-section="mission" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
           <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
-            설립목적
+            {t.subpage1.mission.label}
           </p>
           <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px]">
-            Mission
+            {t.subpage1.mission.labelEn}
           </p>
         </div>
 
         {/* Mission big text — Regular block + Bold block */}
-        <div className="flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] whitespace-nowrap">
+        <div className={`flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div>
-            <p className="text-[50px] leading-[1.2]">길 위에서</p>
-            <p className="text-[50px] leading-[1.2]">사람과 지역,</p>
-            <p className="text-[50px] leading-[1.2]">자연을 잇고</p>
+            {t.subpage1.mission.bigRegularMobile.map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[36px]" : "text-[50px]"} leading-[1.2]`}>{line}</p>
+            ))}
           </div>
           <div>
-            <p className="text-[50px] font-bold leading-[1.2]">지속가능한</p>
-            <p className="text-[50px] font-bold leading-[1.2]">걷기문화를</p>
-            <p className="text-[50px] font-bold leading-[1.2]">만듭니다</p>
+            {t.subpage1.mission.bigBoldMobile.map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold leading-[1.2]`}>{line}</p>
+            ))}
           </div>
         </div>
 
@@ -106,15 +106,9 @@ export default function Subpage1() {
             className="block h-[22px] w-[24px]"
           />
           <div className="font-pretendard text-grayscale-900 text-[16px] tracking-[-0.8px] leading-[1.4] text-center">
-            <p>출범 이후 지난 십여년간 걷기여행길에 문화를</p>
-            <p>입히고 지속가능한 걷기여행길과</p>
-            <p>올바른 걷기문화를 위한 방향을 제시하며</p>
-            <p>다양한 활동을 해왔습니다.</p>
-            <p>&nbsp;</p>
-            <p>대한민국을 대표하는 코리아둘레길, 경기둘레길을 포함한 다양한 걷기 길을 지속적으로</p>
-            <p>연구∙관리·운영하는 가운데,</p>
-            <p>새로운 걷기 기반 문화 프로그램을 운영하며</p>
-            <p>걷기 문화 확산을 위한 걸음을 이어가고 있습니다.</p>
+            {t.subpage1.mission.quoteMobile.map((line, i) => (
+              <p key={i}>{line || "\u00A0"}</p>
+            ))}
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -128,38 +122,21 @@ export default function Subpage1() {
         {/* 3 Mission cards — vertical full-width stack */}
         <div className="flex flex-col gap-[40px] w-full">
           {[
-            {
-              src: "/figma/sub1-mission-card1.png",
-              text: ["좋은 길을 찾고", "길에 문화와 이야기를 입혀", "길에 숨을 불어 넣는다."],
-            },
-            {
-              src: "/figma/sub1-mission-card2.png",
-              text: [
-                "길위에서",
-                "사람과 지역, 자연을 연결하여",
-                "지속가능한 사회적 가치를 창출한다.",
-              ],
-            },
-            {
-              src: "/figma/sub1-mission-card3.png",
-              text: [
-                "길을 통해 치유와 배움 등을",
-                "제공하여 창조적 걷기 여행 문화를",
-                "만들고 길의 이용을 활성화한다.",
-              ],
-            },
-          ].map((card, i) => (
+            "/figma/sub1-mission-card1.png",
+            "/figma/sub1-mission-card2.png",
+            "/figma/sub1-mission-card3.png",
+          ].map((src, i) => (
             <div key={i} className="flex flex-col gap-[16px] w-full">
               <div className="aspect-square w-full overflow-hidden bg-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={card.src}
+                  src={src}
                   alt=""
                   className="block h-full w-full object-cover"
                 />
               </div>
               <div className="font-pretendard text-primary text-[12px] tracking-[-0.6px] text-center">
-                {card.text.map((line, j) => (
+                {t.subpage1.mission.cards[i].map((line, j) => (
                   <p key={j} className="leading-[1.5]">
                     {line}
                   </p>
@@ -181,81 +158,58 @@ export default function Subpage1() {
         {/* Vision — text + inline pill images per Figma. Each row is text with a 50px-tall image
             embedded between words. Pill-shaped (rounded-full) images use overflow-hidden. */}
         <div data-section="vision" className="flex flex-col items-center gap-[24px] text-center font-pretendard tracking-[-1.196px] whitespace-nowrap" style={{ scrollMarginTop: 80 }}>
-          {/* 걷는 [pill img347] 길이 */}
-          <div className="flex items-center gap-[6px] justify-center">
-            <p className="text-primary text-[46px] font-bold leading-[1.2]">걷는</p>
-            <div className="h-[50px] w-[94px] overflow-hidden rounded-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/sub1-vision-img347.png"
-                alt=""
-                aria-hidden
-                className="block h-full w-full object-cover"
-              />
-            </div>
-            <p className="text-[46px] font-bold leading-[1.2] text-grayscale-900">
-              <span className="text-primary">길</span>이
-            </p>
-          </div>
-
-          {/* 행복한 [pill img349] */}
-          <div className="flex items-center gap-[6px] justify-center">
-            <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">행복한</p>
-            <div className="h-[50px] w-[67px] overflow-hidden rounded-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/sub1-vision-img349.png"
-                alt=""
-                aria-hidden
-                className="block h-full w-full object-cover"
-              />
-            </div>
-          </div>
-
-          {/* 이야기가 되는 곳 [img350] */}
-          <div className="flex items-center gap-[6px] justify-center">
-            <p className="text-[46px] font-bold leading-[1.2] text-grayscale-900">
-              <span className="text-primary">이야기</span>가 되는 곳
-            </p>
-            <div className="h-[50px] w-[68px] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/sub1-vision-img350.png"
-                alt=""
-                aria-hidden
-                className="block h-full w-full object-cover"
-              />
-            </div>
-          </div>
-
-          {/* 대한민국 [Korea map SVG] */}
-          <div className="flex items-center gap-[6px] justify-center">
-            <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">대한민국</p>
-            <div className="h-[50px] w-[31px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/sub1-vision-group39.svg"
-                alt=""
-                aria-hidden
-                className="block h-full w-full object-contain"
-              />
-            </div>
-          </div>
-
-          {/* 걷기 문화의 [img346] 중심 */}
-          <div className="flex items-center gap-[6px] justify-center">
-            <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">걷기 문화의</p>
-            <div className="size-[50px] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/figma/sub1-vision-img346.png"
-                alt=""
-                aria-hidden
-                className="block h-full w-full object-cover"
-              />
-            </div>
-            <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">중심</p>
-          </div>
+          {lang === "ko" ? (
+            <>
+              {/* 걷는 [pill img347] 길이 */}
+              <div className="flex items-center gap-[6px] justify-center">
+                <p className="text-primary text-[46px] font-bold leading-[1.2]">걷는</p>
+                <div className="h-[50px] w-[94px] overflow-hidden rounded-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-vision-img347.png" alt="" aria-hidden className="block h-full w-full object-cover" />
+                </div>
+                <p className="text-[46px] font-bold leading-[1.2] text-grayscale-900">
+                  <span className="text-primary">길</span>이
+                </p>
+              </div>
+              <div className="flex items-center gap-[6px] justify-center">
+                <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">행복한</p>
+                <div className="h-[50px] w-[67px] overflow-hidden rounded-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-vision-img349.png" alt="" aria-hidden className="block h-full w-full object-cover" />
+                </div>
+              </div>
+              <div className="flex items-center gap-[6px] justify-center">
+                <p className="text-[46px] font-bold leading-[1.2] text-grayscale-900">
+                  <span className="text-primary">이야기</span>가 되는 곳
+                </p>
+                <div className="h-[50px] w-[68px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-vision-img350.png" alt="" aria-hidden className="block h-full w-full object-cover" />
+                </div>
+              </div>
+              <div className="flex items-center gap-[6px] justify-center">
+                <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">대한민국</p>
+                <div className="h-[50px] w-[31px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-vision-group39.svg" alt="" aria-hidden className="block h-full w-full object-contain" />
+                </div>
+              </div>
+              <div className="flex items-center gap-[6px] justify-center">
+                <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">걷기 문화의</p>
+                <div className="size-[50px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/figma/sub1-vision-img346.png" alt="" aria-hidden className="block h-full w-full object-cover" />
+                </div>
+                <p className="text-grayscale-900 text-[46px] font-bold leading-[1.2]">중심</p>
+              </div>
+            </>
+          ) : (
+            t.subpage1.vision.tagline.map((line, i) => (
+              <p key={i} className="text-grayscale-900 text-[28px] font-bold leading-[1.3] text-center">
+                {line}
+              </p>
+            ))
+          )}
         </div>
 
         {/* Vector68 vertical green decorative line (closing) — same SVG as top */}
@@ -298,10 +252,10 @@ export default function Subpage1() {
             style={{ left: 190, top: F(900) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              설립목적
+              {t.subpage1.mission.label}
             </p>
             <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-              Mission
+              {t.subpage1.mission.labelEn}
             </p>
           </div>
 
@@ -309,13 +263,12 @@ export default function Subpage1() {
             className="absolute font-pretendard tracking-[-1px]"
             style={{ left: 190, top: F(1000) }}
           >
-            <p className="text-[100px] font-normal leading-[1.1]">길 위에서</p>
-            <p className="text-[100px] font-normal leading-[1.1]">
-              사람과 지역, 자연을 잇고
-            </p>
-            <p className="text-[100px] font-bold leading-[1.1]">
-              지속가능한 걷기문화를 만듭니다
-            </p>
+            {t.subpage1.mission.bigRegular.map((line, i) => (
+              <p key={`r${i}`} className={`${lang === "en" ? "text-[80px]" : "text-[100px]"} font-normal leading-[1.1]`}>{line}</p>
+            ))}
+            {t.subpage1.mission.bigBold.map((line, i) => (
+              <p key={`b${i}`} className={`${lang === "en" ? "text-[80px]" : "text-[100px]"} font-bold leading-[1.1]`}>{line}</p>
+            ))}
           </div>
 
           <p
@@ -329,13 +282,9 @@ export default function Subpage1() {
             className="absolute font-pretendard text-[36px] tracking-[-0.72px] whitespace-nowrap"
             style={{ left: 788, top: F(1788) }}
           >
-            <p className="leading-[1.3]">한국의길과문화는 단순히 길을 관리 하는 곳이 아니라</p>
-            <p className="leading-[1.3]">이야기와 문화가 숨쉬는 길을 통해</p>
-            <p className="leading-[1.3]">지역경제를 활성화하고, 생태계를 보전하며,</p>
-            <p className="leading-[1.3]">탐방객에게 치유와 배움을 제공하여</p>
-            <p className="leading-[1.3]">
-              지속 가능한 탐방 문화를 일구겠다는 존재 이유로 설립되었습니다.
-            </p>
+            {t.subpage1.mission.quote.map((line, i) => (
+              <p key={i} className="leading-[1.3]">{line || "\u00A0"}</p>
+            ))}
           </div>
           <p
             className="absolute font-serif text-[124.444px] leading-none"
@@ -350,34 +299,17 @@ export default function Subpage1() {
             style={{ left: 190, top: F(2211), width: 1530 }}
           >
             {[
-              {
-                src: "/figma/sub1-mission-card1.png",
-                text: ["좋은 길을 찾고", "길에 문화와 이야기를 입혀", "길에 숨을 불어 넣는다."],
-              },
-              {
-                src: "/figma/sub1-mission-card2.png",
-                text: [
-                  "길위에서",
-                  "사람과 지역, 자연을 연결하여",
-                  "지속가능한 사회적 가치를 창출한다.",
-                ],
-              },
-              {
-                src: "/figma/sub1-mission-card3.png",
-                text: [
-                  "길을 통해 치유와 배움 등을",
-                  "제공하여 창조적 걷기 여행 문화를",
-                  "만들고 길의 이용을 활성화한다.",
-                ],
-              },
-            ].map((card, i) => (
+              "/figma/sub1-mission-card1.png",
+              "/figma/sub1-mission-card2.png",
+              "/figma/sub1-mission-card3.png",
+            ].map((src, i) => (
               <div key={i} className="flex flex-1 flex-col items-start gap-[98px]">
                 <div className="aspect-square w-full overflow-hidden bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={card.src} alt="" className="block h-full w-full object-cover" />
+                  <img src={src} alt="" className="block h-full w-full object-cover" />
                 </div>
                 <div className="w-full text-center font-pretendard text-[30px] tracking-[-0.9px] text-primary">
-                  {card.text.map((line, j) => (
+                  {t.subpage1.mission.cards[i].map((line, j) => (
                     <p key={j} className="leading-[1.3]">
                       {line}
                     </p>
@@ -401,10 +333,10 @@ export default function Subpage1() {
             style={{ left: "50%", top: F(3664) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              우리가 꿈꾸는 미래
+              {t.subpage1.vision.label}
             </p>
             <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-              Vision
+              {t.subpage1.vision.labelEn}
             </p>
           </div>
 
@@ -412,21 +344,33 @@ export default function Subpage1() {
             className="absolute flex -translate-x-1/2 flex-col items-center gap-[34px] whitespace-nowrap"
             style={{ left: "50%", top: F(3810) }}
           >
-            <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
-              <span className="text-primary">걷는</span>
-              <span>
-                <span className="text-primary">길</span>이
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
-              <span>행복한</span>
-              <span>이야기가&nbsp; 되는 곳</span>
-            </div>
-            <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
-              <span>대한민국</span>
-              <span className="text-primary">걷기 문화의</span>
-              <span className="text-primary">중심</span>
-            </div>
+            {lang === "ko" ? (
+              <>
+                <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
+                  <span className="text-primary">걷는</span>
+                  <span>
+                    <span className="text-primary">길</span>이
+                  </span>
+                </div>
+                <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
+                  <span>행복한</span>
+                  <span>이야기가&nbsp; 되는 곳</span>
+                </div>
+                <div className="flex items-center justify-center gap-[20px] font-pretendard text-[124px] font-bold leading-[1.2] tracking-[-7.44px]">
+                  <span>대한민국</span>
+                  <span className="text-primary">걷기 문화의</span>
+                  <span className="text-primary">중심</span>
+                </div>
+              </>
+            ) : (
+              <>
+                {t.subpage1.vision.tagline.map((line, i) => (
+                  <div key={i} className="font-pretendard text-[80px] font-bold leading-[1.2] tracking-[-3.2px] text-center">
+                    {line}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
 
           {/* Vision 아래쪽 초록 세로 막대 */}
@@ -471,30 +415,27 @@ export default function Subpage1() {
             style={{ left: 414, top: FB(6833) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              주요 연혁
+              {t.subpage1.journey.label}
             </p>
             <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-              Our Journey
+              {t.subpage1.journey.labelEn}
             </p>
           </div>
 
           <p
-            className="absolute font-pretendard text-[100px] font-bold leading-[1.1] tracking-[-1px]"
+            className={`absolute font-pretendard ${lang === "en" ? "text-[80px]" : "text-[100px]"} font-bold leading-[1.1] tracking-[-1px]`}
             style={{ left: 414, top: FB(6925) }}
           >
-            우리가 걸어온 길
+            {t.subpage1.journey.headline.join(" ")}
           </p>
 
           <div
             className="absolute font-pretendard text-[36px] leading-[1.3] tracking-[-0.72px] whitespace-nowrap"
             style={{ left: 414, top: FB(7100) }}
           >
-            <p>출범 이후 지난 십여년간 걷기여행길에 문화를 입히고</p>
-            <p>지속가능한 걷기여행길과 올바른 걷기문화를 위한 방향을 제시하며 다양한 활동을 해왔습니다.</p>
-            <p>&nbsp;</p>
-            <p>대한민국을 대표하는 코리아둘레길, 경기둘레길을 포함한</p>
-            <p>다양한 걷기 길을 지속적으로 연구∙관리·운영하는 가운데,</p>
-            <p>새로운 걷기 기반 문화 프로그램을 운영하며 걷기 문화 확산을 위한 걸음을 이어가고 있습니다.</p>
+            {t.subpage1.journey.intro.map((line, i) => (
+              <p key={i}>{line || "\u00A0"}</p>
+            ))}
           </div>
         </div>
       </div>
@@ -547,18 +488,18 @@ export default function Subpage1() {
             style={{ left: 226, top: FC(10026) }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              사람들
+              {t.subpage1.people.label}
             </p>
             <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-              Our People
+              {t.subpage1.people.labelEn}
             </p>
           </div>
 
           <p
-            className="absolute font-pretendard text-[100px] font-bold leading-[1.1] tracking-[-1px]"
-            style={{ left: 226, top: FC(10118) }}
+            className={`absolute font-pretendard ${lang === "en" ? "text-[80px]" : "text-[100px]"} font-bold leading-[1.1] tracking-[-1px]`}
+            style={{ left: 226, top: FC(10118), maxWidth: 1500 }}
           >
-            한국의 길과 문화를 만들어가는 사람들
+            {t.subpage1.people.headline}
           </p>
 
           <div
@@ -566,7 +507,7 @@ export default function Subpage1() {
             style={{ left: "50%", top: FC(10475), width: 300 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
-              이사장
+              {t.subpage1.people.chairperson}
             </p>
           </div>
 
@@ -575,7 +516,7 @@ export default function Subpage1() {
             style={{ left: 381, top: FC(11040), width: 1158 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
-              사무처
+              {t.subpage1.people.secretariat}
             </p>
           </div>
 
@@ -584,7 +525,7 @@ export default function Subpage1() {
             style={{ left: 1139, top: FC(10758), width: 300 }}
           >
             <p className="font-pretendard text-[36px] font-extrabold leading-[1.1] tracking-[-0.36px] text-white">
-              감사
+              {t.subpage1.people.auditor}
             </p>
           </div>
 
@@ -592,12 +533,12 @@ export default function Subpage1() {
             className="absolute flex gap-[19px]"
             style={{ left: 381, top: FC(11279), width: 1158 }}
           >
-            {["탐방로팀", "문화콘텐츠팀", "운영지원팀"].map((team) => (
+            {t.subpage1.people.teams.map((team, i) => (
               <div
-                key={team}
+                key={i}
                 className="flex flex-1 items-center justify-center rounded-full border-[3px] border-solid border-primary py-[40px]"
               >
-                <p className="font-pretendard text-[30px] font-bold leading-[1.5] tracking-[-1.2px] text-primary">
+                <p className={`font-pretendard ${lang === "en" ? "text-[24px]" : "text-[30px]"} font-bold leading-[1.5] tracking-[-1.2px] text-primary text-center`}>
                   {team}
                 </p>
               </div>
@@ -608,19 +549,15 @@ export default function Subpage1() {
             className="absolute flex items-stretch gap-[19px]"
             style={{ left: 381, top: FC(11433), width: 1158 }}
           >
-            {[
-              ["코리아둘레길 사업", "연구사업", "컨설팅 사업"],
-              ["콘텐츠 사업", "교육사업", "교류사업"],
-              ["조직관리", "홍보마케팅", "협의체 관리"],
-            ].map((items, idx) => (
+            {t.subpage1.people.teamItems.map((items, idx) => (
               <div
                 key={idx}
                 className="flex flex-1 flex-col items-center justify-center gap-[24px] rounded-[30px] border-[3px] border-solid border-primary py-[50px]"
               >
-                {items.map((item) => (
+                {items.map((item, j) => (
                   <p
-                    key={item}
-                    className="font-pretendard text-[30px] leading-[1.3] tracking-[-0.9px] text-primary"
+                    key={j}
+                    className={`font-pretendard ${lang === "en" ? "text-[24px]" : "text-[30px]"} leading-[1.3] tracking-[-0.9px] text-primary text-center`}
                   >
                     {item}
                   </p>
@@ -661,11 +598,13 @@ export default function Subpage1() {
             className="absolute flex items-end gap-[14px] whitespace-nowrap"
             style={{ left: 200, top: FC(12188) }}
           >
-            <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              오시는 길
-            </p>
-            <p className="font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] text-grayscale-400">
-              Location
+            {t.subpage1.location.label && (
+              <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
+                {t.subpage1.location.label}
+              </p>
+            )}
+            <p className={`font-montserrat text-[32px] font-bold leading-none tracking-[-1.28px] ${lang === "en" ? "text-grayscale-900" : "text-grayscale-400"}`}>
+              {t.subpage1.location.labelEn}
             </p>
           </div>
 
@@ -700,14 +639,14 @@ export default function Subpage1() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/sub1-map-ellipse14.svg" alt="" aria-hidden style={{ position:"absolute", left:551.44, top:57.3, width:15.321, height:15.321 }} />
               {/* 역명 라벨 */}
-              <p style={{ position:"absolute", left:284.5, top:257.83, width:59.508, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
-                삼각지역<br/>3번 출구
+              <p style={{ position:"absolute", left:284.5, top:257.83, width: lang === "en" ? 110 : 59.508, fontFamily:"Pretendard, sans-serif", fontSize: lang === "en" ? 14 : 17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                {t.subpage1.location.samgakji.map((line, i) => (<span key={i}>{i > 0 && <br/>}{line}</span>))}
               </p>
-              <p style={{ position:"absolute", left:520.7, top:77.4, width:74.385, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
-                전쟁기념관
+              <p style={{ position:"absolute", left:520.7, top:77.4, width: lang === "en" ? 160 : 74.385, fontFamily:"Pretendard, sans-serif", fontSize: lang === "en" ? 14 : 17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                {t.subpage1.location.warMemorial}
               </p>
-              <p style={{ position:"absolute", left:34, top:473, width:59.508, fontFamily:"Pretendard, sans-serif", fontSize:17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
-                신용산역<br/>1번 출구
+              <p style={{ position:"absolute", left:34, top:473, width: lang === "en" ? 110 : 59.508, fontFamily:"Pretendard, sans-serif", fontSize: lang === "en" ? 14 : 17.651, lineHeight:1.5, textAlign:"center", letterSpacing:-0.8825, color:"#000" }}>
+                {t.subpage1.location.sinyongsan.map((line, i) => (<span key={i}>{i > 0 && <br/>}{line}</span>))}
               </p>
             </div>
             {/* 우측 정보 패널 */}
@@ -715,22 +654,24 @@ export default function Subpage1() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/footer-beyond-logo.svg" alt="Beyond the Trails" style={{ width:200, height:84 }} />
               <div className="flex flex-col gap-[34px]">
+                <div className="flex items-start gap-[24px]">
+                  <div className="size-[40px] shrink-0 rounded-full border border-solid border-primary" />
+                  <div className={`font-pretendard ${lang === "en" ? "text-[20px]" : "text-[24px]"} leading-[1.3] tracking-[-0.24px]`}>
+                    {t.subpage1.location.address.map((line, i) => (
+                      <p key={i}>{line}</p>
+                    ))}
+                  </div>
+                </div>
                 <div className="flex items-center gap-[24px]">
                   <div className="size-[40px] shrink-0 rounded-full border border-solid border-primary" />
                   <p className="font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] whitespace-nowrap">
-                    서울특별시 용산구 한강대로52길 25-8, DB Tower 402호
+                    {t.subpage1.location.phone}
                   </p>
                 </div>
                 <div className="flex items-center gap-[24px]">
                   <div className="size-[40px] shrink-0 rounded-full border border-solid border-primary" />
                   <p className="font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] whitespace-nowrap">
-                    02-6013-6610
-                  </p>
-                </div>
-                <div className="flex items-center gap-[24px]">
-                  <div className="size-[40px] shrink-0 rounded-full border border-solid border-primary" />
-                  <p className="font-pretendard text-[24px] leading-[1.3] tracking-[-0.24px] whitespace-nowrap">
-                    ktnc@tnc.or.kr
+                    {t.subpage1.location.email}
                   </p>
                 </div>
               </div>
@@ -753,18 +694,17 @@ export default function Subpage1() {
         {/* People header */}
         <div data-section="people" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
           <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
-            사람들
+            {t.subpage1.people.label}
           </p>
           <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px]">
-            Our People
+            {t.subpage1.people.labelEn}
           </p>
         </div>
 
         {/* People big text */}
-        <div className="text-center font-pretendard text-grayscale-900 text-[50px] font-bold leading-[1.2] tracking-[-1.3px] whitespace-nowrap">
-          <p>한국의 길과 문화를</p>
-          <p>만들어가는 사람들</p>
-        </div>
+        <p className={`text-center font-pretendard text-grayscale-900 ${lang === "en" ? "text-[32px]" : "text-[50px]"} font-bold leading-[1.2] tracking-[-1.3px]`}>
+          {t.subpage1.people.headline}
+        </p>
 
         {/* Org chart — Figma node 525:24213. 390-frame scaled to 90vw with 5vw margin each side. */}
         <div
@@ -814,8 +754,8 @@ export default function Subpage1() {
               className="bg-primary absolute flex items-center justify-center rounded-full"
               style={{ left: 145, top: 0, width: 101, height: 35 }}
             >
-              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px]">
-                이사장
+              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px] whitespace-nowrap">
+                {t.subpage1.people.chairperson}
               </p>
             </div>
 
@@ -824,8 +764,8 @@ export default function Subpage1() {
               className="bg-primary absolute flex items-center justify-center rounded-full"
               style={{ left: 255, top: 76, width: 101, height: 35 }}
             >
-              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px]">
-                감사
+              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px] whitespace-nowrap">
+                {t.subpage1.people.auditor}
               </p>
             </div>
 
@@ -834,8 +774,8 @@ export default function Subpage1() {
               className="bg-primary absolute flex items-center justify-center rounded-full"
               style={{ left: 0, top: 161, width: 390, height: 35 }}
             >
-              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px]">
-                사무처
+              <p className="font-pretendard text-white text-[12px] font-extrabold leading-[1.1] tracking-[-0.12px] whitespace-nowrap">
+                {t.subpage1.people.secretariat}
               </p>
             </div>
 
@@ -844,12 +784,12 @@ export default function Subpage1() {
               className="absolute flex gap-[6px]"
               style={{ left: 0, top: 231, width: 390, height: 37 }}
             >
-              {["탐방로팀", "문화콘텐츠팀", "운영지원팀"].map((team) => (
+              {t.subpage1.people.teams.map((team, i) => (
                 <div
-                  key={team}
-                  className="border border-primary flex flex-1 items-center justify-center rounded-full"
+                  key={i}
+                  className="border border-primary flex flex-1 items-center justify-center rounded-full px-[4px]"
                 >
-                  <p className="font-pretendard text-primary text-[10px] font-bold leading-[1.5] tracking-[-0.4px] whitespace-nowrap">
+                  <p className={`font-pretendard text-primary ${lang === "en" ? "text-[8px]" : "text-[10px]"} font-bold leading-[1.5] tracking-[-0.4px] text-center`}>
                     {team}
                   </p>
                 </div>
@@ -861,19 +801,15 @@ export default function Subpage1() {
               className="absolute flex gap-[6px]"
               style={{ left: 0, top: 280, width: 390, height: 96 }}
             >
-              {[
-                ["코리아둘레길 사업", "연구사업", "컨설팅 사업"],
-                ["콘텐츠 사업", "교육사업", "교류사업"],
-                ["조직관리", "홍보마케팅", "협의체 관리"],
-              ].map((items, idx) => (
+              {t.subpage1.people.teamItems.map((items, idx) => (
                 <div
                   key={idx}
                   className="border border-primary flex flex-1 flex-col items-center justify-center gap-[6px] rounded-[10px] px-[4px] py-[12px]"
                 >
-                  {items.map((item) => (
+                  {items.map((item, j) => (
                     <p
-                      key={item}
-                      className="font-pretendard text-primary text-[10px] leading-[1.3] tracking-[-0.3px] text-center whitespace-nowrap"
+                      key={j}
+                      className={`font-pretendard text-primary ${lang === "en" ? "text-[8px]" : "text-[10px]"} leading-[1.3] tracking-[-0.3px] text-center`}
                     >
                       {item}
                     </p>
@@ -886,11 +822,13 @@ export default function Subpage1() {
 
         {/* Location header */}
         <div data-section="location" className="flex items-center gap-[10px] whitespace-nowrap leading-none" style={{ scrollMarginTop: 80 }}>
-          <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
-            오시는 길
-          </p>
-          <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px]">
-            Location
+          {t.subpage1.location.label && (
+            <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
+              {t.subpage1.location.label}
+            </p>
+          )}
+          <p className={`font-montserrat text-[14px] font-bold tracking-[-0.56px] ${lang === "en" ? "text-grayscale-900" : "text-grayscale-400"}`}>
+            {t.subpage1.location.labelEn}
           </p>
         </div>
 
@@ -995,26 +933,32 @@ export default function Subpage1() {
             />
             {/* Labels */}
             <p
-              className="absolute -translate-x-1/2 font-pretendard text-grayscale-900 text-[12px] text-center tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
-              style={{ left: "46.47%", top: "41.42%" }}
+              className="absolute font-pretendard text-grayscale-900 text-[12px] text-center tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
+              style={{ left: "46.47%", top: "41.42%", transform: "translateX(-50%)" }}
             >
-              삼각지역
-              <br />
-              3번 출구
+              {t.subpage1.location.samgakji.map((line, i) => (<span key={i}>{i > 0 && <br />}{line}</span>))}
             </p>
             <p
-              className="absolute -translate-x-1/2 font-pretendard text-grayscale-900 text-[12px] text-center tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
-              style={{ left: "80.45%", top: "12.71%" }}
+              className="absolute font-pretendard text-grayscale-900 text-[12px] tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
+              style={{
+                left: "80.45%",
+                top: "12.71%",
+                transform: lang === "en" ? "translateX(-100%)" : "translateX(-50%)",
+                textAlign: lang === "en" ? "right" : "center",
+              }}
             >
-              전쟁기념관
+              {t.subpage1.location.warMemorial}
             </p>
             <p
-              className="absolute -translate-x-1/2 font-pretendard text-grayscale-900 text-[12px] text-center tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
-              style={{ left: "8.91%", top: "75.97%" }}
+              className="absolute font-pretendard text-grayscale-900 text-[12px] tracking-[-0.6px] leading-[1.5] whitespace-nowrap"
+              style={{
+                left: "8.91%",
+                top: "75.97%",
+                transform: lang === "en" ? "translateX(0)" : "translateX(-50%)",
+                textAlign: lang === "en" ? "left" : "center",
+              }}
             >
-              신용산역
-              <br />
-              1번 출구
+              {t.subpage1.location.sinyongsan.map((line, i) => (<span key={i}>{i > 0 && <br />}{line}</span>))}
             </p>
           </div>
 
@@ -1028,24 +972,24 @@ export default function Subpage1() {
 
           {/* Address / phone / email — left-aligned */}
           <div className="flex flex-col items-start gap-[20px]">
+            <div className="flex items-start gap-[12px]">
+              <div className="border border-primary rounded-full size-[24px] shrink-0 mt-[2px]" />
+              <div className="font-pretendard text-grayscale-900 text-[14px] tracking-[-0.7px] leading-[1.5]">
+                {t.subpage1.location.address.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+            </div>
             <div className="flex items-center gap-[12px]">
               <div className="border border-primary rounded-full size-[24px] shrink-0" />
-              <p className="font-pretendard text-grayscale-900 text-[14px] tracking-[-0.7px] leading-[1.5]">
-                서울특별시 용산구 한강대로52길 25-8,
-                <br />
-                DB Tower 402호
+              <p className="font-pretendard text-grayscale-900 text-[14px] tracking-[-0.7px] leading-[1.5] whitespace-nowrap">
+                {t.subpage1.location.phone}
               </p>
             </div>
             <div className="flex items-center gap-[12px]">
               <div className="border border-primary rounded-full size-[24px] shrink-0" />
               <p className="font-pretendard text-grayscale-900 text-[14px] tracking-[-0.7px] leading-[1.5] whitespace-nowrap">
-                02-6013-6610
-              </p>
-            </div>
-            <div className="flex items-center gap-[12px]">
-              <div className="border border-primary rounded-full size-[24px] shrink-0" />
-              <p className="font-pretendard text-grayscale-900 text-[14px] tracking-[-0.7px] leading-[1.5] whitespace-nowrap">
-                ktnc@tnc.or.kr
+                {t.subpage1.location.email}
               </p>
             </div>
           </div>
@@ -1058,23 +1002,19 @@ export default function Subpage1() {
           calligraphy + social icons row, cert buttons row, company info.
           =========================================================================== */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] py-[64px]">
-        {/* Beyond logo with Korean Trails subtitle positioned WITHIN logo bounds (per Figma 320:2981).
-            Union covers logo, subtitle absolute at the lower-right corner. */}
-        <div className="relative" style={{ width: 281, height: 215 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/figma/footer-union.svg"
-            alt="Beyond the Route"
-            className="absolute block"
-            style={{ left: 0, top: 0, width: "100%", height: "100%" }}
-          />
+        <div className="flex flex-col items-center gap-[8px]">
+          <div className="relative" style={{ width: 281, height: 215 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/figma/footer-union.svg"
+              alt="Beyond the Route"
+              className="absolute block"
+              style={{ left: 0, top: 0, width: "100%", height: "100%" }}
+            />
+          </div>
           <p
-            className="font-montserrat text-primary absolute font-semibold leading-none whitespace-nowrap"
-            style={{
-              left: "61%",
-              top: "92%",
-              fontSize: 10,
-            }}
+            className="font-montserrat text-primary font-semibold leading-none whitespace-nowrap"
+            style={{ fontSize: 10 }}
           >
             Korean Trails and Culture Foundation
           </p>

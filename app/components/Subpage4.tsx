@@ -87,6 +87,10 @@ function PCPartnerCard({
   width: number;
   sectionKey?: string;
 }) {
+  const { t, lang } = useLang();
+  const dictPartner = sectionKey && (sectionKey === "kta" || sectionKey === "atn" || sectionKey === "wtn" || sectionKey === "gko") ? t.subpage4.partners[sectionKey] : null;
+  const title = dictPartner?.title || partner.title;
+  const body = dictPartner?.body || partner.body;
   return (
     <div
       data-section={sectionKey}
@@ -103,11 +107,11 @@ function PCPartnerCard({
       </div>
       <div className="flex w-full flex-col items-center gap-[52px]">
         <div className="flex w-full flex-col items-start gap-[32px] text-center">
-          <p className="font-pretendard text-grayscale-900 text-[50px] font-bold leading-[1.2] tracking-[-1.3px] w-full">
-            {partner.title}
+          <p className={`font-pretendard text-grayscale-900 ${lang === "en" ? "text-[36px]" : "text-[50px]"} font-bold leading-[1.2] tracking-[-1.3px] w-full`}>
+            {title}
           </p>
-          <p className="font-pretendard text-grayscale-700 text-[24px] leading-[1.3] tracking-[-0.24px] w-full">
-            {partner.body}
+          <p className={`font-pretendard text-grayscale-700 ${lang === "en" ? "text-[20px]" : "text-[24px]"} leading-[1.3] tracking-[-0.24px] w-full`}>
+            {body}
           </p>
         </div>
         <a
@@ -118,7 +122,7 @@ function PCPartnerCard({
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
         >
           <span className="font-pretendard whitespace-nowrap text-[15px] font-extrabold leading-[1.3] tracking-[-0.3px] text-white">
-            자세히 보기
+            {t.common.viewMore}
           </span>
         </a>
       </div>
@@ -127,6 +131,10 @@ function PCPartnerCard({
 }
 
 function MobilePartnerCard({ partner, sectionKey }: { partner: Partner; sectionKey?: string }) {
+  const { t } = useLang();
+  const dictPartner = sectionKey && (sectionKey === "kta" || sectionKey === "atn" || sectionKey === "wtn" || sectionKey === "gko") ? t.subpage4.partners[sectionKey] : null;
+  const titleLines = dictPartner?.titleMobile || partner.titleMobile;
+  const body = dictPartner?.body || partner.body;
   return (
     <div data-section={sectionKey} style={{ scrollMarginTop: 80 }} className="flex flex-col items-center gap-[50px] overflow-hidden pt-[50px] pb-[40px] w-full">
       <div className="relative shrink-0" style={{ width: partner.imgMobile.width, height: partner.imgMobile.height }}>
@@ -140,12 +148,12 @@ function MobilePartnerCard({ partner, sectionKey }: { partner: Partner; sectionK
       <div className="flex w-full flex-col items-center gap-[52px]">
         <div className="flex w-full flex-col items-start gap-[32px] text-center">
           <div className="font-pretendard text-grayscale-900 text-[34px] font-bold leading-[1.2] tracking-[-0.884px] w-full">
-            {partner.titleMobile.map((line, i) => (
+            {titleLines.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
           </div>
           <p className="font-pretendard text-grayscale-700 text-[16px] leading-[1.5] tracking-[-0.8px] w-full">
-            {partner.body}
+            {body}
           </p>
         </div>
         <a
@@ -156,7 +164,7 @@ function MobilePartnerCard({ partner, sectionKey }: { partner: Partner; sectionK
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
         >
           <span className="font-pretendard whitespace-nowrap text-[15px] font-extrabold leading-[1.3] tracking-[-0.3px] text-white">
-            자세히 보기
+            {t.common.viewMore}
           </span>
         </a>
       </div>
@@ -165,7 +173,7 @@ function MobilePartnerCard({ partner, sectionKey }: { partner: Partner; sectionK
 }
 
 export default function Subpage4() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const rootRef = useRef<HTMLDivElement>(null);
 
   // React to nav links like #h4-kta, #h4-atn, #h4-wtn, #h4-gko
@@ -194,17 +202,19 @@ export default function Subpage4() {
       {/* ============================== MOBILE ============================== */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[100px] px-[20px] py-[64px]">
         <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px] leading-none whitespace-nowrap">
-          What We Do
+          {t.subpage4.headerLabel}
         </p>
 
-        <div className="flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] whitespace-nowrap">
+        <div className={`flex flex-col items-center gap-[24px] text-center font-pretendard text-grayscale-900 tracking-[-1.3px] ${lang === "en" ? "" : "whitespace-nowrap"}`}>
           <div>
-            <p className="text-[50px] leading-[1.2]">함께 걸어서</p>
-            <p className="text-[50px] leading-[1.2]">아름다운 길,</p>
+            {t.subpage4.bigHeadingMobile[0].map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[28px]" : "text-[50px]"} leading-[1.2]`}>{line}</p>
+            ))}
           </div>
           <div>
-            <p className="text-[50px] font-bold leading-[1.2]">같이 해서 힘이 되는</p>
-            <p className="text-[50px] font-bold leading-[1.2]">길을 걷습니다</p>
+            {t.subpage4.bigHeadingMobile[1].map((line, i) => (
+              <p key={i} className={`${lang === "en" ? "text-[28px]" : "text-[50px]"} font-bold leading-[1.2]`}>{line}</p>
+            ))}
           </div>
         </div>
 
@@ -216,10 +226,12 @@ export default function Subpage4() {
 
       {/* MOBILE FOOTER */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[40px] px-[20px] py-[64px]">
-        <div className="relative" style={{ width: 281, height: 215 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
-          <p className="font-montserrat text-primary absolute font-semibold leading-none whitespace-nowrap" style={{ left: "61%", top: "92%", fontSize: 10 }}>
+        <div className="flex flex-col items-center gap-[8px]">
+          <div className="relative" style={{ width: 281, height: 215 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/figma/footer-union.svg" alt="Beyond the Route" className="absolute block" style={{ left: 0, top: 0, width: "100%", height: "100%" }} />
+          </div>
+          <p className="font-montserrat text-primary font-semibold leading-none whitespace-nowrap" style={{ fontSize: 10 }}>
             Korean Trails and Culture Foundation
           </p>
         </div>
@@ -304,14 +316,14 @@ export default function Subpage4() {
           style={{ width: 1920, height: SUBPAGE_HEIGHT, transform: "scale(calc(100vw / 1920px))" }}
         >
           {/* Header section: "Cooperate" + 100px heading */}
-          <div className="absolute flex flex-col gap-[50px] items-start" style={{ left: 194, top: F4(820), width: 1327 }}>
+          <div className="absolute flex flex-col gap-[50px] items-start" style={{ left: 194, top: F4(820), width: 1500 }}>
             <div className="flex flex-col gap-[42px] items-start w-full">
               <p className="font-montserrat text-grayscale-400 text-[32px] font-bold leading-none tracking-[-1.28px] whitespace-nowrap">
-                Cooperate
+                {t.subpage4.headerLabel}
               </p>
               <div className="font-pretendard text-grayscale-900 tracking-[-1px]">
-                <p className="text-[100px] leading-[1.1]">함께 걸어서 아름다운 길,</p>
-                <p className="text-[100px] font-bold leading-[1.1]">같이 해서 힘이 되는 길을 걷습니다</p>
+                <p className={`${lang === "en" ? "text-[60px]" : "text-[100px]"} leading-[1.1]`}>{t.subpage4.bigHeading[0]}</p>
+                <p className={`${lang === "en" ? "text-[60px]" : "text-[100px]"} font-bold leading-[1.1]`}>{t.subpage4.bigHeading[1]}</p>
               </div>
             </div>
           </div>

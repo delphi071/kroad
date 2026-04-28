@@ -216,15 +216,16 @@ export default function Hero6Section() {
           <div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-suite font-black text-primary text-center"
             style={{
-              fontSize: "clamp(60px, 25.12vw, 110px)",
+              fontSize: lang === "en" ? "clamp(36px, 8vw, 56px)" : "clamp(60px, 25.12vw, 110px)",
               lineHeight: 1,
               letterSpacing: "-0.05em",
               fontWeight: 900,
               whiteSpace: "nowrap",
             }}
           >
-            <p>마음</p>
-            <p>잇기</p>
+            {(lang === "ko" ? ["마음", "잇기"] : t.hero6.headingMobile).map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
 
           <button
@@ -266,7 +267,7 @@ export default function Hero6Section() {
                 className="font-suite text-primary absolute -translate-x-1/2 whitespace-nowrap"
                 style={{ left: "50%", top: 175, fontSize: 130, lineHeight: 1, fontWeight: 900, letterSpacing: "-6.5px" }}
               >
-                마음잇기
+                {lang === "ko" ? "마음잇기" : t.hero6.collapsedTitle.join(" ")}
               </p>
             )}
 

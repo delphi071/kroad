@@ -1,16 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useLang } from "../i18n/LanguageContext";
 
-/* Two sets of positions per element — original 1080-tall frame for mobile,
-   and shifted positions for desktop (so content sits below the collapsed hero
-   without being clipped). Frame itself stays 1920×1080 — no vertical compression
-   so text is never clipped. */
-const CARDS = [
+/* Image/layout per card — text comes from dictionary by lang */
+const CARD_LAYOUT = [
   {
-    eng: "Sustainability",
-    kor: "지속",
-    tagline: "오늘의 길이 내일에도 이어지도록",
-    desc: ["자연 생태계를 보전하고 지역 경제를 살려", "내일의 길을 지켜나갑니다."],
     img: "/figma/sub1-corevalue-sustainability.svg",
     imgW: 344,
     imgH: 344,
@@ -20,10 +14,6 @@ const CARDS = [
     imgTransform: "translate(-50%, -50%)",
   },
   {
-    eng: "Trust",
-    kor: "신뢰",
-    tagline: "안심하고 걷는 길, 믿음으로 쌓는 문화",
-    desc: ["누구나 믿고 걸을 수 있도록", "체계적인 관리와 운영의 전문성을 갖춥니다."],
     img: "/figma/sub1-corevalue-trust.svg",
     imgW: 314.4,
     imgH: 269.6,
@@ -33,10 +23,6 @@ const CARDS = [
     imgTransform: "translate(-50%, -50%)",
   },
   {
-    eng: "Connection",
-    kor: "연결",
-    tagline: "길은 사람과 지역을 잇는 다리다",
-    desc: ["지역과 사람, 자연과 여행자를", "따뜻한 유대감으로 잇습니다."],
     img: "/figma/sub1-corevalue-connection.svg",
     imgW: 465.4,
     imgH: 206.4,
@@ -46,10 +32,6 @@ const CARDS = [
     imgTransform: "translateX(-50%)",
   },
   {
-    eng: "Discovery",
-    kor: "발견",
-    tagline: "모든 길에는 이야기가 흐른다",
-    desc: ["길 위의 숨은 역사와 문화를 찾아", "매력적인 콘텐츠로 만듭니다."],
     img: "/figma/sub1-corevalue-discovery.svg",
     imgW: 320,
     imgH: 320,
@@ -61,6 +43,9 @@ const CARDS = [
 ];
 
 export default function CoreValues() {
+  const { t, lang } = useLang();
+  const items = t.subpage1.coreValues.items;
+  const CARDS = CARD_LAYOUT.map((layout, i) => ({ ...layout, ...items[i] }));
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -142,10 +127,10 @@ export default function CoreValues() {
       <div className="bg-grayscale-100 flex flex-col items-center gap-[60px] px-[20px] py-[64px] lg:hidden">
         <div className="flex items-center gap-[10px] whitespace-nowrap">
           <p className="font-pretendard text-[14px] font-extrabold tracking-[-0.56px] leading-none text-grayscale-900">
-            핵심가치
+            {t.subpage1.coreValues.label}
           </p>
           <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px] leading-none">
-            Core Value
+            {t.subpage1.coreValues.labelEn}
           </p>
         </div>
 
@@ -216,10 +201,10 @@ export default function CoreValues() {
             style={{ left: "calc(50% + 0.5px)", top: "var(--cv-header-top)" }}
           >
             <p className="font-pretendard text-[30px] font-extrabold leading-[1.2] tracking-[-0.78px]">
-              핵심가치
+              {t.subpage1.coreValues.label}
             </p>
             <p className="font-montserrat text-grayscale-400 text-[32px] font-bold leading-none tracking-[-1.28px]">
-              Core Value
+              {t.subpage1.coreValues.labelEn}
             </p>
           </div>
 
@@ -257,23 +242,25 @@ export default function CoreValues() {
               />
 
               <div
-                className="absolute flex -translate-x-1/2 items-center gap-[200px] whitespace-nowrap"
-                style={{ left: "50%", top: "var(--cv-text-top)" }}
+                className="absolute flex -translate-x-1/2 items-center whitespace-nowrap"
+                style={{ left: "50%", top: "var(--cv-text-top)", gap: lang === "en" ? 100 : 200 }}
               >
                 <div className="flex flex-col items-start gap-[12px]">
                   <p className="font-montserrat text-primary text-[44px] font-semibold leading-[1.1] tracking-[-0.44px]">
                     {card.eng}
                   </p>
                   <div className="flex items-center gap-[24px]">
-                    <span className="font-pretendard text-[60px] font-bold leading-[1.3] tracking-[-1.56px]">
-                      {card.kor}
-                    </span>
-                    <span className="font-pretendard text-grayscale-700 text-[42px] leading-[1.3] tracking-[-0.84px]">
+                    {lang === "ko" && (
+                      <span className="font-pretendard text-[60px] font-bold leading-[1.3] tracking-[-1.56px]">
+                        {card.kor}
+                      </span>
+                    )}
+                    <span className={`font-pretendard text-grayscale-700 leading-[1.3] tracking-[-0.84px] ${lang === "en" ? "text-[28px]" : "text-[42px]"}`}>
                       {card.tagline}
                     </span>
                   </div>
                 </div>
-                <div className="font-pretendard text-[42px] leading-[1.3] tracking-[-0.84px]">
+                <div className={`font-pretendard leading-[1.3] tracking-[-0.84px] ${lang === "en" ? "text-[24px]" : "text-[42px]"}`}>
                   {card.desc.map((line, j) => (
                     <p key={j}>{line}</p>
                   ))}

@@ -436,6 +436,7 @@ type MobileCardItem = {
 };
 
 function MobileItemCard({ item, hasStoreButton, sectionKey }: { item: MobileCardItem; hasStoreButton?: boolean; sectionKey?: string }) {
+  const { t } = useLang();
   return (
     <div data-section={sectionKey} style={{ scrollMarginTop: 80 }} className="flex flex-col gap-[32px] w-full items-center">
       <div className="flex flex-col gap-[12px] items-center w-full text-center">
@@ -464,7 +465,7 @@ function MobileItemCard({ item, hasStoreButton, sectionKey }: { item: MobileCard
           className="bg-primary flex items-center justify-center gap-[10px] px-[20px] py-[16px] cursor-pointer hover:opacity-90 transition-opacity w-full"
           style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
         >
-          <span className="font-pretendard font-bold leading-[1.5] text-white tracking-[-0.32px] whitespace-nowrap" style={{ fontSize: 16 }}>스토어 바로가기</span>
+          <span className="font-pretendard font-bold leading-[1.5] text-white tracking-[-0.32px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.common.goShop}</span>
           <span className="block size-[18px] text-white"><ExternalIcon size={18} /></span>
         </a>
       )}
@@ -557,10 +558,15 @@ function MobileFooter() {
 
 /* ---------- PC Korea carousel (Section 1) — title TOP, then [body + image with peek] ---------- */
 function PCKoreaCarousel() {
+  const { t } = useLang();
+  const items = KOREA_ITEMS.map((item, i) => {
+    const d = t.subpage3.korea[i];
+    return d ? { ...item, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : item;
+  });
   const [activeIdx, setActiveIdx] = useState(0);
-  const active = KOREA_ITEMS[activeIdx];
-  const nextIdx = (activeIdx + 1) % KOREA_ITEMS.length;
-  const next = KOREA_ITEMS[nextIdx];
+  const active = items[activeIdx];
+  const nextIdx = (activeIdx + 1) % items.length;
+  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -611,10 +617,15 @@ function PCKoreaCarousel() {
 
 /* ---------- PC Regional carousel (Section 2) — title TOP, then [image with peek + body] ---------- */
 function PCRegionalCarousel() {
+  const { t } = useLang();
+  const items = REGIONAL_ITEMS.map((item, i) => {
+    const d = t.subpage3.regional[i];
+    return d ? { ...item, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : item;
+  });
   const [activeIdx, setActiveIdx] = useState(0);
-  const active = REGIONAL_ITEMS[activeIdx];
-  const nextIdx = (activeIdx + 1) % REGIONAL_ITEMS.length;
-  const next = REGIONAL_ITEMS[nextIdx % REGIONAL_ITEMS.length];
+  const active = items[activeIdx];
+  const nextIdx = (activeIdx + 1) % items.length;
+  const next = items[nextIdx % items.length];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -674,10 +685,15 @@ function PCRegionalCarousel() {
 
 /* ---------- PC Culture carousel (Section 3) — image LEFT + text RIGHT (Section 2 패턴), peek shifted right-down ---------- */
 function PCCultureCarousel() {
+  const { t } = useLang();
+  const items = CULTURE_ITEMS.map((item, i) => {
+    const d = t.subpage3.culture[i];
+    return d ? { ...item, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : item;
+  });
   const [activeIdx, setActiveIdx] = useState(0);
-  const active = CULTURE_ITEMS[activeIdx];
-  const nextIdx = (activeIdx + 1) % CULTURE_ITEMS.length;
-  const next = CULTURE_ITEMS[nextIdx];
+  const active = items[activeIdx];
+  const nextIdx = (activeIdx + 1) % items.length;
+  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -757,10 +773,15 @@ function PCCultureCarousel() {
 
 /* ---------- PC Goods carousel (Section 4) — Section 1 패턴 (text LEFT + image RIGHT with peek), 스토어 바로가기 CTA ---------- */
 function PCGoodsCarousel() {
+  const { t } = useLang();
+  const items = GOODS_ITEMS.map((item, i) => {
+    const d = t.subpage3.goods[i];
+    return d ? { ...item, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : item;
+  });
   const [activeIdx, setActiveIdx] = useState(0);
-  const active = GOODS_ITEMS[activeIdx];
-  const nextIdx = (activeIdx + 1) % GOODS_ITEMS.length;
-  const next = GOODS_ITEMS[nextIdx];
+  const active = items[activeIdx];
+  const nextIdx = (activeIdx + 1) % items.length;
+  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -790,7 +811,7 @@ function PCGoodsCarousel() {
             className="bg-primary inline-flex items-center justify-center gap-[10px] px-[30px] py-[16px] cursor-pointer hover:opacity-90 transition-opacity"
             style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
           >
-            <span className="font-pretendard font-bold leading-[1.5] text-white tracking-[-0.32px] whitespace-nowrap" style={{ fontSize: 16 }}>스토어 바로가기</span>
+            <span className="font-pretendard font-bold leading-[1.5] text-white tracking-[-0.32px] whitespace-nowrap" style={{ fontSize: 16 }}>{t.common.goShop}</span>
             <span className="block size-[20px] text-white">
               <svg width={20} height={20} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                 <path d="M14 4h6v6M20 4l-9 9M19 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
@@ -989,6 +1010,23 @@ function MobileSection({ section }: { section: SectionData }) {
 /* MAIN                                                                 */
 /* =================================================================== */
 export default function Subpage3() {
+  const { t } = useLang();
+  const koreaItems = KOREA_ITEMS.map((it, i) => {
+    const d = t.subpage3.korea[i];
+    return d ? { ...it, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : it;
+  });
+  const regionalItems = REGIONAL_ITEMS.map((it, i) => {
+    const d = t.subpage3.regional[i];
+    return d ? { ...it, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : it;
+  });
+  const cultureItems = CULTURE_ITEMS.map((it, i) => {
+    const d = t.subpage3.culture[i];
+    return d ? { ...it, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : it;
+  });
+  const goodsItems = GOODS_ITEMS.map((it, i) => {
+    const d = t.subpage3.goods[i];
+    return d ? { ...it, heading: d.heading, subTitle: d.subTitle, blocks: d.blocks } : it;
+  });
   const innerRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState<number>(7800);
@@ -1001,10 +1039,10 @@ export default function Subpage3() {
     };
     measure();
     // re-measure after images load
-    const t = setTimeout(measure, 500);
+    const timer = setTimeout(measure, 500);
     window.addEventListener("resize", measure);
     return () => {
-      clearTimeout(t);
+      clearTimeout(timer);
       window.removeEventListener("resize", measure);
     };
   }, []);
@@ -1035,25 +1073,24 @@ export default function Subpage3() {
       {/* ============================== MOBILE: all carousel items unrolled vertically ============================== */}
       <div className="lg:hidden bg-grayscale-100 flex flex-col items-center gap-[80px] px-[20px] py-[84px]">
         <div className="flex flex-col gap-[14px] items-center w-full text-center">
-          <p className="font-montserrat font-bold leading-none tracking-[-0.96px] text-grayscale-400" style={{ fontSize: 24 }}>What We Do</p>
-          <p className="font-pretendard leading-[1.2] text-grayscale-900 tracking-[-1.5px]" style={{ fontSize: 50 }}>길의 본질부터</p>
-          <p className="font-pretendard font-bold leading-[1.2] text-grayscale-900 tracking-[-1.5px]" style={{ fontSize: 50 }}>일상의 가치까지,</p>
-          <p className="font-pretendard font-bold leading-[1.2] text-grayscale-900 tracking-[-1.5px]" style={{ fontSize: 50 }}>통합적인 솔루션을 제안합니다.</p>
+          <p className="font-montserrat font-bold leading-none tracking-[-0.96px] text-grayscale-400" style={{ fontSize: 24 }}>{t.subpage3.headerLabel}</p>
+          <p className="font-pretendard leading-[1.2] text-grayscale-900 tracking-[-1.5px]" style={{ fontSize: 36 }}>{t.subpage3.headlineRegular}</p>
+          <p className="font-pretendard font-bold leading-[1.2] text-grayscale-900 tracking-[-1.5px]" style={{ fontSize: 36 }}>{t.subpage3.headlineBold}</p>
         </div>
         {/* Section 1: 코리아둘레길 — 6개 항목 */}
-        {KOREA_ITEMS.map((item, i) => (
+        {koreaItems.map((item, i) => (
           <MobileItemCard key={item.id} item={item} sectionKey={i === 0 ? "korea" : undefined} />
         ))}
         {/* Section 2: 지역길 조사 및 연구 — 2개 항목 */}
-        {REGIONAL_ITEMS.map((item, i) => (
+        {regionalItems.map((item, i) => (
           <MobileItemCard key={item.id} item={item} sectionKey={i === 0 ? "regional" : undefined} />
         ))}
         {/* Section 3: 걷기기반 문화 프로그램 — 5개 항목 */}
-        {CULTURE_ITEMS.map((item, i) => (
+        {cultureItems.map((item, i) => (
           <MobileItemCard key={item.id} item={item} sectionKey={i === 0 ? "culture" : undefined} />
         ))}
         {/* Section 4: 굿즈 기획 및 판매 — 3개 항목, 각각 스토어 바로가기 버튼 */}
-        {GOODS_ITEMS.map((item, i) => (
+        {goodsItems.map((item, i) => (
           <MobileItemCard key={item.id} item={item} hasStoreButton sectionKey={i === 0 ? "goods" : undefined} />
         ))}
       </div>
@@ -1065,10 +1102,10 @@ export default function Subpage3() {
           <div ref={innerRef} className="flex flex-col" style={{ width: 1920 }}>
             {/* Header — "What We Do" + heading */}
             <div className="px-[200px] pt-[160px] pb-[260px] flex flex-col gap-[42px] items-start">
-              <p className="font-montserrat font-bold leading-none tracking-[-1.28px] text-grayscale-400" style={{ fontSize: 32 }}>What We Do</p>
+              <p className="font-montserrat font-bold leading-none tracking-[-1.28px] text-grayscale-400" style={{ fontSize: 32 }}>{t.subpage3.headerLabel}</p>
               <div className="font-pretendard text-grayscale-900 tracking-[-1px]">
-                <p className="leading-[1.1] font-normal" style={{ fontSize: 100 }}>길의 본질부터 일상의 가치까지,</p>
-                <p className="leading-[1.1] font-bold" style={{ fontSize: 100 }}>통합적인 솔루션을 제안합니다.</p>
+                <p className="leading-[1.1] font-normal" style={{ fontSize: 80 }}>{t.subpage3.headlineRegular}</p>
+                <p className="leading-[1.1] font-bold" style={{ fontSize: 80 }}>{t.subpage3.headlineBold}</p>
               </div>
             </div>
 

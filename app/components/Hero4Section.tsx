@@ -212,36 +212,31 @@ export default function Hero4Section() {
 
         {/* MOBILE LAYOUT */}
         <div className="relative z-10 h-full w-full lg:hidden">
-          {/* "함께 걷는" left:28 top:308 */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "7.18%",
-              top: "36.49%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              whiteSpace: "nowrap",
-            }}
-          >
-            함께 걷는
-          </div>
-          {/* "사람들" left:113 top:437 */}
-          <div
-            className="absolute font-suite font-black text-primary"
-            style={{
-              left: "28.97%",
-              top: "51.78%",
-              fontSize: "clamp(60px, 25.12vw, 110px)",
-              lineHeight: 1,
-              letterSpacing: "-0.05em",
-              fontWeight: 900,
-              whiteSpace: "nowrap",
-            }}
-          >
-            사람들
-          </div>
+          {lang === "ko" ? (
+            <>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "7.18%", top: "36.49%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+              >
+                함께 걷는
+              </div>
+              <div
+                className="absolute font-suite font-black text-primary"
+                style={{ left: "28.97%", top: "51.78%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+              >
+                사람들
+              </div>
+            </>
+          ) : (
+            <div
+              className="absolute font-suite font-black text-primary"
+              style={{ left: "7.18%", top: "40%", fontSize: "clamp(36px, 8vw, 56px)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 900 }}
+            >
+              {t.hero4.headingMobile.map((line, i) => (
+                <p key={i} style={{ whiteSpace: "nowrap" }}>{line}</p>
+              ))}
+            </div>
+          )}
 
           <button
             type="button"
@@ -282,7 +277,7 @@ export default function Hero4Section() {
                 className="font-suite text-primary absolute z-10 -translate-x-1/2 whitespace-nowrap"
                 style={{ left: "50%", top: 175, fontSize: 130, lineHeight: 1, fontWeight: 900, letterSpacing: "-6.5px" }}
               >
-                함께 걷는{"\u00A0\u00A0\u00A0"}사람들
+                {lang === "ko" ? <>함께 걷는{"\u00A0\u00A0\u00A0"}사람들</> : t.hero4.collapsedTitle.join(" ")}
               </p>
             )}
 
