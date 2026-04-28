@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-const PC_OVERLAY =
+const OVERLAY_PC =
   "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)";
 
-const MOBILE_OVERLAY =
+const OVERLAY_MOBILE =
   "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), radial-gradient(ellipse 19.5% 42.2% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)";
 
 export default function Intro({ visible }: { visible: boolean }) {
@@ -16,114 +16,90 @@ export default function Intro({ visible }: { visible: boolean }) {
       }}
       aria-hidden={!visible}
     >
-      {/* PC layout (>=768px) */}
-      <div className="hidden h-full w-full md:block">
-        <div
-          className="absolute left-0 top-0 origin-top-left"
+      {/* Background image — separate asset for mobile vs desktop */}
+      <Image
+        src="/figma/intro-bg-mobile.png"
+        alt=""
+        fill
+        priority
+        sizes="(min-width: 1024px) 0px, 100vw"
+        className="object-cover lg:hidden"
+      />
+      <Image
+        src="/figma/intro-bg.png"
+        alt=""
+        fill
+        priority
+        sizes="(min-width: 1024px) 100vw, 0px"
+        className="hidden object-cover lg:block"
+      />
+
+      {/* Overlay (radial+linear) — different gradient stops per breakpoint */}
+      <div
+        className="absolute inset-0 lg:hidden"
+        style={{ backgroundImage: OVERLAY_MOBILE }}
+        aria-hidden
+      />
+      <div
+        className="absolute inset-0 hidden lg:block"
+        style={{ backgroundImage: OVERLAY_PC }}
+        aria-hidden
+      />
+
+      {/* Mobile content — Figma values translated to % of 390×844 frame */}
+      <div className="absolute inset-0 lg:hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/figma/intro-logo-mobile.svg"
+          alt="Beyond the Route"
+          className="absolute block"
           style={{
-            width: 1920,
-            height: 1080,
-            transform: "scale(calc(100vw / 1920px))",
+            left: "7.69%",
+            top: "37.56%",
+            width: "80.66%",
+            height: "19.83%",
+          }}
+        />
+        <p
+          className="absolute font-montserrat text-primary whitespace-nowrap"
+          style={{
+            left: "14.1%",
+            top: "60.66%",
+            fontSize: "clamp(12px, 3.87vw, 17px)",
+            lineHeight: 1,
+            fontWeight: 600,
           }}
         >
-          <Image
-            src="/figma/intro-bg.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{ backgroundImage: PC_OVERLAY }}
-            aria-hidden
-          />
-          <div
-            className="absolute"
-            style={{
-              left: 547.2,
-              top: 308.99,
-              width: 763.43,
-              height: 407.74,
-            }}
-            aria-label="Beyond the Route"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/figma/intro-logo.svg"
-              alt="Beyond the Route"
-              className="block h-full w-full"
-            />
-          </div>
-          <p
-            className="absolute font-montserrat text-primary whitespace-nowrap"
-            style={{
-              left: 993,
-              top: 699,
-              fontSize: 18.354,
-              lineHeight: 1,
-              fontWeight: 600,
-            }}
-          >
-            Korean Trails and Culture Foundation
-          </p>
-        </div>
+          Korean Trails and Culture Foundation
+        </p>
       </div>
 
-      {/* Mobile layout (<768px) */}
-      <div className="block h-full w-full md:hidden">
-        <div
-          className="absolute left-0 top-0 origin-top-left"
+      {/* Desktop content — Figma values translated to % of 1920×1080 frame */}
+      <div className="absolute inset-0 hidden lg:block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/figma/intro-logo.svg"
+          alt="Beyond the Route"
+          className="absolute block"
           style={{
-            width: 390,
-            height: 844,
-            transform: "scale(calc(100vw / 390px))",
+            left: "28.5%",
+            top: "28.6%",
+            width: "39.76%",
+            height: "37.75%",
+          }}
+        />
+        <p
+          className="absolute font-montserrat text-primary whitespace-nowrap"
+          style={{
+            left: "51.7%",
+            top: "64.7%",
+            fontSize: "clamp(14px, 0.96vw, 22px)",
+            lineHeight: 1,
+            fontWeight: 600,
           }}
         >
-          <Image
-            src="/figma/intro-bg-mobile.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{ backgroundImage: MOBILE_OVERLAY }}
-            aria-hidden
-          />
-          <div
-            className="absolute"
-            style={{
-              left: 30,
-              top: 317,
-              width: 314.6,
-              height: 167.4,
-            }}
-            aria-label="Beyond the Route"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/figma/intro-logo-mobile.svg"
-              alt="Beyond the Route"
-              className="block h-full w-full"
-            />
-          </div>
-          <p
-            className="absolute font-montserrat text-primary whitespace-nowrap"
-            style={{
-              left: 55,
-              top: 512,
-              fontSize: 15.112,
-              lineHeight: 1,
-              fontWeight: 600,
-            }}
-          >
-            Korean Trails and Culture Foundation
-          </p>
-        </div>
+          Korean Trails and Culture Foundation
+        </p>
       </div>
     </div>
   );

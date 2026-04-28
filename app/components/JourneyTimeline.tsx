@@ -90,6 +90,8 @@ export default function JourneyTimeline() {
     let endHoldTimer: ReturnType<typeof setTimeout> | null = null;
 
     const onWheel = (e: WheelEvent) => {
+      /* Mobile uses natural scroll over the static vertical timeline — skip. */
+      if (!window.matchMedia("(min-width: 1024px)").matches) return;
       if (!e.deltaY || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
 
       const wrapperTop = getWrapperTop();
@@ -147,13 +149,118 @@ export default function JourneyTimeline() {
   }, []);
 
   return (
-    <div ref={wrapperRef} style={{ height: `${(MAX_INDEX + 1) * 100}vh` }}>
+    <>
+      {/* ============= MOBILE — Journey title + vector8 curve + vertical event list =============
+          Layout matches Figma node 525:24181 at 390-wide reference frame.
+          All offsets (vector8 position, padding-top 454, padding-left 96) are scaled with
+          viewport width so proportions stay consistent across mobile sizes. */}
+      <div className="bg-grayscale-100 relative overflow-hidden lg:hidden">
+        {/* Vector8 mobile curving green line — uses MOBILE-specific SVG.
+            Figma coords (left:-42.52, top:0, w:269.517, h:1877.81) scaled with viewport. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/figma/sub1-vector8-mobile.svg"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute"
+          style={{
+            left: "calc(100vw * -42.52 / 390)",
+            top: 0,
+            width: "calc(100vw * 269.517 / 390)",
+            height: "calc(100vw * 1877.81 / 390)",
+          }}
+        />
+
+        {/* Content positioned to clear the vector's top-right horizontal segment.
+            Figma puts header at top:454 / left:96 / width:254 — scaled here to viewport. */}
+        <div
+          className="relative flex flex-col gap-[40px]"
+          style={{
+            paddingTop: "calc(100vw * 454 / 390)",
+            paddingLeft: "calc(100vw * 96 / 390)",
+            paddingRight: "calc(100vw * 40 / 390)",
+            paddingBottom: 64,
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center gap-[10px] whitespace-nowrap leading-none">
+            <p className="font-pretendard text-grayscale-900 text-[14px] font-extrabold tracking-[-0.56px]">
+              주요 연혁
+            </p>
+            <p className="font-montserrat text-grayscale-400 text-[14px] font-bold tracking-[-0.56px]">
+              Our Journey
+            </p>
+          </div>
+
+          {/* Big title */}
+          <div className="font-pretendard text-grayscale-900 text-[50px] font-bold leading-[1.2] tracking-[-1.3px] whitespace-nowrap">
+            <p>우리가</p>
+            <p>걸어온 길</p>
+          </div>
+
+          {/* Intro paragraph */}
+          <div className="font-pretendard text-grayscale-900 text-[16px] tracking-[-0.8px] leading-[1.4]">
+            <p>출범 이후 지난 십여년간 걷기여행길에 문화를 입히고 지속가능한 걷기여행길과 올바른 걷기문화를 위한 방향을 제시하며</p>
+            <p>다양한 활동을 해왔습니다.</p>
+            <p>&nbsp;</p>
+            <p>대한민국을 대표하는 코리아둘레길, 경기둘레길을 포함한 다양한 걷기 길을 지속적으로 연구∙관리·운영하는 가운데,</p>
+            <p>새로운 걷기 기반 문화 프로그램을 운영하며</p>
+            <p>걷기 문화 확산을 위한 걸음을 이어가고 있습니다.</p>
+          </div>
+
+          {/* Events list */}
+          <div className="flex flex-col gap-[40px] mt-[24px]">
+            {ITEMS.map((item) => (
+              <div key={item.year} className="flex items-start gap-[16px]">
+                <div className="w-[80px] shrink-0">
+                  <p className="font-montserrat text-grayscale-900 text-[32px] font-extrabold leading-[1.1] tracking-[-0.32px]">
+                    {item.year}
+                  </p>
+                </div>
+                <div className="flex flex-1 flex-col gap-[16px]">
+                  {item.events.map((ev, j) => (
+                    <div key={j} className="flex items-start gap-[10px]">
+                      {ev.month && (
+                        <p className="font-montserrat text-grayscale-700 text-[18px] font-extrabold leading-[1.1] tracking-[-0.18px] w-[28px] shrink-0">
+                          {ev.month}
+                        </p>
+                      )}
+                      <div className="flex-1">
+                        <p className="font-pretendard text-grayscale-700 text-[14px] font-bold leading-[1.5] tracking-[-0.7px]">
+                          {ev.title}
+                        </p>
+                        {ev.desc && (
+                          <p className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] mt-[3px]">
+                            {ev.desc}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ============= DESKTOP — sticky scroll timeline ============= */}
+      <div
+        ref={wrapperRef}
+        className="hidden lg:block bg-grayscale-100
+          [--jt-list-top:0px]
+          [--jt-circle-top:70px]
+          lg:[--jt-list-top:400px]
+          lg:[--jt-circle-top:470px]
+        "
+        style={{ height: `${(MAX_INDEX + 1) * 100}vh` }}
+      >
       <div
         className="sticky top-0 overflow-hidden bg-grayscale-100"
         style={{ height: "100vh" }}
       >
         <div
-          className="relative overflow-hidden text-black"
+          className="bg-grayscale-100 relative overflow-hidden text-black"
           style={{
             width: 1920,
             height: 1080,
@@ -181,7 +288,7 @@ export default function JourneyTimeline() {
             className="absolute rounded-full bg-grayscale-100"
             style={{
               left: 251,
-              top: 70,
+              top: "var(--jt-circle-top)",
               width: 80,
               height: 80,
               border: "8px solid #0ac200",
@@ -195,7 +302,7 @@ export default function JourneyTimeline() {
               position: "absolute",
               left: 0,
               right: 0,
-              top: 0,
+              top: "var(--jt-list-top)",
               transform: `translateY(${-activeIndex * SLOT_H}px)`,
               transition: "transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             }}
@@ -248,5 +355,7 @@ export default function JourneyTimeline() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+// trigger

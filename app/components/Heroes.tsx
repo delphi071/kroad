@@ -1,5 +1,8 @@
 "use client";
 
+import Hero1Section from "./Hero1Section";
+import Hero2Section from "./Hero2Section";
+import Hero4Section from "./Hero4Section";
 import HeroLayout, { useHeroCollapse } from "./HeroLayout";
 
 // Shared CTA button (자세히 보기) — clicking scrolls current slide down to subpage
@@ -141,181 +144,16 @@ function HeroSubtitle({
 }
 
 /* ============= HERO 1: 우리의 길 ============= */
+/* Hero1 is fully responsive (mobile + desktop). It owns its own nav, collapse logic, and content.
+   Hero2-6 below still use the legacy HeroLayout until they are migrated. */
 export function Hero1() {
-  return (
-    <HeroLayout
-      activeMenuIndex={0}
-      bgImage="/img01.jpg"
-      linearOverlay={0.3}
-      radialOverlay={0.66}
-      collapsedLine1="길"
-      collapsedLine2="그 이상의 연결"
-    >
-      {/* Vertical L-curve vector (left side, rotated 90deg) - inline SVG */}
-      <div
-        className="absolute"
-        style={{ left: -37, top: 571, width: 484.247, height: 205 }}
-      >
-        <div className="flex h-full w-full items-center justify-center">
-          <div
-            className="origin-center rotate-90"
-            style={{ width: 205, height: 484.247 }}
-          >
-            <div
-              className="absolute"
-              style={{ inset: "-2.79% -6.59% 0 0" }}
-            >
-              <svg
-                preserveAspectRatio="none"
-                width="100%"
-                height="100%"
-                viewBox="0 0 218.5 497.747"
-                fill="none"
-                style={{ overflow: "visible", display: "block" }}
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <path
-                  d="M0 13.5L25 13.5A180 180 0 0 1 205 193.5L205 497.747"
-                  stroke="#0AC200"
-                  strokeWidth={31}
-                  vectorEffect="non-scaling-stroke"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Horizontal vector line (right side) */}
-      <div
-        className="absolute"
-        style={{ left: 1048, top: 571 - 14 - 2, width: 878.497, height: 28 }}
-        aria-hidden
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/hero1-vec-h.svg" alt="" className="block h-full w-full" />
-      </div>
-
-      <HeroHeading text="길" left={102.07} top={200} width={175.089} />
-      <HeroHeading
-        text="그 이상의 연결"
-        left={102.07}
-        top={400}
-        width={1071.547}
-      />
-
-      <HeroButton left={1312} top={479} />
-
-      <HeroSubtitle
-        enText="Beyond the Route"
-        enLeft={1041}
-        enTop={624}
-        krLines={[
-          "단순한 이동을 넘어,",
-          "길 위에 숨겨진 가치를 연결하는 여정이 시작되는 지점",
-        ]}
-        krLeft={1041}
-        krTop={682}
-        krWidth={259}
-      />
-    </HeroLayout>
-  );
+  return <Hero1Section />;
 }
 
 /* ============= HERO 2: 같은 길, 다른 시선 ============= */
+/* Hero2는 Hero1처럼 자체 반응형 컴포넌트로 분리. PC scale-frame + 모바일 레이아웃 + sticky nav. */
 export function Hero2() {
-  return (
-    <HeroLayout
-      activeMenuIndex={1}
-      bgImage="/figma/hero2-bg.png"
-      linearOverlay={0.2}
-      radialOverlay={0.8}
-      collapsedLine1="같은 길"
-      collapsedLine2="다른 시선"
-    >
-      {/* Vector 3 (left S-curve) - inline SVG with arc commands */}
-      <div
-        className="absolute"
-        style={{ left: 2, top: 347.5, width: 433.5, height: 236 }}
-        aria-hidden
-      >
-        <svg
-          preserveAspectRatio="none"
-          width="100%"
-          height="100%"
-          viewBox="0 0 433.5 236"
-          fill="none"
-          style={{ overflow: "visible", display: "block" }}
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden
-        >
-          <path
-            d="M433.5 12.5L304.5 12.5A105.5 105.5 0 0 0 199 118A105.5 105.5 0 0 1 93.5 223.5L0 223.5"
-            stroke="#0AC200"
-            strokeWidth={29}
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-      </div>
-
-      {/* Vector 4 (right, scaleY(-1) rotate(180deg) per Figma) - inline SVG */}
-      <div
-        className="absolute"
-        style={{ left: 1016, top: 620, width: 905, height: 229 }}
-        aria-hidden
-      >
-        <div
-          style={{
-            width: 905,
-            height: 229,
-            transform: "scaleY(-1) rotate(180deg)",
-          }}
-        >
-          <div
-            className="absolute"
-            style={{ inset: "0 -1.46% -5.79% 0" }}
-          >
-            <svg
-              preserveAspectRatio="none"
-              width="100%"
-              height="100%"
-              viewBox="0 0 918.25 242.25"
-              fill="none"
-              style={{ overflow: "visible", display: "block" }}
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M0 229H795A110 110 0 0 0 905 119V0"
-                stroke="#0AC200"
-                strokeWidth={33}
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <HeroHeading text="같은 길" left={337} top={341} />
-      <HeroHeading text="다른 시선" left={881} top={538} />
-
-      <HeroButton left={1402} top={432} />
-
-      <HeroSubtitle
-        enText="Speciality"
-        enLeft={365}
-        enTop={560}
-        krLines={[
-          "표준을 설계하는 전문성과",
-          "현장의 맥락을 읽는 기획력의 결합",
-        ]}
-        krLeft={365}
-        krTop={618}
-        krWidth={259}
-      />
-    </HeroLayout>
-  );
+  return <Hero2Section />;
 }
 
 /* ============= HERO 3: 우리가 걷는 길 ============= */
@@ -414,101 +252,7 @@ export function Hero3() {
 
 /* ============= HERO 4: 함께 걷는 사람들 ============= */
 export function Hero4() {
-  return (
-    <HeroLayout
-      activeMenuIndex={3}
-      bgImage="/figma/hero4-bg.png"
-      linearOverlay={0.4}
-      radialOverlay={0.5}
-      collapsedLine1="함께 걷는"
-      collapsedLine2="사람들"
-    >
-      {/* Vector 5 (left, rotate-180) */}
-      <div
-        className="absolute"
-        style={{ left: -3, top: 305, width: 411, height: 169 }}
-        aria-hidden
-      >
-        <div
-          className="flex h-full w-full items-center justify-center"
-          style={{ transform: "rotate(180deg)" }}
-        >
-          <div
-            className="absolute"
-            style={{ inset: "0 0 -7.69% -3.16%" }}
-          >
-            <svg
-              preserveAspectRatio="none"
-              width="100%"
-              height="100%"
-              viewBox="0 0 424 182"
-              fill="none"
-              style={{ overflow: "visible", display: "block" }}
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M424 169H123A110 110 0 0 1 13 59V0"
-                stroke="#0AC200"
-                strokeWidth={32}
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      {/* Vector 4 (right, rotate-180) */}
-      <div
-        className="absolute"
-        style={{ left: 1282, top: 304, width: 642, height: 201 }}
-        aria-hidden
-      >
-        <div
-          className="flex h-full w-full items-center justify-center"
-          style={{ transform: "rotate(180deg)" }}
-        >
-          <div
-            className="absolute"
-            style={{ inset: "0 -2.06% -6.57% 0" }}
-          >
-            <svg
-              preserveAspectRatio="none"
-              width="100%"
-              height="100%"
-              viewBox="0 0 655.2 214.2"
-              fill="none"
-              style={{ overflow: "visible", display: "block" }}
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M0 201H532A110 110 0 0 0 642 91V0"
-                stroke="#0AC200"
-                strokeWidth={32}
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <HeroHeading text="함께 걷는" left={624} top={454} centered />
-      <HeroHeading text="사람들" left={1396.5} top={454} centered />
-
-      <HeroButton left={1455} top={674} />
-
-      <HeroSubtitle
-        enText="Network"
-        enLeft={303}
-        enTop={669}
-        krLines={["길의 다음을 함께 만드는 파트너를 기다립니다."]}
-        krLeft={477}
-        krTop={674}
-        krNowrap
-      />
-    </HeroLayout>
-  );
+  return <Hero4Section />;
 }
 
 /* ============= HERO 5: 알리는 이야기 ============= */

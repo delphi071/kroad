@@ -298,29 +298,29 @@ export default function HeroLayout({
           </nav>
         </div>
 
-        {/* CLICK TO DISCOVER — expanded 상태에서만 표시 */}
+        {/* CLICK TO DISCOVER — expanded 상태에서만 표시 (60% size to match Hero1) */}
         {!collapsed && (
           <button
             type="button"
             aria-label="아래로 스크롤"
             onClick={collapse}
             className="absolute left-1/2 -translate-x-1/2 cursor-pointer"
-            style={{ bottom: 28, width: 516, height: 244 }}
+            style={{ bottom: 28, width: 309.6, height: 146.4 }}
           >
             <span
               className="absolute border-4 border-solid border-white"
-              style={{ left: 218, top: 0, width: 80, height: 132, borderRadius: 40 }}
+              style={{ left: 130.8, top: 0, width: 48, height: 79.2, borderRadius: 24 }}
             />
             <span
               className="absolute bg-white"
-              style={{ left: 254, top: 28, width: 12, height: 28, borderRadius: 20 }}
+              style={{ left: 152.4, top: 16.8, width: 7.2, height: 16.8, borderRadius: 12 }}
             />
             <span
               className="absolute font-montserrat text-white whitespace-nowrap"
               style={{
                 left: 0,
-                top: 168,
-                fontSize: 44,
+                top: 100.8,
+                fontSize: 26.4,
                 lineHeight: 1.5,
                 fontWeight: scrollFontWeight,
               }}

@@ -3,6 +3,8 @@ import { Hero1, Hero2, Hero3, Hero4, Hero5, Hero6 } from "./components/Heroes";
 import IntroGate from "./components/IntroGate";
 import Slide from "./components/Slide";
 import Subpage1 from "./components/Subpage1";
+import Subpage2 from "./components/Subpage2";
+import Subpage4 from "./components/Subpage4";
 import SubpagePlaceholder from "./components/SubpagePlaceholder";
 
 export default function Home() {
@@ -16,7 +18,7 @@ export default function Home() {
           </Slide>
           <Slide>
             <Hero2 />
-            <SubpagePlaceholder title="같은 길, 다른 시선" />
+            <Subpage2 />
           </Slide>
           <Slide>
             <Hero3 />
@@ -24,7 +26,7 @@ export default function Home() {
           </Slide>
           <Slide>
             <Hero4 />
-            <SubpagePlaceholder title="함께 걷는 사람들" />
+            <Subpage4 />
           </Slide>
           <Slide>
             <Hero5 />
