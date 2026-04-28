@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { getMainHref, getSubHref } from "./navLinks";
+import LangToggle from "./LangToggle";
+import { useLang } from "../i18n/LanguageContext";
 
 type NavItem = {
   label?: string;
@@ -40,6 +42,7 @@ const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), radi
 const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)`;
 
 export default function Hero4Section() {
+  const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
   const [navHovered, setNavHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -70,7 +73,7 @@ export default function Hero4Section() {
     return () => mq.removeEventListener("change", update);
   }, [collapsed]);
 
-  const navHeightDesktop = navHovered ? 325 : 129;
+  const navHeightDesktop = navHovered ? 380 : 129;
   const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
 
   const handleScrollDown = () => {
@@ -174,14 +177,14 @@ export default function Hero4Section() {
               </button>
             </div>
             {NAV_MENU.map((item, idx) => {
-              const titleText = item.label || `${item.line1} ${item.line2}`;
+              const dictItem = t.nav.menu[idx]; const titleText = dictItem.label || item.label || `${item.line1} ${item.line2}`;
               const titleColor = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
               return (
                 <div key={idx} className="flex flex-1 flex-col items-end justify-end gap-[10px] border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]">
                   <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }}><p className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}>{titleText}</p></a>
                   <div className="flex flex-wrap items-start justify-end gap-x-[12px] gap-y-[4px]">
                     {item.subs.map((sub, subIdx) => (
-                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{sub}</a>
+                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{dictItem.subs[subIdx] || sub}</a>
                     ))}
                   </div>
                 </div>
@@ -192,7 +195,7 @@ export default function Hero4Section() {
                 <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-instagram.svg" alt="" className="size-full" /></a>
                 <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-store.svg" alt="" className="size-full" /></a>
                 <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
-                <a href="#" aria-label="언어" className="block size-[28px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-globe.svg" alt="" className="size-full" /></a>
+                <LangToggle className="block size-[28px]" />
               </div>
             </div>
           </div>
@@ -257,55 +260,20 @@ export default function Hero4Section() {
         <div className="hidden lg:block">
           <div className="absolute left-0 top-0 origin-top-left" style={{ width: 1920, height: 1080, transform: "scale(calc(100vw / 1920px))" }}>
             <div aria-hidden={collapsed} style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? "none" : "auto", transition: "opacity 0.3s" }}>
-              {/* Vector 5 (left, rotate-180) */}
-              <div className="absolute" style={{ left: -3, top: 305, width: 411, height: 169 }} aria-hidden>
-                <div className="flex h-full w-full items-center justify-center" style={{ transform: "rotate(180deg)" }}>
-                  <div className="absolute" style={{ inset: "0 0 -7.69% -3.16%" }}>
-                    <svg preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 424 182" fill="none" style={{ overflow: "visible", display: "block" }} xmlns="http://www.w3.org/2000/svg">
-                      <path d="M424 169H123A110 110 0 0 1 13 59V0" stroke="#0AC200" strokeWidth={32} vectorEffect="non-scaling-stroke" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Vector 4 (right, rotate-180) */}
-              <div className="absolute" style={{ left: 1282, top: 304, width: 642, height: 201 }} aria-hidden>
-                <div className="flex h-full w-full items-center justify-center" style={{ transform: "rotate(180deg)" }}>
-                  <div className="absolute" style={{ inset: "0 -2.06% -6.57% 0" }}>
-                    <svg preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 655.2 214.2" fill="none" style={{ overflow: "visible", display: "block" }} xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0 201H532A110 110 0 0 0 642 91V0" stroke="#0AC200" strokeWidth={32} vectorEffect="non-scaling-stroke" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Headings */}
-              <p className="font-suite text-primary absolute -translate-x-1/2 whitespace-nowrap" style={{ left: 624, top: 454, fontSize: 201.5, lineHeight: 0.9, letterSpacing: "-10.075px", fontWeight: 900, margin: 0 }}>
-                함께 걷는
-              </p>
-              <p className="font-suite text-primary absolute -translate-x-1/2 whitespace-nowrap" style={{ left: 1396.5, top: 454, fontSize: 201.5, lineHeight: 0.9, letterSpacing: "-10.075px", fontWeight: 900, margin: 0 }}>
-                사람들
-              </p>
-
-              {/* CTA */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={t.hero4.image}
+                alt="함께 걷는 사람들 — Network"
+                className="absolute pointer-events-none select-none"
+                style={{ left: 0, top: 0, width: 1920, height: 1080 }}
+              />
               <button
                 type="button"
+                aria-label="자세히 보기"
                 onClick={collapse}
-                className="absolute flex h-[49px] w-[169px] cursor-pointer items-center justify-center bg-white p-[10px]"
-                style={{ left: 1455, top: 674, borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
-              >
-                <span className="font-pretendard text-primary whitespace-nowrap" style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.3, letterSpacing: "-0.3px" }}>
-                  자세히 보기
-                </span>
-              </button>
-
-              {/* Subtitle */}
-              <p className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: 303, top: 669, fontSize: 30.395, lineHeight: 1.3, letterSpacing: "-0.6079px", fontWeight: 800 }}>
-                Network
-              </p>
-              <div className="font-pretendard absolute whitespace-nowrap text-white" style={{ left: 477, top: 674, fontSize: 20, lineHeight: 1.5, letterSpacing: "-0.2px", fontWeight: 500 }}>
-                <p>길의 다음을 함께 만드는 파트너를 기다립니다.</p>
-              </div>
+                className="absolute cursor-pointer"
+                style={{ left: 1170, top: 700, width: 160, height: 50, background: "transparent", border: 0 }}
+              />
             </div>
 
             {/* Collapsed compact title — z-10 (below nav z-20 so hover dropdown shows on top) */}
@@ -344,26 +312,26 @@ export default function Hero4Section() {
               </div>
               {NAV_MENU.map((item, idx) => {
                 const colorClass = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
-                const isTwoLine = !item.label;
+                const dictItem = t.nav.menu[idx]; const isTwoLine = lang === "ko" && !item.label; const enLines = lang === "ko" ? 1 : (dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").length; const labelTop = lang === "ko" ? (isTwoLine ? 75 : 96) : (enLines >= 3 ? 54 : enLines === 2 ? 75 : 96);
                 return (
                   <div key={idx} className="relative w-[184px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
-                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: isTwoLine ? 75 : 96 }}>{item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>}</a>
+                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: labelTop }}>{lang === "ko" ? (item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>) : <>{(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => <p key={i}>{line}</p>)}</>}</a>
                     <div className="absolute right-[18px] flex flex-col items-end gap-[12px] transition-opacity duration-200" style={{ top: 158, opacity: navHovered ? 1 : 0, pointerEvents: navHovered ? "auto" : "none" }} aria-hidden={!navHovered}>
                       {item.subs.map((sub, subIdx) => (
-                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard hover:text-primary whitespace-nowrap text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white">
-                          {sub}
+                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white" style={{ whiteSpace: "pre-line" }}>
+                          {dictItem.subs[subIdx] || sub}
                         </a>
                       ))}
                     </div>
                   </div>
                 );
               })}
-              <div className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
+              <div onMouseEnter={() => setNavHovered(false)} className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
                 <div className="absolute right-[49.5px] top-[50.5px] flex items-center gap-[39px]">
                   <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-instagram.svg" alt="" className="size-full" /></a>
                   <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-store.svg" alt="" className="size-full" /></a>
                   <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
-                  <a href="#" aria-label="언어" className="block size-[28px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-globe.svg" alt="" className="size-full" /></a>
+                  <LangToggle className="block size-[28px]" />
                 </div>
               </div>
             </nav>

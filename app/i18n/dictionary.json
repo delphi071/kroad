@@ -1,0 +1,152 @@
+{
+  "ko": {
+    "nav": {
+      "menu": [
+        { "label": "우리의 길", "subs": ["설립목적", "비전 및 핵심가치", "주요 연혁", "사람들", "오시는 길"] },
+        { "label": "같은 길, 다른 시선", "subs": ["전문역량"] },
+        { "label": "우리가 걷는 길", "subs": ["코리아둘레길", "지역길 조사 및 연구", "걷기 문화 프로그램", "굿즈 개발 및 판매"] },
+        { "label": "함께 걷는 사람들", "subs": ["한국걷는길연합", "ATN", "WTN", "코리아둘레길 완보자 클럽"] },
+        { "label": "알리는 이야기", "subs": ["공지사항", "소식받기", "문의하기"] },
+        { "label": "마음잇기", "subs": ["후원하기", "연간기금 및 활동 실적내역"] }
+      ]
+    },
+    "footer": {
+      "cols": [
+        { "title": "우리의 길", "items": ["설립목적", "비전 및 핵심가치", "주요 연혁", "사람들", "오시는 길"] },
+        { "title": "같은 길, 다른 시선", "items": ["전문역량"] },
+        { "title": "우리가 걷는 길", "items": ["코리아둘레길", "지역길 조사 및 계획", "걷기 문화 프로그램", "굿즈 개발 및 판매"] },
+        { "title": "함께 걷는 사람들", "items": ["한국걷는길연합", "ATN", "WTN", "코리아둘레길\n완보자 클럽"] },
+        { "title": "알리는 이야기", "items": ["공지사항", "소식받기", "문의하기"] },
+        { "title": "마음잇기", "items": ["후원하기", "연간기금 및\n활동 실적내역"] }
+      ],
+      "company": {
+        "ceo": "대표 : 홍성운",
+        "regNo": "사업자등록번호 : 123-82-14123",
+        "address": "주소 : 서울특별시 용산구 한강대로52길 25-8, DB Tower 402호",
+        "tel": "대표전화  : 02-6013-6610",
+        "fax": "팩스 : 02-6937-0259",
+        "email": "이메일  : ktnc@tnc.or.kr",
+        "privacyOfficer": "개인정보보호책임자 : 최해선",
+        "copyright": "Copyrightⓒ Korea Trails and Culture Foundation , All Rights Reserved."
+      }
+    },
+    "hero1": {
+      "image": "/title_img/ko-hero-01.png",
+      "headingMobile": ["길", "그 이상의", "연결"],
+      "collapsedTitle": ["길", "그 이상의 연결"]
+    },
+    "hero2": {
+      "image": "/title_img/ko-hero-02.png",
+      "headingMobile": ["같은 길,", "다른 시선"],
+      "collapsedTitle": ["같은 길, 다른 시선"]
+    },
+    "hero3": {
+      "image": "/title_img/ko-hero-03.png",
+      "headingMobile": ["우리가", "걷는 길"],
+      "collapsedTitle": ["우리가", "걷는 길"]
+    },
+    "hero4": {
+      "image": "/title_img/ko-hero-04.png",
+      "headingMobile": ["함께 걷는", "사람들"],
+      "collapsedTitle": ["함께 걷는   사람들"]
+    },
+    "hero5": {
+      "image": "/title_img/ko-hero-05.png",
+      "headingMobile": ["알리는", "이야기"],
+      "collapsedTitle": ["알리는 이야기"]
+    },
+    "hero6": {
+      "image": "/title_img/ko-hero-06.png",
+      "headingMobile": ["마음잇기"],
+      "collapsedTitle": ["마음잇기"]
+    },
+    "common": {
+      "viewMore": "자세히 보기",
+      "scrollToDiscover": "SCROLL TO DISCOVER",
+      "clickToDiscover": "CLICK TO DISCOVER",
+      "close": "닫기",
+      "submit": "신청",
+      "send": "보내기",
+      "list": "목록",
+      "viewDetail": "자세히 보기",
+      "back": "뒤로",
+      "loading": "로딩 중...",
+      "lang": "언어"
+    }
+  },
+  "en": {
+    "nav": {
+      "menu": [
+        { "label": "Our Path", "subs": ["Mission", "Vision & Core Values", "Journey", "Organization", "Directions"] },
+        { "label": "Same Path,\nA Different\nPerspective", "subs": ["Specialty"] },
+        { "label": "The Paths We Walk", "subs": ["Korea Dulle-gil", "Research & Planning", "Walking-Based\nCultural\nPrograms", "Goods Design & Retail"] },
+        { "label": "Walking Together", "subs": ["Korean Trail\nAssociation", "Asia Trails Network", "The World Trails\nNetwork", "Great Kodullers Club"] },
+        { "label": "Stories and Updates", "subs": ["Announcements", "Subscribe", "Contact us"] },
+        { "label": "Support our work", "subs": ["Donation", "Activity Report"] }
+      ]
+    },
+    "footer": {
+      "cols": [
+        { "title": "Our Path", "items": ["Mission", "Vision & Core Values", "Journey", "Organization", "Directions"] },
+        { "title": "Same Path,\nA Different Perspective", "items": ["Specialty"] },
+        { "title": "The Paths We Walk", "items": ["Korea Dulle-gil", "Research & Planning", "Walking-Based Cultural Programs", "Goods Design & Retail"] },
+        { "title": "Walking Together", "items": ["Korean Trail Association", "Asia Trails Network", "The World Trails Network", "Great Kodullers Club"] },
+        { "title": "Stories and Updates", "items": ["Announcements", "Subscribe", "Contact us"] },
+        { "title": "Support our work", "items": ["Donation", "Activity Report"] }
+      ],
+      "company": {
+        "ceo": "",
+        "regNo": "",
+        "address": "",
+        "tel": "",
+        "fax": "",
+        "email": "",
+        "privacyOfficer": "",
+        "copyright": ""
+      }
+    },
+    "hero1": {
+      "image": "/title_img/en-hero-01.png",
+      "headingMobile": ["", "", ""],
+      "collapsedTitle": ["", ""]
+    },
+    "hero2": {
+      "image": "/title_img/en-hero-02.png",
+      "headingMobile": ["", ""],
+      "collapsedTitle": [""]
+    },
+    "hero3": {
+      "image": "/title_img/en-hero-03.png",
+      "headingMobile": ["", ""],
+      "collapsedTitle": ["", ""]
+    },
+    "hero4": {
+      "image": "/title_img/en-hero-04.png",
+      "headingMobile": ["", ""],
+      "collapsedTitle": [""]
+    },
+    "hero5": {
+      "image": "/title_img/en-hero-05.png",
+      "headingMobile": ["", ""],
+      "collapsedTitle": [""]
+    },
+    "hero6": {
+      "image": "/title_img/en-hero-06.png",
+      "headingMobile": [""],
+      "collapsedTitle": [""]
+    },
+    "common": {
+      "viewMore": "",
+      "scrollToDiscover": "SCROLL TO DISCOVER",
+      "clickToDiscover": "CLICK TO DISCOVER",
+      "close": "",
+      "submit": "",
+      "send": "",
+      "list": "",
+      "viewDetail": "",
+      "back": "",
+      "loading": "",
+      "lang": ""
+    }
+  }
+}

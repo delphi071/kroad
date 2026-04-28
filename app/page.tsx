@@ -4,10 +4,10 @@ import IntroGate from "./components/IntroGate";
 import Slide from "./components/Slide";
 import Subpage1 from "./components/Subpage1";
 import Subpage2 from "./components/Subpage2";
+import Subpage3 from "./components/Subpage3";
 import Subpage4 from "./components/Subpage4";
 import Subpage5 from "./components/Subpage5";
 import Subpage6 from "./components/Subpage6";
-import SubpagePlaceholder from "./components/SubpagePlaceholder";
 
 export default function Home() {
   return (
@@ -24,7 +24,7 @@ export default function Home() {
           </Slide>
           <Slide>
             <Hero3 />
-            <SubpagePlaceholder title="우리가 걷는 길" />
+            <Subpage3 />
           </Slide>
           <Slide>
             <Hero4 />

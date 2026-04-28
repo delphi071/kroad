@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { getMainHref, getSubHref } from "./navLinks";
+import LangToggle from "./LangToggle";
+import { useLang } from "../i18n/LanguageContext";
 
 type NavItem = {
   label?: string;
@@ -46,6 +48,7 @@ const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radi
 const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%)`;
 
 export default function Hero2Section() {
+  const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
   const [navHovered, setNavHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -76,7 +79,7 @@ export default function Hero2Section() {
     return () => mq.removeEventListener("change", update);
   }, [collapsed]);
 
-  const navHeightDesktop = navHovered ? 325 : 129;
+  const navHeightDesktop = navHovered ? 380 : 129;
 
   const isDesktop = () =>
     typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
@@ -189,14 +192,14 @@ export default function Hero2Section() {
               </button>
             </div>
             {NAV_MENU.map((item, idx) => {
-              const titleText = item.label || `${item.line1} ${item.line2}`;
+              const dictItem = t.nav.menu[idx]; const titleText = dictItem.label || item.label || `${item.line1} ${item.line2}`;
               const titleColor = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
               return (
                 <div key={idx} className="flex flex-1 flex-col items-end justify-end gap-[10px] border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]">
                   <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }}><p className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}>{titleText}</p></a>
                   <div className="flex flex-wrap items-start justify-end gap-x-[12px] gap-y-[4px]">
                     {item.subs.map((sub, subIdx) => (
-                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{sub}</a>
+                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{dictItem.subs[subIdx] || sub}</a>
                     ))}
                   </div>
                 </div>
@@ -207,7 +210,7 @@ export default function Hero2Section() {
                 <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-instagram.svg" alt="" className="size-full" /></a>
                 <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-store.svg" alt="" className="size-full" /></a>
                 <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
-                <a href="#" aria-label="언어" className="block size-[28px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-globe.svg" alt="" className="size-full" /></a>
+                <LangToggle className="block size-[28px]" />
               </div>
             </div>
           </div>
@@ -277,52 +280,23 @@ export default function Hero2Section() {
               aria-hidden={collapsed}
               style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? "none" : "auto", transition: "opacity 0.3s" }}
             >
-              {/* Vector 3 (left S-curve) */}
-              <div className="absolute" style={{ left: 2, top: 347.5, width: 433.5, height: 236 }} aria-hidden>
-                <svg preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 433.5 236" fill="none" style={{ overflow: "visible", display: "block" }} xmlns="http://www.w3.org/2000/svg">
-                  <path d="M433.5 12.5L304.5 12.5A105.5 105.5 0 0 0 199 118A105.5 105.5 0 0 1 93.5 223.5L0 223.5" stroke="#0AC200" strokeWidth={29} vectorEffect="non-scaling-stroke" />
-                </svg>
-              </div>
+              {/* Title image (transparent PNG: text + lines + 자세히 보기 visual) */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={t.hero2.image}
+                alt="같은 길, 다른 시선 — Speciality"
+                className="absolute pointer-events-none select-none"
+                style={{ left: 0, top: 0, width: 1920, height: 1080 }}
+              />
 
-              {/* Vector 4 (right) */}
-              <div className="absolute" style={{ left: 1016, top: 620, width: 905, height: 229 }} aria-hidden>
-                <div style={{ width: 905, height: 229, transform: "scaleY(-1) rotate(180deg)" }}>
-                  <div className="absolute" style={{ inset: "0 -1.46% -5.79% 0" }}>
-                    <svg preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 918.25 242.25" fill="none" style={{ overflow: "visible", display: "block" }} xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0 229H795A110 110 0 0 0 905 119V0" stroke="#0AC200" strokeWidth={33} vectorEffect="non-scaling-stroke" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Heading: 같은 길 */}
-              <p className="font-suite text-primary absolute whitespace-nowrap" style={{ left: 337, top: 341, fontSize: 201.5, lineHeight: 0.9, letterSpacing: "-10.075px", fontWeight: 900, margin: 0 }}>
-                같은 길
-              </p>
-              <p className="font-suite text-primary absolute whitespace-nowrap" style={{ left: 881, top: 538, fontSize: 201.5, lineHeight: 0.9, letterSpacing: "-10.075px", fontWeight: 900, margin: 0 }}>
-                다른 시선
-              </p>
-
-              {/* CTA */}
+              {/* Invisible click area for 자세히 보기 button */}
               <button
                 type="button"
+                aria-label="자세히 보기"
                 onClick={collapse}
-                className="absolute flex h-[49px] w-[169px] cursor-pointer items-center justify-center bg-white p-[10px]"
-                style={{ left: 1402, top: 432, borderTopLeftRadius: 20, borderBottomRightRadius: 20 }}
-              >
-                <span className="font-pretendard text-primary whitespace-nowrap" style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.3, letterSpacing: "-0.3px" }}>
-                  자세히 보기
-                </span>
-              </button>
-
-              {/* Subtitle */}
-              <p className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: 365, top: 560, fontSize: 30.395, lineHeight: 1.3, letterSpacing: "-0.6079px", fontWeight: 800 }}>
-                Speciality
-              </p>
-              <div className="font-pretendard absolute text-white" style={{ left: 365, top: 618, width: 259, fontSize: 20, lineHeight: 1.5, letterSpacing: "-0.2px", fontWeight: 500 }}>
-                <p>표준을 설계하는 전문성과</p>
-                <p>현장의 맥락을 읽는 기획력의 결합</p>
-              </div>
+                className="absolute cursor-pointer"
+                style={{ left: 1402, top: 432, width: 169, height: 49, background: "transparent", border: 0 }}
+              />
             </div>
 
             {/* Collapsed compact title */}
@@ -361,14 +335,14 @@ export default function Hero2Section() {
 
               {NAV_MENU.map((item, idx) => {
                 const colorClass = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
-                const isTwoLine = !item.label;
+                const dictItem = t.nav.menu[idx]; const isTwoLine = lang === "ko" && !item.label; const enLines = lang === "ko" ? 1 : (dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").length; const labelTop = lang === "ko" ? (isTwoLine ? 75 : 96) : (enLines >= 3 ? 54 : enLines === 2 ? 75 : 96);
                 return (
                   <div key={idx} className="relative w-[184px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
-                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: isTwoLine ? 75 : 96 }}>{item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>}</a>
+                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: labelTop }}>{lang === "ko" ? (item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>) : <>{(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => <p key={i}>{line}</p>)}</>}</a>
                     <div className="absolute right-[18px] flex flex-col items-end gap-[12px] transition-opacity duration-200" style={{ top: 158, opacity: navHovered ? 1 : 0, pointerEvents: navHovered ? "auto" : "none" }} aria-hidden={!navHovered}>
                       {item.subs.map((sub, subIdx) => (
-                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard hover:text-primary whitespace-nowrap text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white">
-                          {sub}
+                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white" style={{ whiteSpace: "pre-line" }}>
+                          {dictItem.subs[subIdx] || sub}
                         </a>
                       ))}
                     </div>
@@ -376,12 +350,12 @@ export default function Hero2Section() {
                 );
               })}
 
-              <div className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
+              <div onMouseEnter={() => setNavHovered(false)} className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
                 <div className="absolute right-[49.5px] top-[50.5px] flex items-center gap-[39px]">
                   <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-instagram.svg" alt="" className="size-full" /></a>
                   <a href="https://smartstore.naver.com/koreatnc" target="_blank" rel="noopener noreferrer" aria-label="스토어" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-store.svg" alt="" className="size-full" /></a>
                   <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
-                  <a href="#" aria-label="언어" className="block size-[28px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-globe.svg" alt="" className="size-full" /></a>
+                  <LangToggle className="block size-[28px]" />
                 </div>
               </div>
             </nav>

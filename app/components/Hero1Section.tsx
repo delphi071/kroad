@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { getMainHref, getSubHref } from "./navLinks";
+import LangToggle from "./LangToggle";
+import { useLang } from "../i18n/LanguageContext";
 
 type NavItem = {
   label?: string;
@@ -47,6 +49,7 @@ const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radi
 const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 100%)`;
 
 export default function Hero1Section() {
+  const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
   const [navHovered, setNavHovered] = useState(false);
   /* `collapsed` only takes effect on desktop (lg+). On mobile the hero is always
@@ -86,7 +89,7 @@ export default function Hero1Section() {
     return () => mq.removeEventListener("change", update);
   }, [collapsed]);
 
-  const navHeightDesktop = navHovered ? 325 : 129;
+  const navHeightDesktop = navHovered ? 380 : 129;
 
   const isDesktop = () =>
     typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
@@ -242,7 +245,8 @@ export default function Hero1Section() {
 
             {/* 6 menu rows — equal flex-1 height */}
             {NAV_MENU.map((item, idx) => {
-              const titleText = item.label || `${item.line1} ${item.line2}`;
+              const dictItem = t.nav.menu[idx];
+              const titleText = dictItem.label || item.label || `${item.line1} ${item.line2}`;
               const titleColor =
                 idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
               return (
@@ -265,7 +269,7 @@ export default function Hero1Section() {
                         onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                         className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary"
                       >
-                        {sub}
+                        {dictItem.subs[subIdx] || sub}
                       </a>
                     ))}
                   </div>
@@ -285,10 +289,7 @@ export default function Hero1Section() {
                   <img src="/figma/icon-store.svg" alt="" className="size-full" />
                 </a>
                 <span className="bg-grayscale-200 block h-[25px] w-px" aria-hidden />
-                <a href="#" aria-label="언어" className="block size-[28px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-globe.svg" alt="" className="size-full" />
-                </a>
+                <LangToggle className="block size-[28px]" />
               </div>
             </div>
           </div>
@@ -380,7 +381,7 @@ export default function Hero1Section() {
             {/* Title image (transparent PNG: text + lines + 자세히 보기 visual) */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/title_img/ko-hero-01.png"
+              src={t.hero1.image}
               alt="길, 그 이상의 연결 — Beyond the Route"
               className="absolute pointer-events-none select-none"
               style={{ left: 0, top: 0, width: 1920, height: 1080 }}
@@ -476,9 +477,12 @@ export default function Hero1Section() {
 
             {/* Menu cells — fixed 184px wide; only height changes on hover (down expansion only) */}
             {NAV_MENU.map((item, idx) => {
+              const dictItem = t.nav.menu[idx];
               const colorClass =
                 idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
-              const isTwoLine = !item.label;
+              const isTwoLine = lang === "ko" && !item.label;
+              const enLines = lang === "ko" ? 1 : (dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").length;
+              const labelTop = lang === "ko" ? (isTwoLine ? 75 : 96) : (enLines >= 3 ? 54 : enLines === 2 ? 75 : 96);
               return (
                 <div
                   key={idx}
@@ -489,14 +493,22 @@ export default function Hero1Section() {
                     href={getMainHref(idx)}
                     onClick={() => { setMenuOpen(false); setNavHovered(false); }}
                     className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`}
-                    style={{ top: isTwoLine ? 75 : 96 }}
+                    style={{ top: labelTop }}
                   >
-                    {item.label ? (
-                      <p>{item.label}</p>
+                    {lang === "ko" ? (
+                      item.label ? (
+                        <p>{item.label}</p>
+                      ) : (
+                        <>
+                          <p>{item.line1}</p>
+                          <p>{item.line2}</p>
+                        </>
+                      )
                     ) : (
                       <>
-                        <p>{item.line1}</p>
-                        <p>{item.line2}</p>
+                        {(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => (
+                          <p key={i}>{line}</p>
+                        ))}
                       </>
                     )}
                   </a>
@@ -515,9 +527,10 @@ export default function Hero1Section() {
                         key={sub}
                         href={getSubHref(idx, subIdx)}
                         onClick={() => { setMenuOpen(false); setNavHovered(false); }}
-                        className="font-pretendard hover:text-primary whitespace-nowrap text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white"
+                        className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white"
+                        style={{ whiteSpace: "pre-line" }}
                       >
-                        {sub}
+                        {dictItem.subs[subIdx] || sub}
                       </a>
                     ))}
                   </div>
@@ -527,6 +540,7 @@ export default function Hero1Section() {
 
             {/* Right icons cell — fixed 513px wide; only height changes on hover */}
             <div
+              onMouseEnter={() => setNavHovered(false)}
               className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200"
               style={{ height: navHeightDesktop }}
             >
@@ -543,10 +557,7 @@ export default function Hero1Section() {
                   className="bg-grayscale-200 block h-[25px] w-px"
                   aria-hidden
                 />
-                <a href="#" aria-label="언어" className="block size-[28px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-globe.svg" alt="" className="size-full" />
-                </a>
+                <LangToggle className="block size-[28px]" />
               </div>
             </div>
           </nav>

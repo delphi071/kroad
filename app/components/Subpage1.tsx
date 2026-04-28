@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Footer from "./Footer";
 import CoreValues from "./CoreValues";
+import { useLang } from "../i18n/LanguageContext";
 import JourneyTimeline from "./JourneyTimeline";
 import { getMainHref, getSubHref } from "./navLinks";
 
@@ -36,6 +37,7 @@ const BOTTOM_GAP_HEIGHT = 10026 - 8780; // 1246
 const BOTTOM_B_HEIGHT = 14000 - 10026; // 3974
 
 export default function Subpage1() {
+  const { t } = useLang();
   const rootRef = useRef<HTMLDivElement>(null);
 
   // React to nav links like #h1-mission, #h1-vision, #h1-journey, #h1-people, #h1-location
@@ -1081,46 +1083,52 @@ export default function Subpage1() {
         {/* Nav columns — 2 rows × 3 cols */}
         <div className="flex flex-col gap-[24px] w-full">
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(0, 3).map((col, colIdx) => (
-              <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
-                  {col.title}
-                </a>
-                <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item, itemIdx) => (
-                    <a
-                      key={item}
-                      href={getSubHref(colIdx, itemIdx)}
-                      className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
-                      style={{ whiteSpace: "pre-line" }}
-                    >
-                      {item}
-                    </a>
-                  ))}
+            {NAV_COLS.slice(0, 3).map((col, colIdx) => {
+              const dictCol = t.footer.cols[colIdx];
+              return (
+                <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
+                  <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>
+                    {dictCol.title || col.title}
+                  </a>
+                  <div className="flex flex-col items-center gap-[6px]">
+                    {col.items.map((item, itemIdx) => (
+                      <a
+                        key={item}
+                        href={getSubHref(colIdx, itemIdx)}
+                        className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
+                        style={{ whiteSpace: "pre-line" }}
+                      >
+                        {dictCol.items[itemIdx] || item}
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="flex items-start justify-between w-full">
-            {NAV_COLS.slice(3, 6).map((col, colIdx) => (
-              <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
-                  {col.title}
-                </a>
-                <div className="flex flex-col items-center gap-[6px]">
-                  {col.items.map((item, itemIdx) => (
-                    <a
-                      key={item}
-                      href={getSubHref(colIdx + 3, itemIdx)}
-                      className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
-                      style={{ whiteSpace: "pre-line" }}
-                    >
-                      {item}
-                    </a>
-                  ))}
+            {NAV_COLS.slice(3, 6).map((col, colIdx) => {
+              const dictCol = t.footer.cols[colIdx + 3];
+              return (
+                <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
+                  <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>
+                    {dictCol.title || col.title}
+                  </a>
+                  <div className="flex flex-col items-center gap-[6px]">
+                    {col.items.map((item, itemIdx) => (
+                      <a
+                        key={item}
+                        href={getSubHref(colIdx + 3, itemIdx)}
+                        className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
+                        style={{ whiteSpace: "pre-line" }}
+                      >
+                        {dictCol.items[itemIdx] || item}
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import ToastContainer from "./components/Toast";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat-next",
@@ -24,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full bg-black text-white">
-        {children}
-        <ToastContainer />
+        <LanguageProvider>
+          {children}
+          <ToastContainer />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,4 +1,7 @@
+"use client";
+
 import { getMainHref, getSubHref } from "./navLinks";
+import { useLang } from "../i18n/LanguageContext";
 
 const NAV_COLS = [
   {
@@ -28,6 +31,7 @@ const NAV_COLS = [
 ];
 
 export default function Footer() {
+  const { t } = useLang();
   return (
     <div
       className="relative bg-grayscale-100"
@@ -55,25 +59,28 @@ export default function Footer() {
         className="absolute flex items-start justify-between"
         style={{ left: 880, top: 120, width: 840 }}
       >
-        {NAV_COLS.map((col, colIdx) => (
-          <div key={col.title} className="flex flex-col items-end gap-[20px]">
-            <a href={getMainHref(colIdx)} className="font-pretendard text-right text-[16px] font-extrabold leading-[1.3] text-black tracking-[-0.32px] whitespace-nowrap hover:text-primary">
-              {col.title}
-            </a>
-            <div className="flex flex-col items-end gap-[12px]">
-              {col.items.map((item, itemIdx) => (
-                <a
-                  key={item}
-                  href={getSubHref(colIdx, itemIdx)}
-                  className="font-pretendard text-right text-[16px] font-normal leading-[1.4] text-[#737373] tracking-[-0.8px] hover:text-primary"
-                  style={{ whiteSpace: "pre-line" }}
-                >
-                  {item}
-                </a>
-              ))}
+        {NAV_COLS.map((col, colIdx) => {
+          const dictCol = t.footer.cols[colIdx];
+          return (
+            <div key={col.title} className="flex flex-col items-end gap-[20px]">
+              <a href={getMainHref(colIdx)} className="font-pretendard text-right text-[16px] font-extrabold leading-[1.3] text-black tracking-[-0.32px] hover:text-primary" style={{ whiteSpace: "pre-line" }}>
+                {dictCol.title || col.title}
+              </a>
+              <div className="flex flex-col items-end gap-[12px]">
+                {col.items.map((item, itemIdx) => (
+                  <a
+                    key={item}
+                    href={getSubHref(colIdx, itemIdx)}
+                    className="font-pretendard text-right text-[16px] font-normal leading-[1.4] text-[#737373] tracking-[-0.8px] hover:text-primary"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    {dictCol.items[itemIdx] || item}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* ===== 하단 중앙: 회사 정보 ===== */}
@@ -82,21 +89,21 @@ export default function Footer() {
         style={{ left: 880, top: 440 }}
       >
         <div className="flex items-center gap-[10px] px-[10px] py-[5px]">
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">대표 : 홍성운</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.ceo || "대표 : 홍성운"}</p>
           <span className="h-[12px] w-px bg-[#737373]" aria-hidden />
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">사업자등록번호 : 123-82-14123</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.regNo || "사업자등록번호 : 123-82-14123"}</p>
         </div>
         <div className="flex items-center gap-[10px] px-[10px] py-[5px]">
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">주소 : 서울특별시 용산구 한강대로52길 25-8, DB Tower 402호</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.address || "주소 : 서울특별시 용산구 한강대로52길 25-8, DB Tower 402호"}</p>
           <span className="h-[12px] bg-[#737373]" style={{ width: "0.5px" }} aria-hidden />
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">대표전화  : 02-6013-6610</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.tel || "대표전화  : 02-6013-6610"}</p>
         </div>
         <div className="flex items-center gap-[10px] px-[10px] py-[5px]">
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">팩스 : 02-6937-0259</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.fax || "팩스 : 02-6937-0259"}</p>
           <span className="h-[12px] bg-[#737373]" style={{ width: "0.5px" }} aria-hidden />
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">이메일  : ktnc@tnc.or.kr</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.email || "이메일  : ktnc@tnc.or.kr"}</p>
           <span className="h-[12px] bg-[#737373]" style={{ width: "0.5px" }} aria-hidden />
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">개인정보보호책임자 : 최해선</p>
+          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.privacyOfficer || "개인정보보호책임자 : 최해선"}</p>
         </div>
         <div className="px-[10px]" style={{ paddingTop: 24 }}>
           <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">

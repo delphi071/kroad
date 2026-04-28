@@ -1,5 +1,8 @@
+"use client";
+
 import Footer from "./Footer";
 import { getMainHref, getSubHref } from "./navLinks";
+import { useLang } from "../i18n/LanguageContext";
 
 /* Figma slide 2 PC base: hero is top 0-613, content extends to footer at top:8780.
    Subpage2 = the part below the hero, scaled in a 1920-wide frame.
@@ -76,6 +79,7 @@ const SECTIONS = [
 ];
 
 export default function Subpage2() {
+  const { t } = useLang();
   return (
     <div className="bg-grayscale-100">
       {/* ============================== MOBILE — Figma 525:24297 ============================== */}
@@ -300,10 +304,12 @@ export default function Subpage2() {
               { title: "우리의 길", items: ["설립목적", "비전 및 핵심가치", "주요 연혁", "사람들", "오시는 길"] },
               { title: "같은 길, 다른 시선", items: ["전문역량"] },
               { title: "우리가 걷는 길", items: ["코리아둘레길", "지역길 조사 및 계획", "걷기 문화 프로그램", "굿즈 개발 및 판매"] },
-            ].map((col, colIdx) => (
+            ].map((col, colIdx) => {
+              const dictCol = t.footer.cols[colIdx];
+              return (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
-                  {col.title}
+                <a href={getMainHref(colIdx)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>
+                  {dictCol.title || col.title}
                 </a>
                 <div className="flex flex-col items-center gap-[6px]">
                   {col.items.map((item, itemIdx) => (
@@ -313,22 +319,25 @@ export default function Subpage2() {
                       className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
                       style={{ whiteSpace: "pre-line" }}
                     >
-                      {item}
+                      {dictCol.items[itemIdx] || item}
                     </a>
                   ))}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
           <div className="flex items-start justify-between w-full">
             {[
               { title: "함께 걷는 사람들", items: ["한국걷는길연합", "ATN", "WTN", "코리아둘레길\n완보자 클럽"] },
               { title: "알리는 이야기", items: ["공지사항", "소식받기", "문의하기"] },
               { title: "마음잇기", items: ["후원하기", "연간기금 및\n활동 실적내역"] },
-            ].map((col, colIdx) => (
+            ].map((col, colIdx) => {
+              const dictCol = t.footer.cols[colIdx + 3];
+              return (
               <div key={col.title} className="flex flex-col items-center gap-[10px] w-[100px]">
-                <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center whitespace-nowrap hover:text-primary">
-                  {col.title}
+                <a href={getMainHref(colIdx + 3)} className="font-pretendard text-grayscale-900 text-[12px] font-bold leading-none text-center hover:text-primary" style={{ whiteSpace: "pre-line" }}>
+                  {dictCol.title || col.title}
                 </a>
                 <div className="flex flex-col items-center gap-[6px]">
                   {col.items.map((item, itemIdx) => (
@@ -338,12 +347,13 @@ export default function Subpage2() {
                       className="font-pretendard text-grayscale-600 text-[12px] leading-[1.5] tracking-[-0.6px] text-center hover:text-primary"
                       style={{ whiteSpace: "pre-line" }}
                     >
-                      {item}
+                      {dictCol.items[itemIdx] || item}
                     </a>
                   ))}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

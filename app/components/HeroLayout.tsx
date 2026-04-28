@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { createContext, useContext, useRef, useState } from "react";
+import LangToggle from "./LangToggle";
 
 const HeroCollapseCtx = createContext<(() => void) | null>(null);
 export function useHeroCollapse() { return useContext(HeroCollapseCtx); }
@@ -68,7 +69,7 @@ export default function HeroLayout({
   const scrollFontWeight = scrollIndicatorWeight === "bold" ? 700 : 500;
 
   const [navHovered, setNavHovered] = useState(false);
-  const navHeight = navHovered ? 325 : 129;
+  const navHeight = navHovered ? 380 : 129;
 
   const [collapsed, setCollapsed] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -272,6 +273,7 @@ export default function HeroLayout({
 
             {/* Right icons cell */}
             <div
+              onMouseEnter={() => setNavHovered(false)}
               className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200"
               style={{ height: navHeight }}
             >
@@ -285,10 +287,7 @@ export default function HeroLayout({
                   <img src="/figma/icon-store.svg" alt="" className="size-full" />
                 </a>
                 <span className="block h-[25px] w-px bg-grayscale-200" aria-hidden />
-                <a href="#" aria-label="언어" className="block size-[28px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/figma/icon-globe.svg" alt="" className="size-full" />
-                </a>
+                <LangToggle className="block size-[28px]" />
               </div>
             </div>
           </nav>
