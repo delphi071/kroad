@@ -171,7 +171,7 @@ export default function Hero6Section() {
             <div className="flex shrink-0 items-center justify-between border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/logo.svg" alt="한국의길과문화 공식 로고" className="block h-[40px] w-[95px] object-contain" />
-              <button type="button" aria-label="메뉴 닫기" onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="block size-[24px] cursor-pointer text-white">
+              <button type="button" aria-label="메뉴 닫기" onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }} className="block size-[24px] cursor-pointer text-white">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="block size-full" aria-hidden>
                   <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
@@ -182,10 +182,10 @@ export default function Hero6Section() {
               const titleColor = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
               return (
                 <div key={idx} className="flex flex-1 flex-col items-end justify-end gap-[10px] border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]">
-                  <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }}><p className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}>{titleText}</p></a>
+                  <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}><p className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}>{titleText}</p></a>
                   <div className="flex flex-wrap items-start justify-end gap-x-[12px] gap-y-[4px]">
                     {item.subs.map((sub, subIdx) => (
-                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{dictItem.subs[subIdx] || sub}</a>
+                      <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }} className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary">{dictItem.subs[subIdx] || sub}</a>
                     ))}
                   </div>
                 </div>
@@ -300,10 +300,10 @@ export default function Hero6Section() {
                 const dictItem = t.nav.menu[idx]; const isTwoLine = lang === "ko" && !item.label; const enLines = lang === "ko" ? 1 : (dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").length; const labelTop = lang === "ko" ? (isTwoLine ? 75 : 96) : (enLines >= 3 ? 54 : enLines === 2 ? 75 : 96);
                 return (
                   <div key={idx} className="relative w-[184px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
-                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: labelTop }}>{lang === "ko" ? (item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>) : <>{(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => <p key={i}>{line}</p>)}</>}</a>
+                    <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }} className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`} style={{ top: labelTop }}>{lang === "ko" ? (item.label ? <p>{item.label}</p> : <><p>{item.line1}</p><p>{item.line2}</p></>) : <>{(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => <p key={i}>{line}</p>)}</>}</a>
                     <div className="absolute right-[18px] flex flex-col items-end gap-[12px] transition-opacity duration-200" style={{ top: 158, opacity: navHovered ? 1 : 0, pointerEvents: navHovered ? "auto" : "none" }} aria-hidden={!navHovered}>
                       {item.subs.map((sub, subIdx) => (
-                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }} className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white" style={{ whiteSpace: "pre-line" }}>
+                        <a key={sub} href={getSubHref(idx, subIdx)} onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }} className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white" style={{ whiteSpace: "pre-line" }}>
                           {dictItem.subs[subIdx] || sub}
                         </a>
                       ))}

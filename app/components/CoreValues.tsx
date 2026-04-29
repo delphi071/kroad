@@ -134,20 +134,18 @@ export default function CoreValues() {
           </p>
         </div>
 
-        {/* Single combined Group55 icon at the top per Figma mobile design */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/figma/sub1-corevalue-group55.svg"
-          alt=""
-          aria-hidden
-          className="block size-[200px] object-contain"
-        />
-
         {CARDS.map((card) => (
           <div
             key={card.eng}
             className="flex flex-col items-center gap-[24px] w-full max-w-[295px] text-center"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={card.img}
+              alt=""
+              aria-hidden
+              className="block h-[200px] w-auto max-w-full object-contain"
+            />
             <div className="flex flex-col items-center gap-[6px]">
               <p className="font-montserrat text-primary text-[20px] font-bold leading-none">
                 {card.eng}

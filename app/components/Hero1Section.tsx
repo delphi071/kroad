@@ -223,7 +223,7 @@ export default function Hero1Section() {
               <button
                 type="button"
                 aria-label="메뉴 닫기"
-                onClick={() => { setMenuOpen(false); setNavHovered(false); }}
+                onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}
                 className="block size-[24px] cursor-pointer text-white"
               >
                 <svg
@@ -254,7 +254,7 @@ export default function Hero1Section() {
                   key={idx}
                   className="flex flex-1 flex-col items-end justify-end gap-[10px] border-b border-l border-r border-white bg-white/10 px-[18px] py-[12px]"
                 >
-                  <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); }}>
+                  <a href={getMainHref(idx)} onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}>
                     <p
                       className={`font-pretendard whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${titleColor}`}
                     >
@@ -266,7 +266,7 @@ export default function Hero1Section() {
                       <a
                         key={sub}
                         href={getSubHref(idx, subIdx)}
-                        onClick={() => { setMenuOpen(false); setNavHovered(false); }}
+                        onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}
                         className="font-pretendard whitespace-nowrap text-[12px] leading-[1.3] tracking-[-0.24px] text-white hover:text-primary"
                       >
                         {dictItem.subs[subIdx] || sub}
@@ -482,7 +482,7 @@ export default function Hero1Section() {
                 >
                   <a
                     href={getMainHref(idx)}
-                    onClick={() => { setMenuOpen(false); setNavHovered(false); }}
+                    onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}
                     className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`}
                     style={{ top: labelTop }}
                   >
@@ -517,7 +517,7 @@ export default function Hero1Section() {
                       <a
                         key={sub}
                         href={getSubHref(idx, subIdx)}
-                        onClick={() => { setMenuOpen(false); setNavHovered(false); }}
+                        onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}
                         className="font-pretendard hover:text-primary text-right text-[16px] font-normal leading-[1.4] tracking-[-0.8px] text-white"
                         style={{ whiteSpace: "pre-line" }}
                       >

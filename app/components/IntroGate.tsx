@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Intro from "./Intro";
+import MobileNavLoader from "./MobileNavLoader";
 
 export default function IntroGate({
   children,
@@ -18,6 +19,7 @@ export default function IntroGate({
   return (
     <>
       <Intro visible={introVisible} />
+      <MobileNavLoader />
       {children}
     </>
   );
