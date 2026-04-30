@@ -178,11 +178,9 @@ export default function JourneyTimeline() {
                 <div className="flex flex-1 flex-col gap-[16px]">
                   {item.events.map((ev, j) => (
                     <div key={j} className="flex items-start gap-[10px]">
-                      {ev.month && (
-                        <p className="font-montserrat text-grayscale-700 text-[18px] font-extrabold leading-[1.1] tracking-[-0.18px] w-[28px] shrink-0">
-                          {ev.month}
-                        </p>
-                      )}
+                      <p className="font-montserrat text-grayscale-700 text-[18px] font-extrabold leading-[1.1] tracking-[-0.18px] w-[28px] shrink-0">
+                        {ev.month}
+                      </p>
                       <div className="flex-1">
                         <p className="font-pretendard text-grayscale-700 text-[14px] font-bold leading-[1.5] tracking-[-0.7px]">
                           {ev.title}

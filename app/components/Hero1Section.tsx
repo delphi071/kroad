@@ -43,7 +43,7 @@ const NAV_MENU: NavItem[] = [
 ];
 
 const ACTIVE_INDEX = 0;
-const COLLAPSED_H_DESKTOP = 370; // 1920-frame baseline
+const COLLAPSED_H_DESKTOP = 280; // 1920-frame baseline
 
 const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)`;
 const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 100%)`;
@@ -89,7 +89,7 @@ export default function Hero1Section() {
     return () => mq.removeEventListener("change", update);
   }, [collapsed]);
 
-  const navHeightDesktop = navHovered ? 380 : 129;
+  const navHeightDesktop = collapsed ? (navHovered ? 280 : 80) : (navHovered ? 380 : 129);
 
   const isDesktop = () =>
     typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
@@ -143,9 +143,9 @@ export default function Hero1Section() {
   }, []);
 
   /* Mobile: always relative h-screen — no sticky/collapse.
-     Desktop collapsed: sticky top-0 with compact 370/1920 ratio height. */
+     Desktop collapsed: sticky top-0 with compact 280/1920 ratio height. */
   const sectionClasses = collapsed
-    ? "relative h-screen lg:sticky lg:top-0 lg:z-50 lg:h-[calc(100vw*370/1920)]"
+    ? "relative h-screen lg:sticky lg:top-0 lg:z-50 lg:h-[calc(100vw*280/1920)]"
     : "relative h-screen";
 
   return (
@@ -406,37 +406,19 @@ export default function Hero1Section() {
 
           {/* Collapsed compact title (desktop) */}
           {collapsed && (
-            <div className="absolute" style={{ left: 80, top: 152 }}>
-              {t.hero1.collapsedTitle.map((line, i) => (
-                <p
-                  key={i}
-                  className="font-suite text-primary"
-                  style={{
-                    fontSize: 90,
-                    lineHeight: 1,
-                    fontWeight: 900,
-                    letterSpacing: "-4.5px",
-                    whiteSpace: "nowrap",
-                    marginTop: i > 0 ? 14 : 0,
-                  }}
-                >
-                  {line}
-                </p>
-              ))}
-            </div>
-          )}
-
-          {/* Collapsed X */}
-          {collapsed && (
-            <button
-              type="button"
-              aria-label="히어로 닫기"
-              onClick={expand}
-              className="text-primary absolute z-30 cursor-pointer"
-              style={{ left: 1810, top: 243, fontSize: 64, lineHeight: 1 }}
+            <p
+              className="font-suite text-primary absolute whitespace-nowrap"
+              style={{
+                left: 80,
+                top: 173,
+                fontSize: 54,
+                lineHeight: 1,
+                fontWeight: 900,
+                letterSpacing: "-2.7px",
+              }}
             >
-              ✕
-            </button>
+              {t.hero1.collapsedTitle.join(" ")}
+            </p>
           )}
 
           {/* Top navigation (always visible) */}
@@ -456,7 +438,7 @@ export default function Hero1Section() {
               className="relative w-[303px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200"
               style={{ height: navHeightDesktop }}
             >
-              <div className="absolute left-[86px] top-[37.19px] h-[54.628px] w-[130px]">
+              <div className="absolute left-[86px] h-[54.628px] w-[130px]" style={{ top: collapsed ? 12 : 37.19 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/figma/logo.svg"
@@ -471,9 +453,9 @@ export default function Hero1Section() {
               const dictItem = t.nav.menu[idx];
               const colorClass =
                 idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
-              const isTwoLine = lang === "ko" && !item.label;
-              const enLines = lang === "ko" ? 1 : (dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").length;
-              const labelTop = lang === "ko" ? (isTwoLine ? 75 : 96) : (enLines >= 3 ? 54 : enLines === 2 ? 75 : 96);
+              const labelText = (dictItem.label || `${item.line1 ?? ""} ${item.line2 ?? ""}`.trim() || item.label || "").replace(/\n/g, " ");
+              const labelLines = (idx === 1 && lang === "en") ? labelText.split(", ") : [labelText];
+              const labelTop = (idx === 1 && lang === "en") ? (collapsed ? 12 : 75) : (collapsed ? 20 : 96);
               return (
                 <div
                   key={idx}
@@ -483,31 +465,16 @@ export default function Hero1Section() {
                   <a
                     href={getMainHref(idx)}
                     onClick={() => { setMenuOpen(false); setNavHovered(false); window.dispatchEvent(new CustomEvent("mobile-nav-start")); }}
-                    className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[16px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`}
+                    className={`font-pretendard absolute right-[18px] whitespace-nowrap text-right text-[13px] font-extrabold leading-[1.3] tracking-[-0.32px] ${colorClass}`}
                     style={{ top: labelTop }}
                   >
-                    {lang === "ko" ? (
-                      item.label ? (
-                        <p>{item.label}</p>
-                      ) : (
-                        <>
-                          <p>{item.line1}</p>
-                          <p>{item.line2}</p>
-                        </>
-                      )
-                    ) : (
-                      <>
-                        {(dictItem.label || item.label || `${item.line1} ${item.line2}`).split("\n").map((line, i) => (
-                          <p key={i}>{line}</p>
-                        ))}
-                      </>
-                    )}
+                    {labelLines.map((line, i) => <p key={i}>{line}</p>)}
                   </a>
 
                   <div
                     className="absolute right-[18px] flex flex-col items-end gap-[12px] transition-opacity duration-200"
                     style={{
-                      top: 158,
+                      top: collapsed ? 80 : 158,
                       opacity: navHovered ? 1 : 0,
                       pointerEvents: navHovered ? "auto" : "none",
                     }}
@@ -531,11 +498,10 @@ export default function Hero1Section() {
 
             {/* Right icons cell — fixed 513px wide; only height changes on hover */}
             <div
-              onMouseEnter={() => setNavHovered(false)}
               className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200"
               style={{ height: navHeightDesktop }}
             >
-              <div className="absolute right-[49.5px] top-[50.5px] flex items-center gap-[39px]">
+              <div className="absolute right-[49.5px] flex items-center gap-[39px]" style={{ top: collapsed ? 28 : 50.5 }}>
                 <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/figma/icon-instagram.svg" alt="" className="size-full" />
@@ -551,6 +517,19 @@ export default function Hero1Section() {
                 <LangToggle className="block size-[28px]" />
               </div>
             </div>
+
+            {/* Collapsed X — placed inside nav so hovering it doesn't trigger nav onMouseLeave */}
+            {collapsed && (
+              <button
+                type="button"
+                aria-label={navHovered ? "메뉴 닫기" : "히어로 닫기"}
+                onClick={() => navHovered ? setNavHovered(false) : expand()}
+                className={`absolute cursor-pointer ${navHovered ? "text-white" : "text-primary"}`}
+                style={{ left: 1810, top: 180, fontSize: 40, lineHeight: 1 }}
+              >
+                ✕
+              </button>
+            )}
           </nav>
         </div>
 

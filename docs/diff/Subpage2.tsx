@@ -330,12 +330,12 @@ export default function Subpage2() {
               <img src="/figma/footer-group1.svg" alt="국민권익위원회" className="block size-full object-contain" />
             </div>
           </div>
-          <div className="relative h-[40px]" style={{ width: 102.069 }}>
-            <div className="absolute" style={{ left: 0, top: 0, width: 41.2169, height: 40 }}>
+          <div className="relative h-[40px] w-[160px]">
+            <div className="absolute size-[40px]" style={{ left: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/footer-frame371-emblem.svg" alt="" className="block size-full" />
             </div>
-            <div className="absolute" style={{ left: 51.3, top: 12.2, width: 50.769, height: 16.715 }}>
+            <div className="absolute" style={{ left: 50, top: 12, width: 50.769, height: 16 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/footer-frame371-text.svg" alt="국세청" className="block size-full" />
             </div>

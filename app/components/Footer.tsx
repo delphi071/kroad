@@ -99,8 +99,6 @@ export default function Footer() {
           <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.tel || "대표전화  : 02-6013-6610"}</p>
         </div>
         <div className="flex items-center gap-[10px] px-[10px] py-[5px]">
-          <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.fax || "팩스 : 02-6937-0259"}</p>
-          <span className="h-[12px] bg-[#737373]" style={{ width: "0.5px" }} aria-hidden />
           <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.email || "이메일  : ktnc@tnc.or.kr"}</p>
           <span className="h-[12px] bg-[#737373]" style={{ width: "0.5px" }} aria-hidden />
           <p className="font-pretendard text-[12px] font-bold leading-none text-[#737373] whitespace-nowrap">{t.footer.company.privacyOfficer || "개인정보보호책임자 : 최해선"}</p>
@@ -153,13 +151,21 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ===== 하단 우측: 국세청 버튼 ===== */}
+      {/* ===== 하단 우측: 국세청 버튼 (emblem + 텍스트) ===== */}
       <div
         className="absolute"
-        style={{ left: 1625.13, top: 514, width: 94.715, height: 40 }}
+        style={{ left: 1625.13, top: 514, width: 102.069, height: 40 }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/footer-frame371.svg" alt="국세청" className="block h-full w-full" />
+        {/* emblem 원형 */}
+        <div className="absolute" style={{ left: 0, top: 0, width: 41.2169, height: 40 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/footer-frame371-emblem.svg" alt="" className="block h-full w-full" />
+        </div>
+        {/* 텍스트 라벨 */}
+        <div className="absolute" style={{ left: 51.3, top: 12.2, width: 50.769, height: 16.715 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/footer-frame371-text.svg" alt="국세청" className="block h-full w-full" />
+        </div>
       </div>
     </div>
   );

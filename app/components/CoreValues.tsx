@@ -2,44 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "../i18n/LanguageContext";
 
-/* Image/layout per card — text comes from dictionary by lang */
+/* Image per card — text comes from dictionary by lang */
 const CARD_LAYOUT = [
-  {
-    img: "/figma/sub1-corevalue-sustainability.svg",
-    imgW: 344,
-    imgH: 344,
-    imgLeft: "50%" as string,
-    imgTopMobile: "calc(50% - 82px)",
-    imgTopDesktop: "calc(50% + 120px)",
-    imgTransform: "translate(-50%, -50%)",
-  },
-  {
-    img: "/figma/sub1-corevalue-trust.svg",
-    imgW: 314.4,
-    imgH: 269.6,
-    imgLeft: "calc(50% + 0.5px)" as string,
-    imgTopMobile: "calc(50% - 81.5px)",
-    imgTopDesktop: "calc(50% + 120.5px)",
-    imgTransform: "translate(-50%, -50%)",
-  },
-  {
-    img: "/figma/sub1-corevalue-connection.svg",
-    imgW: 465.4,
-    imgH: 206.4,
-    imgLeft: "calc(50% - 9.5px)" as string,
-    imgTopMobile: "329px",
-    imgTopDesktop: "530px",
-    imgTransform: "translateX(-50%)",
-  },
-  {
-    img: "/figma/sub1-corevalue-discovery.svg",
-    imgW: 320,
-    imgH: 320,
-    imgLeft: "50%" as string,
-    imgTopMobile: "calc(50% - 82px)",
-    imgTopDesktop: "calc(50% + 120px)",
-    imgTransform: "translate(-50%, -50%)",
-  },
+  { img: "/figma/sub1-corevalue-sustainability.svg", imgW: 344, imgH: 344 },
+  { img: "/figma/sub1-corevalue-trust.svg", imgW: 314.4, imgH: 269.6 },
+  { img: "/figma/sub1-corevalue-connection.svg", imgW: 465.4, imgH: 206.4 },
+  { img: "/figma/sub1-corevalue-discovery.svg", imgW: 320, imgH: 320 },
 ];
 
 export default function CoreValues() {
@@ -174,9 +142,7 @@ export default function CoreValues() {
           hidden lg:block
           bg-grayscale-100
           [--cv-header-top:98px]
-          [--cv-text-top:872px]
-          lg:[--cv-header-top:400px]
-          lg:[--cv-text-top:870px]
+          lg:[--cv-header-top:150px]
         "
       >
       <div
@@ -187,7 +153,7 @@ export default function CoreValues() {
           className="bg-grayscale-100 relative text-black"
           style={{
             width: 1920,
-            height: 1080,
+            height: 930,
             transformOrigin: "top left",
             transform: "scale(calc(100vw / 1920px)) translateZ(0)",
             backfaceVisibility: "hidden",
@@ -210,18 +176,13 @@ export default function CoreValues() {
             <div
               key={card.eng}
               aria-hidden={i !== activeIndex}
-              className="bg-grayscale-100
-                [--card-svg-top:var(--card-svg-top-mobile)]
-                lg:[--card-svg-top:var(--card-svg-top-desktop)]
-              "
+              className="bg-grayscale-100"
               style={{
                 position: "absolute",
                 inset: 0,
                 zIndex: i,
                 transform: i <= activeIndex ? "translateY(0%)" : "translateY(100%)",
                 transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-                ["--card-svg-top-mobile" as string]: card.imgTopMobile,
-                ["--card-svg-top-desktop" as string]: card.imgTopDesktop,
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -231,34 +192,34 @@ export default function CoreValues() {
                 aria-hidden
                 style={{
                   position: "absolute",
-                  left: card.imgLeft,
-                  top: "var(--card-svg-top)",
-                  width: card.imgW,
-                  height: card.imgH,
-                  transform: card.imgTransform,
+                  left: 560,
+                  top: 570,
+                  width: card.imgW * 0.9,
+                  height: card.imgH * 0.9,
+                  transform: "translate(-50%, -50%)",
                 }}
               />
 
               <div
-                className="absolute flex -translate-x-1/2 items-center whitespace-nowrap"
-                style={{ left: "50%", top: "var(--cv-text-top)", gap: lang === "en" ? 100 : 200 }}
+                className="absolute flex flex-col items-start whitespace-nowrap"
+                style={{ left: 940, top: 570, transform: "translateY(-50%)", gap: 60 }}
               >
                 <div className="flex flex-col items-start gap-[12px]">
-                  <p className="font-montserrat text-primary text-[44px] font-semibold leading-[1.1] tracking-[-0.44px]">
+                  <p className="font-montserrat text-primary text-[40px] font-semibold leading-[1.1] tracking-[-0.4px]">
                     {card.eng}
                   </p>
                   <div className="flex items-center gap-[24px]">
                     {lang === "ko" && (
-                      <span className="font-pretendard text-[60px] font-bold leading-[1.3] tracking-[-1.56px]">
+                      <span className="font-pretendard text-[54px] font-bold leading-[1.3] tracking-[-1.4px]">
                         {card.kor}
                       </span>
                     )}
-                    <span className={`font-pretendard text-grayscale-700 leading-[1.3] tracking-[-0.84px] ${lang === "en" ? "text-[28px]" : "text-[42px]"}`}>
+                    <span className={`font-pretendard text-grayscale-700 leading-[1.3] tracking-[-0.76px] ${lang === "en" ? "text-[26px]" : "text-[38px]"}`}>
                       {card.tagline}
                     </span>
                   </div>
                 </div>
-                <div className={`font-pretendard leading-[1.3] tracking-[-0.84px] ${lang === "en" ? "text-[24px]" : "text-[42px]"}`}>
+                <div className={`font-pretendard leading-[1.3] tracking-[-0.76px] ${lang === "en" ? "text-[22px]" : "text-[38px]"}`}>
                   {card.desc.map((line, j) => (
                     <p key={j}>{line}</p>
                   ))}

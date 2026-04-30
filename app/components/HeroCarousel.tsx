@@ -10,6 +10,16 @@ export default function HeroCarousel({
   const ref = useRef<HTMLDivElement>(null);
   const slides = Children.count(children);
   const [anyCollapsed, setAnyCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 1023.98px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   // Watch for any slide entering collapsed state OR scrolled into subpage (mobile) — disable horizontal swipe
   useEffect(() => {
@@ -143,11 +153,15 @@ export default function HeroCarousel({
     };
   }, [slides]);
 
+  // Desktop: when a slide is collapsed or scrolled into subpage, lock horizontal navigation.
+  // Mobile: always allow horizontal swipe, even inside the content area.
+  const horizDisabled = anyCollapsed && !isMobile;
+
   return (
     <div
       ref={ref}
-      className={`hero-carousel relative h-screen w-screen overflow-y-hidden ${anyCollapsed ? "overflow-x-hidden" : "overflow-x-auto"}`}
-      style={{ scrollBehavior: "smooth", scrollSnapType: anyCollapsed ? "none" : "x mandatory", touchAction: anyCollapsed ? "pan-y" : "auto" }}
+      className={`hero-carousel relative h-screen w-screen overflow-y-hidden ${horizDisabled ? "overflow-x-hidden" : "overflow-x-auto"}`}
+      style={{ scrollBehavior: "smooth", scrollSnapType: horizDisabled ? "none" : "x mandatory", touchAction: horizDisabled ? "pan-y" : "auto" }}
     >
       <div className="flex h-full" style={{ width: `${slides * 100}vw` }}>
         {children}
