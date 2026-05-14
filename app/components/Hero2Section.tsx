@@ -391,7 +391,7 @@ export default function Hero2Section() {
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/figma/hero-scroll-chevron.png" alt="" aria-hidden className="absolute" style={{ left: "50%", top: "calc(100% * 50 / 244)", transform: "translateX(-50%)", width: "calc(100% * 92 / 516)", height: "calc(100% * 92 / 244)" }} />
+              <img src="/figma/hero-scroll-chevron.png" alt="" aria-hidden className="absolute" style={{ left: "50%", top: "calc(100% * 50 / 244)", transform: "translateX(-50%)", width: "calc(100% * 64 / 516)", height: "calc(100% * 64 / 244)" }} />
               <span className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: 0, top: "calc(100% * 168 / 244)", fontSize: "calc(100vw * 26.4 / 1920)", lineHeight: 1.5, fontWeight: 500 }}>
                 CLICK TO DISCOVER
               </span>

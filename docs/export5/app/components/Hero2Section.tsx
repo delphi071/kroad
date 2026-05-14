@@ -22,7 +22,12 @@ const NAV_MENU: NavItem[] = [
   {
     line1: "우리가",
     line2: "걷는 길",
-    subs: ["코리아둘레길", "지역길 조사 및 연구", "걷기 문화 프로그램", "굿즈 개발 및 판매"],
+    subs: [
+      "코리아둘레길",
+      "지역길 조사 및 연구",
+      "걷기 문화 프로그램",
+      "굿즈 개발 및 판매",
+    ],
   },
   {
     line1: "함께 걷는",
@@ -37,11 +42,12 @@ const NAV_MENU: NavItem[] = [
   { label: "마음잇기", subs: ["후원하기", "연간기금 및 활동 실적내역"] },
 ];
 
-const ACTIVE_INDEX = 2;
-const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)`;
-const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)`;
+const ACTIVE_INDEX = 1;
 
-export default function Hero3Section() {
+const OVERLAY_DESKTOP = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(ellipse 96% 54% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%)`;
+const OVERLAY_MOBILE = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%)`;
+
+export default function Hero2Section() {
   const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
   const [navHovered, setNavHovered] = useState(false);
@@ -74,7 +80,9 @@ export default function Hero3Section() {
   }, [collapsed]);
 
   const navHeightDesktop = collapsed ? (navHovered ? 280 : 80) : (navHovered ? 380 : 129);
-  const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
+
+  const isDesktop = () =>
+    typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
 
   const handleScrollDown = () => {
     if (isDesktop()) {
@@ -84,6 +92,9 @@ export default function Hero3Section() {
     const slide = sectionRef.current?.closest("[data-slide]") as HTMLElement | null;
     const section = sectionRef.current;
     if (!slide || !section) return;
+    /* Mobile: scroll so subpage's top sits just below the 64px sticky nav.
+       Section uses -mt-[64px] so its bottom = clientHeight - 64; subtract another 64
+       so the subpage starts right under the sticky nav, not hidden behind it. */
     const sectionBottomInSlide =
       section.getBoundingClientRect().bottom - slide.getBoundingClientRect().top + slide.scrollTop;
     slide.scrollTo({ top: sectionBottomInSlide - 64, behavior: "smooth" });
@@ -105,7 +116,6 @@ export default function Hero3Section() {
       delete slide.dataset.heroCollapsed;
       slide.scrollTop = 0;
     }
-    window.dispatchEvent(new CustomEvent("hero-expanded"));
   };
 
   useEffect(() => {
@@ -118,8 +128,8 @@ export default function Hero3Section() {
         if (slide) slide.dataset.heroCollapsed = "true";
       }
     };
-    window.addEventListener("nav-h3", handler);
-    return () => window.removeEventListener("nav-h3", handler);
+    window.addEventListener("nav-h2", handler);
+    return () => window.removeEventListener("nav-h2", handler);
   }, []);
 
   const sectionClasses = collapsed
@@ -146,7 +156,9 @@ export default function Hero3Section() {
           <div
             aria-label="한국의길과문화 공식 로고"
             role="img"
-            className={`block h-[40px] w-[95px] transition-colors duration-200 ${navOnLight ? "bg-primary" : "bg-white"}`}
+            className={`block h-[40px] w-[95px] transition-colors duration-200 ${
+              navOnLight ? "bg-primary" : "bg-white"
+            }`}
             style={{
               WebkitMaskImage: "url(/figma/logo.svg)",
               WebkitMaskRepeat: "no-repeat",
@@ -163,7 +175,9 @@ export default function Hero3Section() {
           type="button"
           aria-label="메뉴 열기"
           onClick={() => setMenuOpen(true)}
-          className={`block size-[24px] cursor-pointer transition-colors duration-200 ${navOnLight ? "text-primary" : "text-white"}`}
+          className={`block size-[24px] cursor-pointer transition-colors duration-200 ${
+            navOnLight ? "text-primary" : "text-white"
+          }`}
         >
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="block size-full" aria-hidden>
             <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -171,7 +185,7 @@ export default function Hero3Section() {
         </button>
       </nav>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile menu overlay (same as Hero1) */}
       {menuOpen && (
         <div className="fixed inset-0 z-100 lg:hidden bg-black/50 backdrop-blur-sm">
           <div className="relative z-10 flex h-full w-full flex-col bg-white/10">
@@ -212,37 +226,37 @@ export default function Hero3Section() {
 
       <section
         ref={sectionRef}
-        className={`w-full bg-black mt-[-64px] lg:mt-0 transition-[height] duration-500 ease-in-out ${
-          collapsed && navHovered ? "lg:overflow-visible overflow-hidden" : "overflow-hidden"
-        } ${sectionClasses}`}
+        className={`w-full overflow-hidden bg-black mt-[-64px] lg:mt-0 transition-[height] duration-500 ease-in-out ${sectionClasses}`}
       >
-        <Image src="/figma/hero3-bg.png" alt="" fill priority sizes="100vw" className="absolute inset-0 object-cover" />
+        <Image src="/figma/hero2-bg.png" alt="" fill priority sizes="100vw" className="absolute inset-0 object-cover" />
         <div className="absolute inset-0 lg:hidden" style={{ backgroundImage: OVERLAY_MOBILE }} aria-hidden />
         <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: OVERLAY_DESKTOP }} aria-hidden />
 
-        {/* MOBILE LAYOUT — "우리가" / "걷는 길" cascading */}
+        {/* MOBILE LAYOUT — matches Figma 525:24297 hero portion (390×844) */}
         <div className="relative z-10 h-full w-full lg:hidden">
           {lang === "ko" ? (
             <>
               <div
                 className="absolute font-suite font-black text-primary"
-                style={{ left: "7.18%", top: "36.49%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+                style={{ left: "7.18%", top: "28.32%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, textAlign: "left" }}
               >
-                우리가
+                <p style={{ whiteSpace: "nowrap" }}>같은</p>
+                <p style={{ whiteSpace: "nowrap" }}>길</p>
               </div>
               <div
                 className="absolute font-suite font-black text-primary"
-                style={{ left: "28.97%", top: "51.78%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, whiteSpace: "nowrap" }}
+                style={{ left: "50%", top: "55.21%", fontSize: "clamp(60px, 25.12vw, 110px)", lineHeight: 1, letterSpacing: "-0.05em", fontWeight: 900, textAlign: "left" }}
               >
-                걷는 길
+                <p style={{ whiteSpace: "nowrap" }}>다른</p>
+                <p style={{ whiteSpace: "nowrap" }}>시선</p>
               </div>
             </>
           ) : (
             <div
               className="absolute font-suite font-black text-primary"
-              style={{ left: "7.18%", top: "40%", fontSize: "clamp(36px, 8vw, 56px)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 900 }}
+              style={{ left: "7.18%", top: "32%", fontSize: "clamp(36px, 8vw, 56px)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 900 }}
             >
-              {t.hero3.headingMobile.map((line, i) => (
+              {t.hero2.headingMobile.map((line, i) => (
                 <p key={i} style={{ whiteSpace: "nowrap" }}>{line}</p>
               ))}
             </div>
@@ -263,30 +277,36 @@ export default function Hero3Section() {
         {/* DESKTOP LAYOUT */}
         <div className="hidden lg:block">
           <div className="absolute left-0 top-0 origin-top-left" style={{ width: 1920, height: 1080, transform: "scale(calc(100vw / 1920px))" }}>
-            <div aria-hidden={collapsed} style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? "none" : "auto", transition: "opacity 0.3s" }}>
+            <div
+              aria-hidden={collapsed}
+              style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? "none" : "auto", transition: "opacity 0.3s" }}
+            >
+              {/* Title image (transparent PNG: text + lines + 자세히 보기 visual) */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={t.hero3.image}
-                alt="우리가 걷는 길 — Solution"
+                src={t.hero2.image}
+                alt="같은 길, 다른 시선 — Speciality"
                 className="absolute pointer-events-none select-none"
                 style={{ left: 0, top: 0, width: 1920, height: 1080 }}
               />
+
+              {/* Invisible click area for 자세히 보기 button */}
               <button
                 type="button"
                 aria-label="자세히 보기"
                 onClick={collapse}
                 className="absolute cursor-pointer"
-                style={{ left: 982, top: 455, width: 169, height: 49, background: "transparent", border: 0 }}
+                style={{ left: 1402, top: 432, width: 169, height: 49, background: "transparent", border: 0 }}
               />
             </div>
 
-            {/* Collapsed compact title — z-10 (below nav z-20 so hover dropdown shows on top) */}
+            {/* Collapsed compact title */}
             {collapsed && (
               <p
-                className="font-suite text-primary absolute z-10 whitespace-nowrap"
+                className="font-suite text-primary absolute whitespace-nowrap"
                 style={{ left: 80, top: 173, fontSize: 54, lineHeight: 1, fontWeight: 900, letterSpacing: "-2.7px" }}
               >
-                {lang === "ko" ? "우리가 걷는 길" : t.hero3.collapsedTitle.join(" ")}
+                {lang === "ko" ? "같은 길 다른 시선" : t.hero2.collapsedTitle.join(" ")}
               </p>
             )}
 
@@ -314,6 +334,7 @@ export default function Hero3Section() {
                   <img src="/figma/logo.svg" alt="한국의길과문화 공식 로고" className="block h-full w-full object-contain" />
                 </a>
               </div>
+
               {NAV_MENU.map((item, idx) => {
                 const colorClass = idx === ACTIVE_INDEX ? "text-primary" : "text-grayscale-100";
                 const dictItem = t.nav.menu[idx]; const labelText = (dictItem.label || `${item.line1 ?? ""} ${item.line2 ?? ""}`.trim() || item.label || "").replace(/\n/g, " "); const labelLines = (idx === 1 && lang === "en") ? labelText.split(", ") : [labelText]; const labelTop = (idx === 1 && lang === "en") ? (collapsed ? 12 : 75) : (collapsed ? 20 : 96);
@@ -330,6 +351,7 @@ export default function Hero3Section() {
                   </div>
                 );
               })}
+
               <div className="relative w-[513px] shrink-0 border-b border-l border-r border-solid border-white transition-[height] duration-200" style={{ height: navHeightDesktop }}>
                 <div className="absolute right-[49.5px] flex items-center gap-[39px]" style={{ top: collapsed ? 28 : 50.5 }}>
                   <a href="https://www.instagram.com/koreatnc1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="block size-[24px]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/figma/icon-instagram.svg" alt="" className="size-full" /></a>
@@ -355,6 +377,7 @@ export default function Hero3Section() {
             )}
           </div>
 
+          {/* CLICK TO DISCOVER */}
           {!collapsed && (
             <button
               type="button"
@@ -368,7 +391,7 @@ export default function Hero3Section() {
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/figma/hero-scroll-chevron.png" alt="" aria-hidden className="absolute" style={{ left: "50%", top: "calc(100% * 50 / 244)", transform: "translateX(-50%)", width: "calc(100% * 64 / 516)", height: "calc(100% * 64 / 244)" }} />
+              <img src="/figma/hero-scroll-chevron.png" alt="" aria-hidden className="absolute" style={{ left: "50%", top: "calc(100% * 50 / 244)", transform: "translateX(-50%)", width: "calc(100% * 92 / 516)", height: "calc(100% * 92 / 244)" }} />
               <span className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: 0, top: "calc(100% * 168 / 244)", fontSize: "calc(100vw * 26.4 / 1920)", lineHeight: 1.5, fontWeight: 500 }}>
                 CLICK TO DISCOVER
               </span>
