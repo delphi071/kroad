@@ -324,7 +324,7 @@ export default function Hero1Section() {
       >
         {/* Background */}
         <Image
-          src="/img01.jpg"
+          src="/img01.png"
           alt=""
           fill
           priority
