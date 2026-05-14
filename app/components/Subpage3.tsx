@@ -562,6 +562,26 @@ function MobileFooter() {
   );
 }
 
+/* ---------- Carousel prev / next arrows (PC) ---------- */
+function CarouselArrows({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) {
+  const base =
+    "absolute top-1/2 z-20 flex h-[72px] w-[72px] -translate-y-1/2 items-center justify-center rounded-full border border-white/50 bg-black/35 text-white backdrop-blur-sm transition-colors duration-200 hover:bg-black/60 cursor-pointer";
+  return (
+    <>
+      <button type="button" onClick={onPrev} aria-label="이전 항목" className={`${base} left-[24px]`}>
+        <svg viewBox="0 0 24 24" fill="none" className="block h-[34px] w-[34px]" aria-hidden>
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button type="button" onClick={onNext} aria-label="다음 항목" className={`${base} right-[24px]`}>
+        <svg viewBox="0 0 24 24" fill="none" className="block h-[34px] w-[34px]" aria-hidden>
+          <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+    </>
+  );
+}
+
 /* ---------- PC Korea carousel (Section 1) — title TOP, then [body + image with peek] ---------- */
 function PCKoreaCarousel() {
   const { t } = useLang();
@@ -572,7 +592,6 @@ function PCKoreaCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = items[activeIdx];
   const nextIdx = (activeIdx + 1) % items.length;
-  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -596,25 +615,16 @@ function PCKoreaCarousel() {
 
         {/* Image carousel area (main + peek behind, layered 3D) */}
         <div className="flex-1 relative" style={{ aspectRatio: "980 / 520" }}>
-          <button
-            type="button"
-            onClick={() => setActiveIdx(nextIdx)}
-            aria-label={`다음 항목: ${next.subTitle}`}
-            className="absolute z-0 inset-0 overflow-hidden rounded-[20px] cursor-pointer transition-transform duration-300"
-            style={{ transform: "translate(420px, 80px)", filter: "blur(4px)", opacity: 0.85 }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={next.image} alt="" className="absolute inset-0 size-full object-cover" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveIdx(nextIdx)}
-            aria-label={`다음 항목 보기: ${next.subTitle}`}
-            className="absolute z-10 inset-0 overflow-hidden rounded-[20px] cursor-pointer"
-          >
+          <div className="absolute z-10 inset-0 overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={active.image} alt={active.subTitle} className="absolute inset-0 size-full object-cover" />
-          </button>
+          </div>
+          {items.length > 1 && (
+            <CarouselArrows
+              onPrev={() => setActiveIdx((activeIdx - 1 + items.length) % items.length)}
+              onNext={() => setActiveIdx(nextIdx)}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -631,7 +641,6 @@ function PCRegionalCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = items[activeIdx];
   const nextIdx = (activeIdx + 1) % items.length;
-  const next = items[nextIdx % items.length];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -645,27 +654,16 @@ function PCRegionalCarousel() {
       <div className="flex gap-[60px] items-start w-full">
         {/* Image carousel area (main + peek behind, peek shifted LEFT-down) */}
         <div className="flex-1 relative" style={{ aspectRatio: "980 / 520" }}>
-          {REGIONAL_ITEMS.length > 1 && (
-            <button
-              type="button"
-              onClick={() => setActiveIdx(nextIdx)}
-              aria-label={`다음 항목: ${next.subTitle}`}
-              className="absolute z-0 inset-0 overflow-hidden rounded-[20px] cursor-pointer transition-transform duration-300"
-              style={{ transform: "translate(-420px, 80px)", filter: "blur(4px)", opacity: 0.85 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={next.image} alt="" className="absolute inset-0 size-full object-cover" />
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setActiveIdx(nextIdx)}
-            aria-label={`다음 항목 보기`}
-            className="absolute z-10 inset-0 overflow-hidden rounded-[20px] cursor-pointer"
-          >
+          <div className="absolute z-10 inset-0 overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={active.image} alt={active.subTitle} className="absolute inset-0 size-full object-cover" />
-          </button>
+          </div>
+          {items.length > 1 && (
+            <CarouselArrows
+              onPrev={() => setActiveIdx((activeIdx - 1 + items.length) % items.length)}
+              onNext={() => setActiveIdx(nextIdx)}
+            />
+          )}
         </div>
 
         {/* Body text column — RIGHT */}
@@ -699,7 +697,6 @@ function PCCultureCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = items[activeIdx];
   const nextIdx = (activeIdx + 1) % items.length;
-  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -709,35 +706,24 @@ function PCCultureCarousel() {
         <p className="font-pretendard leading-[1.1] text-grayscale-900 tracking-[-0.36px]" style={{ fontSize: 36, fontWeight: 800 }}>{active.subTitle}</p>
       </div>
 
-      {/* Below: image (flush left, breaks out -ml-200) + body text (right) */}
-      <div className="flex items-start w-full">
-        {/* Image carousel area — flush against viewport left edge */}
-        <div className="relative shrink-0" style={{ width: 980, aspectRatio: "980 / 520", marginLeft: -200 }}>
-          {CULTURE_ITEMS.length > 1 && (
-            <button
-              type="button"
-              onClick={() => setActiveIdx(nextIdx)}
-              aria-label={`다음 항목: ${next.subTitle}`}
-              className="absolute z-0 inset-0 overflow-hidden rounded-[20px] cursor-pointer transition-transform duration-300"
-              style={{ transform: "translate(150px, 100px)", filter: "blur(4px)", opacity: 0.85 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={next.image} alt="" className="absolute inset-0 size-full object-cover" />
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setActiveIdx(nextIdx)}
-            aria-label={`다음 항목 보기`}
-            className="absolute z-10 inset-0 overflow-hidden rounded-[20px] cursor-pointer"
-          >
+      {/* Below: image (left) + body text (right) — same inset as the other sections */}
+      <div className="flex gap-[60px] items-start w-full">
+        {/* Image carousel area */}
+        <div className="flex-1 relative" style={{ aspectRatio: "980 / 520" }}>
+          <div className="absolute z-10 inset-0 overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={active.image} alt={active.subTitle} className="absolute inset-0 size-full object-cover" />
-          </button>
+          </div>
+          {items.length > 1 && (
+            <CarouselArrows
+              onPrev={() => setActiveIdx((activeIdx - 1 + items.length) % items.length)}
+              onNext={() => setActiveIdx(nextIdx)}
+            />
+          )}
         </div>
 
-        {/* Body text column — RIGHT (ml-auto pushes to right edge) */}
-        <div className="w-[480px] shrink-0 ml-auto flex flex-col gap-[36px] items-start">
+        {/* Body text column — RIGHT */}
+        <div className="w-[480px] shrink-0 flex flex-col gap-[36px] items-start">
           {active.blocks.map((b, i) => (
             <div key={i} className="flex flex-col gap-[13px] items-start w-full">
               {b.subHeading && (
@@ -787,7 +773,6 @@ function PCGoodsCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = items[activeIdx];
   const nextIdx = (activeIdx + 1) % items.length;
-  const next = items[nextIdx];
 
   return (
     <div className="flex flex-col gap-[60px] w-full">
@@ -828,27 +813,16 @@ function PCGoodsCarousel() {
 
         {/* Image carousel area — RIGHT, peek shifted right-down (Section 1 패턴) */}
         <div className="flex-1 relative" style={{ aspectRatio: "980 / 520" }}>
-          {GOODS_ITEMS.length > 1 && (
-            <button
-              type="button"
-              onClick={() => setActiveIdx(nextIdx)}
-              aria-label={`다음 항목: ${next.subTitle}`}
-              className="absolute z-0 inset-0 overflow-hidden rounded-[20px] cursor-pointer transition-transform duration-300"
-              style={{ transform: "translate(420px, 80px)", filter: "blur(4px)", opacity: 0.85 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={next.image} alt="" className="absolute inset-0 size-full object-cover" />
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setActiveIdx(nextIdx)}
-            aria-label={`다음 항목 보기`}
-            className="absolute z-10 inset-0 overflow-hidden rounded-[20px] cursor-pointer"
-          >
+          <div className="absolute z-10 inset-0 overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={active.image} alt={active.subTitle} className="absolute inset-0 size-full object-cover" />
-          </button>
+          </div>
+          {items.length > 1 && (
+            <CarouselArrows
+              onPrev={() => setActiveIdx((activeIdx - 1 + items.length) % items.length)}
+              onNext={() => setActiveIdx(nextIdx)}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -1063,12 +1037,22 @@ export default function Subpage3() {
       const slide = root.closest("[data-slide]") as HTMLElement | null;
       if (!slide) return;
       const isMobile = window.matchMedia("(max-width: 1023.98px)").matches;
-      const targets = root.querySelectorAll<HTMLElement>(`[data-section="${subKey}"]`);
-      const target = Array.from(targets).find((el) => el.offsetParent !== null);
-      if (!target) return;
-      const offsetTop =
-        target.getBoundingClientRect().top - slide.getBoundingClientRect().top + slide.scrollTop;
-      slide.scrollTo({ top: offsetTop - (isMobile ? 80 : 0), behavior: "smooth" });
+      // Desktop: Hero3 collapses on nav-h3 with a 500ms height transition,
+      // shifting this content upward. Measure only after that settles —
+      // otherwise the scroll overshoots past the section title.
+      const measureAndScroll = () => {
+        const targets = root.querySelectorAll<HTMLElement>(`[data-section="${subKey}"]`);
+        const target = Array.from(targets).find((el) => el.offsetParent !== null);
+        if (!target) return;
+        const offsetTop =
+          target.getBoundingClientRect().top - slide.getBoundingClientRect().top + slide.scrollTop;
+        // Desktop: the collapsed hero is a sticky bar (height 100vw*280/1920)
+        // pinned to the top — land the title just below it with breathing room.
+        const topMargin = isMobile ? 80 : (window.innerWidth * 280) / 1920 + 60;
+        slide.scrollTo({ top: offsetTop - topMargin, behavior: "smooth" });
+      };
+      if (isMobile) measureAndScroll();
+      else window.setTimeout(measureAndScroll, 550);
     };
     window.addEventListener("nav-h3", handler);
     return () => window.removeEventListener("nav-h3", handler);
