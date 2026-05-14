@@ -585,7 +585,7 @@ export default function Hero1Section() {
               className="absolute"
               style={{
                 left: "50%",
-                top: "calc(100% * 50 / 244)",
+                top: "calc(100% * 80 / 244)",
                 transform: "translateX(-50%)",
                 width: "calc(100vw * 32 / 1920)",
                 height: "calc(100vw * 32 / 1920)",
@@ -595,7 +595,7 @@ export default function Hero1Section() {
               className="font-montserrat absolute whitespace-nowrap text-white"
               style={{
                 left: "50%",
-                top: "calc(100% * 130 / 244)",
+                top: "calc(100% * 160 / 244)",
                 transform: "translateX(-50%)",
                 fontSize: "calc(100vw * 15 / 1920)",
                 lineHeight: 1.5,
