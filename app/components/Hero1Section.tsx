@@ -594,9 +594,10 @@ export default function Hero1Section() {
             <span
               className="font-montserrat absolute whitespace-nowrap text-white"
               style={{
-                left: 0,
-                top: "calc(100% * 168 / 244)",
-                fontSize: "calc(100vw * 26.4 / 1920)",
+                left: "50%",
+                top: "calc(100% * 130 / 244)",
+                transform: "translateX(-50%)",
+                fontSize: "calc(100vw * 15 / 1920)",
                 lineHeight: 1.5,
                 fontWeight: 500,
               }}

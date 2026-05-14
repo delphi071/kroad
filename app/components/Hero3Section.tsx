@@ -369,7 +369,7 @@ export default function Hero3Section() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/figma/hero-scroll-chevron.png" alt="" aria-hidden className="absolute" style={{ left: "50%", top: "calc(100% * 50 / 244)", transform: "translateX(-50%)", width: "calc(100vw * 32 / 1920)", height: "calc(100vw * 32 / 1920)" }} />
-              <span className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: 0, top: "calc(100% * 168 / 244)", fontSize: "calc(100vw * 26.4 / 1920)", lineHeight: 1.5, fontWeight: 500 }}>
+              <span className="font-montserrat absolute whitespace-nowrap text-white" style={{ left: "50%", top: "calc(100% * 130 / 244)", transform: "translateX(-50%)", fontSize: "calc(100vw * 15 / 1920)", lineHeight: 1.5, fontWeight: 500 }}>
                 CLICK TO DISCOVER
               </span>
             </button>
