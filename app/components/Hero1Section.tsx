@@ -587,8 +587,8 @@ export default function Hero1Section() {
                 left: "50%",
                 top: "calc(100% * 50 / 244)",
                 transform: "translateX(-50%)",
-                width: "calc(100% * 64 / 516)",
-                height: "calc(100% * 64 / 244)",
+                width: "calc(100vw * 32 / 1920)",
+                height: "calc(100vw * 32 / 1920)",
               }}
             />
             <span
